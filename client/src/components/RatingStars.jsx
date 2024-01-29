@@ -15,14 +15,14 @@ const RatingStars = ({ rating }) => {
   }
   return (
     <div className="flex items-center gap-1">
-      {fullStars.map((_) => (
-        <i class="bx bxs-star text-yellow-500"></i>
+      {fullStars.map((_, index) => (
+        <i key={index} className="bx bxs-star text-yellow-500"></i>
       ))}
-      {halfStars.map((_) => (
-        <i class="bx bxs-star-half text-yellow-500"></i>
+      {halfStars.map((_, index) => (
+        <i key={index} className="bx bxs-star-half text-yellow-500"></i>
       ))}
-      {emptyStars.map((_) => (
-        <i class="bx bxs-star text-slate-400"></i>
+      {emptyStars.map((_, index) => (
+        <i key={index} className="bx bxs-star text-slate-400"></i>
       ))}
     </div>
   );
