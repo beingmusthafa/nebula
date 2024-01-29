@@ -1,11 +1,52 @@
-import React from "react";
+import { useState } from "react";
 import teacherIllustration from "../assets/teacher-illustration.png";
 import logo from "../assets/nebula_light.png";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  let [error, setError] = useState(null);
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
+  let [confirmPassword, setConfirmPassword] = useState("");
+  let [name, setName] = useState("");
+  const navigate = useNavigate();
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (
+      !(
+        email.trim() &&
+        password.trim() &&
+        name.trim() &&
+        confirmPassword.trim()
+      )
+    ) {
+      return setError("All fields are required");
+    }
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    const res = await fetch("/api/create-user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+    }).then((res) => res.json());
+    if (!res.success) {
+      setError(res.message);
+    } else {
+      setError(null);
+      navigate("/login");
+    }
+  }
   return (
-    <div className="flex _bg-light h-screen w-full items-center">
+    <div className="flex _bg-light h-fit w-full items-center">
       <div className="hidden md:flex flex-col items-center w-1/2 pl-10">
         <motion.img
           initial={{ y: 100, opacity: 0 }}
@@ -48,25 +89,35 @@ const SignUp = () => {
           <p className="_font-tilt-warp text-5xl">nebula</p>
         </div>
         <form
+          onSubmit={handleSubmit}
           className="bg-white w-fit flex flex-col p-8 gap-5"
-          action="
-        "
         >
-          <p className="text-3xl _font-tilt-warp _text-blue-black-gradient mb-6 w-fit mx-auto">
+          <p className="text-3xl _font-tilt-warp _tex t-blue-black-gradient mb-6 w-fit mx-auto">
             Sign up
           </p>
-
+          {error && (
+            <p className="font-semibold text-base text-red-500">{error}</p>
+          )}
           <input
+            onChange={(e) => setName(e.target.value)}
+            type="name"
+            placeholder="Full name"
+            className="p-2 text-base border border-black pl-4 w-64 md:w-80"
+          />
+          <input
+            onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Email"
             className="p-2 text-base border border-black pl-4 w-64 md:w-80"
           />
           <input
+            onChange={(e) => setPassword(e.target.value)}
             type="text"
             placeholder="Password"
             className="p-2 text-base border border-black pl-4 w-64 md:w-80"
           />
           <input
+            onChange={(e) => setConfirmPassword(e.target.value)}
             type="text"
             placeholder="Confirm password"
             className="p-2 text-base border border-black pl-4 w-64 md:w-80"

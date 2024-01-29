@@ -1,11 +1,38 @@
-import React from "react";
+import { useState } from "react";
 import welcomeIllustration from "../assets/welcome-illustration.png";
 import logo from "../assets/nebula_light.png";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
+  let [error, setError] = useState(null);
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!(email.trim() && password.trim())) {
+      return setError("All fields are required");
+    }
+    const res = await fetch("/api/sign-in", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    }).then((res) => res.json());
+    if (!res.success) {
+      setError(res.message);
+    } else {
+      setError(null);
+      navigate("/");
+    }
+  }
   return (
-    <div className="flex _bg-light h-screen w-full items-center">
+    <div className="flex _bg-light h-fit w-full items-center">
       <div className="hidden md:flex flex-col items-center w-1/2 pl-10">
         <motion.img
           initial={{ y: 100, opacity: 0 }}
@@ -47,6 +74,7 @@ const SignIn = () => {
           <p className="_font-tilt-warp text-5xl">nebula</p>
         </div>
         <form
+          onSubmit={handleSubmit}
           className="bg-white w-fit flex flex-col p-8 gap-5"
           action="
         "
@@ -54,13 +82,17 @@ const SignIn = () => {
           <p className="text-3xl _font-tilt-warp _text-blue-black-gradient mb-6 w-fit mx-auto">
             Sign in
           </p>
-
+          {error && (
+            <p className="font-semibold text-base text-red-500">{error}</p>
+          )}
           <input
+            onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Email"
             className="p-2 text-base border border-black pl-4 w-80"
           />
           <input
+            onChange={(e) => setPassword(e.target.value)}
             type="text"
             placeholder="Password"
             className="p-2 text-base border border-black pl-4 w-80"
