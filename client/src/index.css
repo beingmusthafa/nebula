@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Tilt+Warp&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=Tilt+Warp&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cyan: #24e6ce;
+  --blue: #38b6ff;
+  --grey: #787878;
+  --light: #f7fcff;
+}
+body {
+  padding-top: 4rem;
+  font-family: "DM Sans", sans-serif;
+}
+._font-tilt-warp {
+  font-family: "Tilt Warp", sans-serif;
+}
+._font-dm-display {
+  font-family: "DM Serif Display", serif;
+}
+._color-cyan {
+  color: var(--cyan);
+}
+._color-blue {
+  color: var(--blue);
+}
+._color-grey {
+  color: var(--grey);
+}
+._border-cyan {
+  border-color: var(--cyan);
+}
+._border-grey {
+  border-color: var(--grey);
+}
+._border-blue {
+  border-color: var(--blue);
+}
+._bg-light {
+  background-color: var(--light);
+}
+._border-blue-black-gradient {
+  border-color: transparent;
+  border-style: solid;
+  border-image: linear-gradient(to right, var(--blue), black, var(--blue));
+  border-image-slice: 1;
+}
+._text-blue-black-gradient {
+  background: -webkit-linear-gradient(black, var(--blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+._fill-btn {
+  padding: 0.25rem 0.5rem;
+  border: 2px solid black;
+  background-color: black;
+  font-weight: bold;
+  color: white;
+  font-size: 0.8rem;
+  transition: 0.3s;
+}
+._fill-btn:hover {
+  background-color: white;
+  color: black;
+}
+._outline-btn {
+  box-sizing: border-box;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid black;
+  color: black;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: 0.3s;
+}
+._outline-btn:hover {
+  background-color: black;
+  color: white;
+}
