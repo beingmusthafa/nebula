@@ -7,12 +7,14 @@
 
 :root {
   --cyan: #24e6ce;
-  --blue: #38b6ff;
+  --blue: #0e9bed;
+  --red: #d60c0c;
+  --dark-blue: #3464b4;
   --grey: #787878;
   --light: #f7fcff;
 }
 body {
-  padding-top: 4rem;
+  font-size: 0.8rem;
   font-family: "DM Sans", sans-serif;
 }
 ._font-tilt-warp {
@@ -42,10 +44,22 @@ body {
 ._bg-light {
   background-color: var(--light);
 }
-._border-blue-black-gradient {
+._bg-blue {
+  background-color: var(--blue);
+}
+._bg-dark-blue {
+  background-color: var(--dark-blue);
+}
+._border-blue-black-gradient2 {
   border-color: transparent;
   border-style: solid;
   border-image: linear-gradient(to right, var(--blue), black, var(--blue));
+  border-image-slice: 1;
+}
+._border-blue-black-gradient {
+  border-color: transparent;
+  border-style: solid;
+  border-image: linear-gradient(to right, black, var(--blue));
   border-image-slice: 1;
 }
 ._text-blue-black-gradient {
@@ -55,8 +69,8 @@ body {
 }
 ._fill-btn {
   padding: 0.25rem 0.5rem;
-  border: 2px solid black;
-  background-color: black;
+  border: 2px solid var(--blue);
+  background-color: var(--blue);
   font-weight: bold;
   color: white;
   font-size: 0.8rem;
@@ -64,18 +78,54 @@ body {
 }
 ._fill-btn:hover {
   background-color: white;
-  color: black;
+  color: var(--blue);
+}
+._fill-btn-red {
+  padding: 0.25rem 0.5rem;
+  border: 2px solid #d60c0c;
+  background-color: #d60c0c;
+  font-weight: bold;
+  color: white;
+  font-size: 0.8rem;
+  transition: 0.3s;
+}
+._fill-btn-red:hover {
+  background-color: white;
+  color: #d60c0c;
+}
+._fill-btn-black {
+  padding: 0.25rem 0.5rem;
+  border: 2px solid #000000;
+  background-color: #000000;
+  font-weight: bold;
+  color: white;
+  font-size: 0.8rem;
+  transition: 0.3s;
+}
+._fill-btn-black:hover {
+  background-color: white;
+  color: #000000;
 }
 ._outline-btn {
   box-sizing: border-box;
   padding: 0.25rem 0.5rem;
-  border: 2px solid black;
-  color: black;
+  border: 2px solid var(--blue);
+  color: var(--blue);
   font-size: 0.8rem;
   font-weight: bold;
   transition: 0.3s;
 }
 ._outline-btn:hover {
-  background-color: black;
+  background-color: var(--blue);
   color: white;
+}
+._section-title {
+  padding: 1.5rem 1rem 0.5rem 1rem;
+  display: block;
+  width: 100%;
+  font-family: "DM Serif Display", serif;
+  font-size: 1.7rem;
+}
+._no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
