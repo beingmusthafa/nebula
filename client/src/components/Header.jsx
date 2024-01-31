@@ -34,7 +34,7 @@ const Header = () => {
             className=" border border-black pl-4 w-80"
           />
           <button className="_fill-btn-black">
-            <i class="bx bx-search-alt-2 text-lg"></i>
+            <i className="bx bx-search-alt-2 text-lg"></i>
           </button>
         </form>
         <div className="flex md:gap-8 gap-4 items-center cursor-pointer">
