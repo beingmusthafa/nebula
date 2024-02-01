@@ -43,6 +43,40 @@ class AuthController {
       next(customError(500, error.message));
     }
   }
+
+  async signIn(req: Request, res: Response, next: NextFunction) {
+    try {
+      const response = await this.authService.signIn(req.body);
+      if (!response.success) {
+        return next(customError(response.statusCode, response.message));
+      }
+      res
+        .cookie("access_token", response.token, {
+          httpOnly: true,
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
+        })
+        .json({ success: true, user: response.doc });
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async googleAuth(req: Request, res: Response, next: NextFunction) {
+    try {
+      const response = await this.authService.googleAuth(req.body);
+      if (!response.success) {
+        return next(customError(response.statusCode, response.message));
+      }
+      res
+        .cookie("access_token", response.token, {
+          httpOnly: true,
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
+        })
+        .json({ success: true, user: response.doc });
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
 }
 
 export default new AuthController(authServiceInstance);

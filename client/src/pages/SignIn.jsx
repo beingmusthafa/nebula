@@ -1,20 +1,24 @@
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 import welcomeIllustration from "../assets/welcome-illustration.png";
 import logo from "../assets/nebula_light.png";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { signIn } from "../redux/user/userSlice";
+import GoogleAuth from "../components/GoogleAuth";
 
 const SignIn = () => {
   let [error, setError] = useState(null);
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   async function handleSubmit(e) {
     e.preventDefault();
     if (!(email.trim() && password.trim())) {
       return setError("All fields are required");
     }
-    const res = await fetch("/api/sign-in", {
+    const res = await fetch("/api/auth/sign-in", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,11 +29,11 @@ const SignIn = () => {
       }),
     }).then((res) => res.json());
     if (!res.success) {
-      setError(res.message);
-    } else {
-      setError(null);
-      navigate("/");
+      return setError(res.message);
     }
+    dispatch(signIn(res.user));
+    setError(null);
+    navigate("/");
   }
   return (
     <div className="flex _bg-light h-fit w-full items-center">
@@ -98,9 +102,7 @@ const SignIn = () => {
             className="p-2 text-base border border-black pl-4 w-80"
           />
           <button className="_fill-btn uppercase">Sign in</button>
-          <button className="_outline-btn ">
-            Continue with <i class="bx bxl-google"></i>
-          </button>
+          <GoogleAuth />
         </form>
       </div>
     </div>

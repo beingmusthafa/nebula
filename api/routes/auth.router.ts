@@ -15,4 +15,12 @@ router.post(
     authController.finishSignUp(req, res, next)
 );
 
+router.post("/sign-in", (req: Request, res: Response, next: NextFunction) =>
+  authController.signIn(req, res, next)
+);
+
+router.post("/google-auth", (req: Request, res: Response, next: NextFunction) =>
+  authController.googleAuth(req, res, next)
+);
+
 export default router;

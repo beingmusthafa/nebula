@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn } from "../redux/user/userSlice";
+import GoogleAuth from "../components/GoogleAuth";
+
 const SignUp = () => {
   let [error, setError] = useState(null);
   let [verificationStarted, setVerificationStarted] = useState(false);
@@ -13,10 +15,12 @@ const SignUp = () => {
   let [password, setPassword] = useState("");
   let [confirmPassword, setConfirmPassword] = useState("");
   let [name, setName] = useState("");
+  let [processing, setProcessing] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   async function handleSignUp(e) {
     e.preventDefault();
+    setProcessing(true);
     if (
       !(
         email.trim() &&
@@ -42,6 +46,7 @@ const SignUp = () => {
         password,
       }),
     }).then((res) => res.json());
+    setProcessing(false);
     if (!res.success) {
       setError(res.message);
     } else {
@@ -51,6 +56,7 @@ const SignUp = () => {
   }
   async function handleVerify(e) {
     e.preventDefault();
+    setProcessing(true);
     const res = await fetch("/api/auth/finish-sign-up", {
       method: "POST",
       headers: {
@@ -66,6 +72,7 @@ const SignUp = () => {
       }),
     }).then((res) => res.json());
     if (!res.success) return setError(res.message);
+    setProcessing(false);
     console.log(res.user);
     dispatch(signIn(res.user));
     setError(null);
@@ -135,7 +142,14 @@ const SignUp = () => {
               placeholder="Verification code"
               className="p-2 text-base border border-black pl-4 w-64 md:w-80"
             />
-            <button className="_fill-btn uppercase">Verify</button>
+            <button
+              className={`_fill-btn uppercase ${
+                processing ? "cursor-not-allowed" : ""
+              }`}
+              disabled={processing}
+            >
+              Verify
+            </button>
           </form>
         ) : (
           <form
@@ -174,10 +188,15 @@ const SignUp = () => {
               placeholder="Confirm password"
               className="p-2 text-base border border-black pl-4 w-64 md:w-80"
             />
-            <button className="_fill-btn uppercase">Sign up</button>
-            <button className="_outline-btn ">
-              Continue with <i className="bx bxl-google"></i>
+            <button
+              className={`_fill-btn uppercase ${
+                processing ? "cursor-not-allowed" : ""
+              }`}
+              disabled={processing}
+            >
+              Sign up
             </button>
+            <GoogleAuth />
           </form>
         )}
       </div>

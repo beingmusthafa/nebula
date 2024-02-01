@@ -15,7 +15,8 @@ export class AuthService {
   private mailer: Mailer;
 
   private hashPassword(password: string) {
-    return bcryptjs.hashSync(password, 10);
+    const salt = bcryptjs.genSaltSync(10);
+    return bcryptjs.hashSync(password, salt);
   }
   private comparePassword(password: string, hash: string) {
     return bcryptjs.compareSync(password, hash);
@@ -157,6 +158,53 @@ export class AuthService {
         message: "User logged in",
         statusCode: 200,
         token: this.generateToken({ id: existingUser._id.toString() }),
+        doc: rest,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async googleAuth(details: {
+    email: string;
+    name: string;
+    image: string;
+  }): Promise<{
+    success: boolean;
+    message: string;
+    statusCode: number;
+    token?: string;
+    doc?: object;
+  }> {
+    try {
+      const existingUser = await this.usersRepository.findByEmail(
+        details.email
+      );
+      if (existingUser) {
+        const { password: _password, ...rest } = existingUser;
+        console.log(rest);
+        return {
+          success: true,
+          message: "User logged in",
+          statusCode: 200,
+          token: this.generateToken({ id: existingUser._id.toString() }),
+          doc: rest,
+        };
+      }
+      const generatedPassword = Math.random().toString(36).slice(-8);
+      const password = this.hashPassword(generatedPassword);
+      const doc = await this.usersRepository.create({
+        image: details.image,
+        password,
+        email: details.email,
+        name: details.name,
+      });
+      const { password: _password, ...rest } = doc;
+      return {
+        success: true,
+        message: "User created",
+        statusCode: 201,
+        token: this.generateToken({ id: doc._id.toString() }),
         doc: rest,
       };
     } catch (error) {
