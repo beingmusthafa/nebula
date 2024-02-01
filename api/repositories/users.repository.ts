@@ -1,12 +1,13 @@
+import mongoose from "mongoose";
 import QueryOptionsInterface from "../interfaces/queryOptions.interface.js";
 import UsersInterface from "../interfaces/users.interface.js";
 import usersModel from "../models/users.model.js";
 
 export class UsersRepository {
   private model = usersModel;
-  async findAll(query: object, options?: QueryOptionsInterface) {
+  async find(queryFilter: object = {}, options?: QueryOptionsInterface) {
     try {
-      let query = this.model.find();
+      let query = this.model.find(queryFilter);
       if (options.select) {
         query = query.select(options.select);
       }
@@ -33,7 +34,18 @@ export class UsersRepository {
     }
   }
 
-  async findById(id: string, select?: string | Record<string, 1 | -1>) {
+  async count(query: object = {}) {
+    try {
+      return this.model.countDocuments(query).exec();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findById(
+    id: string | mongoose.Types.ObjectId,
+    select?: string | Record<string, 1 | -1>
+  ) {
     try {
       let query = this.model.findById(id);
       if (select) {
@@ -44,20 +56,19 @@ export class UsersRepository {
       throw error;
     }
   }
+  async findByEmail(email: string) {
+    try {
+      return (await this.model.findOne({ email })).toObject();
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async create(user: UsersInterface) {
     try {
       console.log("repo");
       const doc = await this.model.create(user);
       return doc.toObject();
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async findByEmail(email: string) {
-    try {
-      return await this.model.findOne({ email });
     } catch (error) {
       throw error;
     }
