@@ -18,17 +18,17 @@ export class Mailer {
     this.transporter = transporter;
   }
   async sendRecoveryMail(email: string, code: number) {
+    console.log("started sending");
     const mail = {
       from: process.env.GMAIL,
       to: email,
       subject: "Password recovery of Nebula Account",
-      text: `Hello,\nYou have requested a password recovery for your account with the email '${email}'. Your recovery code is ${code}.THIS CODE IS ONLY VALID FOR 1 MINUTE! Dont worry, kindly ignore this mail if you didnt initiate this request. Happy learning.\n Team Nebula`,
+      text: `Hello,\nYou have requested a password recovery for your account with the email '${email}'. Your recovery code is ${code}.THIS CODE IS ONLY VALID FOR 3 MINUTES! Dont worry, kindly ignore this mail if you didnt initiate this request. Happy learning.\n Team Nebula`,
     };
-    await transporter.sendMail(mail, (err) => {
+    await this.transporter.sendMail(mail, (err) => {
       if (err) {
-        console.log(err);
+        throw err;
       }
-      throw err;
     });
   }
 
@@ -39,7 +39,7 @@ export class Mailer {
       subject: "Signup verification for Nebula Account",
       text: `Hello,\nYour verification code to register the email '${email}' is ${code}. Dont worry, kindly ignore this mail if you didnt initiate this request. Happy learning.\n Team Nebula`,
     };
-    await transporter.sendMail(mail, (err) => {
+    await this.transporter.sendMail(mail, (err) => {
       if (err) {
         throw err;
       }
