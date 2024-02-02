@@ -6,33 +6,33 @@ const Home = () => {
   let [courses, setCourses] = useState([]);
   let [currentIndex, setCurrentIndex] = useState(0);
   let skeletons = new Array(7).fill(0);
-  useEffect(() => {
-    async function getSlides() {
-      const res = await fetch("/api/get-home-slides").then((res) => res.json());
-      setImages(res.images);
-    }
-    getSlides();
-  }, []);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const nextIndex = (currentIndex + 1) % images.length;
-      setCurrentIndex(nextIndex);
-    }, 4000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [currentIndex, images.length]);
-  useEffect(() => {
-    async function getCourses() {
-      const res = await fetch("/api/get-home-courses").then((res) =>
-        res.json()
-      );
-      setCourses(res.courses);
-    }
-    setTimeout(() => {
-      getCourses();
-    }, 2000);
-  }, []);
+  // useEffect(() => {
+  //   async function getSlides() {
+  //     const res = await fetch("/api/get-home-slides").then((res) => res.json());
+  //     setImages(res.images);
+  //   }
+  //   getSlides();
+  // }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     const nextIndex = (currentIndex + 1) % images.length;
+  //     setCurrentIndex(nextIndex);
+  //   }, 4000);
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, [currentIndex, images.length]);
+  // useEffect(() => {
+  //   async function getCourses() {
+  //     const res = await fetch("/api/get-home-courses").then((res) =>
+  //       res.json()
+  //     );
+  //     setCourses(res.courses);
+  //   }
+  //   setTimeout(() => {
+  //     getCourses();
+  //   }, 2000);
+  // }, []);
   return (
     <>
       <img

@@ -33,7 +33,7 @@ const Header = () => {
             placeholder="Search for courses or tutors"
             className=" border border-black pl-4 w-80"
           />
-          <button className="_fill-btn-black">
+          <button className="_fill-btn-blue">
             <i className="bx bx-search-alt-2 text-lg"></i>
           </button>
         </form>
@@ -60,10 +60,10 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Link to={"/sign-in"} className="_fill-btn">
+              <Link to={"/sign-in"} className="_fill-btn-blue">
                 Sign in
               </Link>
-              <Link to={"/sign-up"} className="_outline-btn">
+              <Link to={"/sign-up"} className="_fill-btn-blue">
                 Sign up
               </Link>
             </>

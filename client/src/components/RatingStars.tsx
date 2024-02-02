@@ -1,6 +1,9 @@
 import React from "react";
 
-const RatingStars = ({ rating }) => {
+interface Props {
+  rating: number;
+}
+const RatingStars: React.FC<Props> = ({ rating }) => {
   let emptyStars = new Array(Math.round(5 - rating)).fill(0);
   let fullStars = [];
   let halfStars = [];

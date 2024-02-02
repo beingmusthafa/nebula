@@ -1,7 +1,20 @@
 import React from "react";
 import RatingStars from "./RatingStars";
 
-const CourseCard = ({ course }) => {
+interface Props {
+  course: {
+    title: string;
+    rating: number;
+    price: string;
+    thumbnail: string;
+    tutor: {
+      name: string;
+      image: string;
+    };
+  };
+}
+
+const CourseCard: React.FC<Props> = ({ course }) => {
   return (
     <div className="flex flex-col items-start w-fit">
       <img src={course.thumbnail} className="object-cover w-80 h-36" alt="" />

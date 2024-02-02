@@ -3,20 +3,20 @@ import { useState } from "react";
 import welcomeIllustration from "../assets/welcome-illustration.png";
 import logo from "../assets/nebula_light.png";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { signIn } from "../redux/user/userSlice";
 
 const ForgotPassword = () => {
-  let [error, setError] = useState(null);
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
-  let [confirmPassword, setCofirmPassword] = useState("");
-  let [code, setCode] = useState(null);
-  let [startVerification, setStartVerification] = useState(false);
-  let [processing, setProcessing] = useState(false);
+  let [error, setError] = useState<string | null>(null);
+  let [email, setEmail] = useState<string>("");
+  let [password, setPassword] = useState<string>("");
+  let [confirmPassword, setCofirmPassword] = useState<string>("");
+  let [code, setCode] = useState<number | null>(null);
+  let [verificationStarted, setVerificationStarted] = useState<boolean>(false);
+  let [processing, setProcessing] = useState<boolean>(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  async function handleEmailSubmit(e) {
+  async function handleEmailSubmit(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
     setProcessing(true);
     if (!email.trim()) {
@@ -36,9 +36,9 @@ const ForgotPassword = () => {
       return setError(res.message);
     }
     setError(null);
-    setStartVerification(true);
+    setVerificationStarted(true);
   }
-  async function handleVerifyAndChange(e) {
+  async function handleVerifyAndChange(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setProcessing(true);
     if (code !== undefined && !password.trim() && !confirmPassword.trim()) {
@@ -64,7 +64,7 @@ const ForgotPassword = () => {
       return setError(res.message);
     }
     setError(null);
-    setStartVerification(false);
+    setVerificationStarted(false);
     dispatch(signIn(res.doc));
     navigate("/");
   }
@@ -111,7 +111,7 @@ const ForgotPassword = () => {
           <p className="_font-tilt-warp text-5xl">nebula</p>
         </div>
 
-        {startVerification ? (
+        {verificationStarted ? (
           <form
             onSubmit={handleVerifyAndChange}
             className="bg-white w-fit flex flex-col p-8 gap-5"
@@ -126,7 +126,7 @@ const ForgotPassword = () => {
               <p className="font-semibold text-base text-red-500">{error}</p>
             )}
             <input
-              onChange={(e) => setCode(e.target.value)}
+              onChange={(e) => setCode(Number(e.target.value))}
               type="number"
               placeholder="Verification code"
               className="p-2 text-base border border-black pl-4 w-80"

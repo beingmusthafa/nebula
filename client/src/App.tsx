@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-import Sidebar from "./components/admin/Sidebar";
+import Sidebar from "./components/admin/Sidebar.tsx";
 import Loading from "./components/Loading";
 const Home = lazy(() => import("./pages/Home"));
 const SignUp = lazy(() => import("./pages/SignUp"));

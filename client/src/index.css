@@ -8,7 +8,9 @@
 :root {
   --cyan: #24e6ce;
   --blue: #0e9bed;
+  --blue-hover: #1185c8;
   --red: #d60c0c;
+  --red-hover: #b70e0e;
   --dark-blue: #3464b4;
   --grey: #787878;
   --light: #f7fcff;
@@ -67,7 +69,29 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-._fill-btn {
+._fill-btn-blue {
+  padding: 0.25rem 0.5rem;
+  background-color: var(--blue);
+  font-weight: bold;
+  color: white;
+  transition: 0.3s;
+  font-size: 0.8rem;
+}
+._fill-btn-blue:hover {
+  background-color: var(--blue-hover);
+}
+._fill-btn-red {
+  padding: 0.25rem 0.5rem;
+  background-color: var(--red);
+  font-weight: bold;
+  color: white;
+  font-size: 0.8rem;
+  transition: 0.3s;
+}
+._fill-btn-red:hover {
+  background-color: var(--red-hover);
+}
+._fill-btn-blue2 {
   padding: 0.25rem 0.5rem;
   border: 2px solid var(--blue);
   background-color: var(--blue);
@@ -76,24 +100,11 @@ body {
   font-size: 0.8rem;
   transition: 0.3s;
 }
-._fill-btn:hover {
+._fill-btn-blue2:hover {
   background-color: white;
   color: var(--blue);
 }
-._fill-btn-red {
-  padding: 0.25rem 0.5rem;
-  border: 2px solid #d60c0c;
-  background-color: #d60c0c;
-  font-weight: bold;
-  color: white;
-  font-size: 0.8rem;
-  transition: 0.3s;
-}
-._fill-btn-red:hover {
-  background-color: white;
-  color: #d60c0c;
-}
-._fill-btn-black {
+._fill-btn-black2 {
   padding: 0.25rem 0.5rem;
   border: 2px solid #000000;
   background-color: #000000;
@@ -102,7 +113,7 @@ body {
   font-size: 0.8rem;
   transition: 0.3s;
 }
-._fill-btn-black:hover {
+._fill-btn-black2:hover {
   background-color: white;
   color: #000000;
 }

@@ -8,14 +8,12 @@ import { signIn } from "../redux/user/userSlice";
 import GoogleAuth from "../components/GoogleAuth";
 
 const SignIn = () => {
-  let [error, setError] = useState(null);
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
-  let [confirmPassword, setCofirmPassword] = useState("");
-  let [page, setPage] = useState("sign-in");
+  let [error, setError] = useState<string | null>(null);
+  let [email, setEmail] = useState<string>("");
+  let [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!(email.trim() && password.trim())) {
       return setError("All fields are required");

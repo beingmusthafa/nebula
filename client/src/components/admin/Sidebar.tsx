@@ -3,10 +3,13 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/nebula_dark.png";
 const Sidebar = () => {
   const location = useLocation();
-  let [active, setActive] = useState("stats");
+  const path = location.pathname.split("/")[2];
+  let [active, setActive] = useState(path);
+  console.log("run");
+
   return (
     location.pathname.startsWith("/admin") && (
-      <div className="w-64 bg-black sticky top-0 left-0 bottom-0 h-screen flex flex-col items-center justify-between py-4">
+      <div className="w-64 bg-black fixed top-0 left-0 bottom-0 h-full flex flex-col items-center justify-between py-4">
         <div className="flex items-center">
           <img src={logo} className="w-14 h-14 mr-4" alt="" />
           <p className="_font-tilt-warp text-3xl text-white">nebula</p>
@@ -49,7 +52,7 @@ const Sidebar = () => {
           </Link>
         </div>
         <div className="flex gap-6">
-          <Link to="/" className="_fill-btn">
+          <Link to="/" className="_fill-btn-blue">
             Home
           </Link>
           <button className="_fill-btn-red bg-red-500">Logout</button>

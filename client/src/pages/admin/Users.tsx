@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import AdminLayout from "../../components/admin/AdminLayout";
 import UserCard from "../../components/admin/UserCard";
 import Loading from "../../components/Loading";
-
+interface User {
+  name: string;
+  email: string;
+  image: string;
+}
 const Users = () => {
-  let [users, setUsers] = useState([]);
-  let [page, setPage] = useState(1);
-  let [hasNext, setHasNext] = useState(true);
-  let [loading, setLoading] = useState(false);
+  let [users, setUsers] = useState<User[]>([]);
+  let [page, setPage] = useState<number>(1);
+  let [hasNext, setHasNext] = useState<boolean>(true);
+  let [loading, setLoading] = useState<boolean>(false);
   async function fetchUsers() {
     setLoading(true);
     const res = await fetch(`/api/admin/get-all-users?page=${page}`).then(
@@ -32,7 +36,7 @@ const Users = () => {
           className="p-1 text-base border border-black pl-4 w-80"
         />
         <button className="_fill-btn-black">
-          <i class="bx bx-search-alt-2 text-lg"></i>
+          <i className="bx bx-search-alt-2 text-lg"></i>
         </button>
       </form>
       {loading ? (

@@ -3,22 +3,22 @@ import teacherIllustration from "../assets/teacher-illustration.png";
 import logo from "../assets/nebula_light.png";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signIn } from "../redux/user/userSlice";
 import GoogleAuth from "../components/GoogleAuth";
 
 const SignUp = () => {
-  let [error, setError] = useState(null);
-  let [verificationStarted, setVerificationStarted] = useState(false);
-  let [verificationCode, setVerificationCode] = useState(null);
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
-  let [confirmPassword, setConfirmPassword] = useState("");
-  let [name, setName] = useState("");
+  let [error, setError] = useState<string | null>(null);
+  let [verificationStarted, setVerificationStarted] = useState<boolean>(false);
+  let [verificationCode, setVerificationCode] = useState<number | null>(null);
+  let [email, setEmail] = useState<string>("");
+  let [password, setPassword] = useState<string>("");
+  let [confirmPassword, setConfirmPassword] = useState<string>("");
+  let [name, setName] = useState<string>("");
   let [processing, setProcessing] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  async function handleSignUp(e) {
+  async function handleSignUp(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setProcessing(true);
     if (
@@ -54,7 +54,7 @@ const SignUp = () => {
       setVerificationStarted(true);
     }
   }
-  async function handleVerify(e) {
+  async function handleVerify(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!verificationCode) {
       return setError("Enter verification code");
@@ -140,7 +140,7 @@ const SignUp = () => {
             )}
             <p>Enter the verification code sent to your email</p>
             <input
-              onChange={(e) => setVerificationCode(e.target.value)}
+              onChange={(e) => setVerificationCode(Number(e.target.value))}
               type="number"
               placeholder="Verification code"
               className="p-2 text-base border border-black pl-4 w-64 md:w-80"

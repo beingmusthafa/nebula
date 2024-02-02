@@ -1,6 +1,13 @@
 import React from "react";
 
-const UserCard = ({ user }) => {
+interface Props {
+  user: {
+    name: string;
+    email: string;
+    image: string;
+  };
+}
+const UserCard: React.FC<Props> = ({ user }) => {
   return (
     <div className="flex flex-col items-center mt-2">
       <img
