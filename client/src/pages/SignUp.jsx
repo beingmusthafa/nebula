@@ -56,6 +56,9 @@ const SignUp = () => {
   }
   async function handleVerify(e) {
     e.preventDefault();
+    if (!verificationCode) {
+      return setError("Enter verification code");
+    }
     setProcessing(true);
     const res = await fetch("/api/auth/finish-sign-up", {
       method: "POST",
@@ -71,8 +74,8 @@ const SignUp = () => {
         code: verificationCode,
       }),
     }).then((res) => res.json());
-    if (!res.success) return setError(res.message);
     setProcessing(false);
+    if (!res.success) return setError(res.message);
     console.log(res.user);
     dispatch(signIn(res.user));
     setError(null);
@@ -143,7 +146,7 @@ const SignUp = () => {
               className="p-2 text-base border border-black pl-4 w-64 md:w-80"
             />
             <button
-              className={`_fill-btn uppercase ${
+              className={`_fill-btn-blue2 uppercase ${
                 processing ? "cursor-not-allowed" : ""
               }`}
               disabled={processing}
@@ -178,18 +181,18 @@ const SignUp = () => {
             />
             <input
               onChange={(e) => setPassword(e.target.value)}
-              type="text"
+              type="password"
               placeholder="Password"
               className="p-2 text-base border border-black pl-4 w-64 md:w-80"
             />
             <input
               onChange={(e) => setConfirmPassword(e.target.value)}
-              type="text"
+              type="password"
               placeholder="Confirm password"
               className="p-2 text-base border border-black pl-4 w-64 md:w-80"
             />
             <button
-              className={`_fill-btn uppercase ${
+              className={`_fill-btn-blue2 uppercase ${
                 processing ? "cursor-not-allowed" : ""
               }`}
               disabled={processing}

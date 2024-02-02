@@ -99,8 +99,11 @@ export class AuthService {
     doc?: object;
   }> {
     try {
-      const isCodeCorrect = await this.otpsRepository.findOne(user.email, code);
-      if (isCodeCorrect) {
+      const isCodeCorrect = await this.otpsRepository.findOne({
+        email: user.email,
+        code,
+      });
+      if (!isCodeCorrect) {
         return {
           success: false,
           message: "Incorrect code",
@@ -249,7 +252,7 @@ export class AuthService {
     doc?: object;
   }> {
     try {
-      const isCodeCorrect = await this.otpsRepository.findOne(email, code);
+      const isCodeCorrect = await this.otpsRepository.findOne({ email, code });
       if (!isCodeCorrect) {
         return {
           success: false,
@@ -267,14 +270,17 @@ export class AuthService {
         };
       }
       const hashedPassword = this.hashPassword(password);
-      await this.usersRepository.findOneAndUpdate(
+      const user = await this.usersRepository.findOneAndUpdate(
         { email },
         { password: hashedPassword }
       );
+      const { password: _password, ...doc } = user;
+      console.log(doc);
       return {
         success: true,
         message: "Password changed",
         statusCode: 200,
+        doc,
       };
     } catch (error) {
       throw error;

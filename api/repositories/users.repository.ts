@@ -58,15 +58,25 @@ export class UsersRepository {
   }
   async findByEmail(email: string) {
     try {
-      return (await this.model.findOne({ email })).toObject();
+      const doc = await this.model.findOne({ email });
+      if (doc) return doc.toObject();
+      return null;
     } catch (error) {
       throw error;
     }
   }
 
+  async findOneAndUpdate(query: object, updation: object) {
+    const doc = await this.model.findOneAndUpdate(
+      query,
+      { $set: updation },
+      { new: true }
+    );
+    return doc.toObject();
+  }
+
   async create(user: UsersInterface) {
     try {
-      console.log("repo");
       const doc = await this.model.create(user);
       return doc.toObject();
     } catch (error) {

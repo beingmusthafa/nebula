@@ -99,7 +99,7 @@ class AuthController {
       const { email, code, password } = req.body;
       const response = await this.authService.verifyCodeAndChangePassword(
         email,
-        code,
+        Number(code),
         password
       );
       if (!response.success) {

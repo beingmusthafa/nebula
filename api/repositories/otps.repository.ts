@@ -6,12 +6,12 @@ export class OtpsRepository {
     await this.model.deleteOne({ email });
   }
 
-  async findOne(email: string, code: number) {
-    return await this.model.findOne({ email, code });
+  async findOne(query: { email: string; code?: number }) {
+    return await this.model.findOne(query);
   }
 
   async create(email: string, code: number) {
-    const otpExists = await this.model.findOne({ email });
+    const otpExists = await this.findOne({ email });
     if (otpExists) await this.delete(email);
     await this.model.create({ email, code });
     setTimeout(async () => {

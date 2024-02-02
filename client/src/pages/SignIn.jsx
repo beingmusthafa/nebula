@@ -3,7 +3,7 @@ import { useState } from "react";
 import welcomeIllustration from "../assets/welcome-illustration.png";
 import logo from "../assets/nebula_light.png";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signIn } from "../redux/user/userSlice";
 import GoogleAuth from "../components/GoogleAuth";
 
@@ -11,6 +11,8 @@ const SignIn = () => {
   let [error, setError] = useState(null);
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
+  let [confirmPassword, setCofirmPassword] = useState("");
+  let [page, setPage] = useState("sign-in");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   async function handleSubmit(e) {
@@ -95,13 +97,19 @@ const SignIn = () => {
             placeholder="Email"
             className="p-2 text-base border border-black pl-4 w-80"
           />
+          <Link
+            to={"/forgot-password"}
+            className="font-semibold cursor-pointer"
+          >
+            Forgot password?
+          </Link>
           <input
             onChange={(e) => setPassword(e.target.value)}
-            type="text"
+            type="password"
             placeholder="Password"
             className="p-2 text-base border border-black pl-4 w-80"
           />
-          <button className="_fill-btn uppercase">Sign in</button>
+          <button className="_fill-btn-blue2 uppercase">Sign in</button>
           <GoogleAuth />
         </form>
       </div>

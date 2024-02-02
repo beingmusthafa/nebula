@@ -58,13 +58,14 @@ const ForgotPassword = () => {
         password,
       }),
     }).then((res) => res.json());
+    console.log(res);
     setProcessing(false);
     if (!res.success) {
       return setError(res.message);
     }
     setError(null);
     setStartVerification(false);
-    dispatch(signIn(res.user));
+    dispatch(signIn(res.doc));
     navigate("/");
   }
   return (
@@ -138,12 +139,12 @@ const ForgotPassword = () => {
             />
             <input
               onChange={(e) => setCofirmPassword(e.target.value)}
-              type="text"
+              type="password"
               placeholder="Confirm new password"
               className="p-2 text-base border border-black pl-4 w-80"
             />
             <button
-              className={`_fill-btn uppercase ${
+              className={`_fill-btn-blue2 uppercase ${
                 processing ? "cursor-not-allowed" : ""
               }`}
               disabled={processing}
@@ -172,7 +173,7 @@ const ForgotPassword = () => {
               className="p-2 text-base border border-black pl-4 w-80"
             />
             <button
-              className={`_fill-btn uppercase ${
+              className={`_fill-btn-blue2 uppercase ${
                 processing ? "cursor-not-allowed" : ""
               }`}
               disabled={processing}
