@@ -23,4 +23,16 @@ router.post("/google-auth", (req: Request, res: Response, next: NextFunction) =>
   authController.googleAuth(req, res, next)
 );
 
+router.post(
+  "/send-recovery-code",
+  (req: Request, res: Response, next: NextFunction) =>
+    authController.sendRecoveryCode(req, res, next)
+);
+
+router.post(
+  "/verify-and-change-password",
+  (req: Request, res: Response, next: NextFunction) =>
+    authController.verifyCodeAndChangePassword(req, res, next)
+);
+
 export default router;

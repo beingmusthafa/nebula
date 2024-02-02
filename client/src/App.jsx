@@ -7,6 +7,8 @@ const Home = lazy(() => import("./pages/Home"));
 const SignUp = lazy(() => import("./pages/SignUp"));
 const SignIn = lazy(() => import("./pages/SignIn"));
 const Users = lazy(() => import("./pages/admin/Users"));
+const UserDetails = lazy(() => import("./pages/admin/UserDetails"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 
 const App = () => {
   return (
@@ -38,6 +40,14 @@ const App = () => {
           }
         />
         <Route
+          path="/forgot-password"
+          element={
+            <Suspense fallback={<Loading />}>
+              <ForgotPassword />
+            </Suspense>
+          }
+        />
+        <Route
           path="/admin/users"
           element={
             <Suspense fallback={<Loading />}>
@@ -50,6 +60,14 @@ const App = () => {
           element={
             <Suspense fallback={<Loading />}>
               <Users />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/users/user-details/:id"
+          element={
+            <Suspense fallback={<Loading />}>
+              <UserDetails />
             </Suspense>
           }
         />

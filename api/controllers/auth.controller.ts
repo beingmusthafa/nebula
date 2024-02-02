@@ -77,6 +77,39 @@ class AuthController {
       next(customError(500, error.message));
     }
   }
+
+  async sendRecoveryCode(req: Request, res: Response, next: NextFunction) {
+    try {
+      const response = await this.authService.sendRecoveryCode(req.body.email);
+      if (!response.success) {
+        return next(customError(response.statusCode, response.message));
+      }
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async verifyCodeAndChangePassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { email, code, password } = req.body;
+      const response = await this.authService.verifyCodeAndChangePassword(
+        email,
+        code,
+        password
+      );
+      if (!response.success) {
+        return next(customError(response.statusCode, response.message));
+      }
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
 }
 
 export default new AuthController(authServiceInstance);

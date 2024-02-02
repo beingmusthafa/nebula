@@ -5,17 +5,18 @@ export class OtpsRepository {
   private async delete(email: string) {
     await this.model.deleteOne({ email });
   }
+
+  async findOne(email: string, code: number) {
+    return await this.model.findOne({ email, code });
+  }
+
   async create(email: string, code: number) {
     const otpExists = await this.model.findOne({ email });
     if (otpExists) await this.delete(email);
     await this.model.create({ email, code });
     setTimeout(async () => {
       await this.delete(email);
-    }, 1000 * 60 * 5);
-  }
-
-  async findOne(email: string, code: number) {
-    return await this.model.findOne({ email, code });
+    }, 1000 * 60 * 3);
   }
 }
 

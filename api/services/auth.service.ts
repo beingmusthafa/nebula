@@ -211,6 +211,75 @@ export class AuthService {
       throw error;
     }
   }
+
+  async sendRecoveryCode(
+    email: string
+  ): Promise<{ success: boolean; message: string; statusCode: number }> {
+    try {
+      const user = await this.usersRepository.findByEmail(email);
+      if (!user) {
+        return {
+          success: false,
+          message: "User not found",
+          statusCode: 404,
+        };
+      }
+      const code = Math.floor(100000 + Math.random() * 900000);
+      await this.otpsRepository.create(email, code);
+      await this.mailer.sendRecoveryMail(email, code);
+      return {
+        success: true,
+        message: "Recovery code sent",
+        statusCode: 200,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async verifyCodeAndChangePassword(
+    email: string,
+    code: number,
+    password: string
+  ): Promise<{
+    success: boolean;
+    message: string;
+    statusCode: number;
+    token?: string;
+    doc?: object;
+  }> {
+    try {
+      const isCodeCorrect = await this.otpsRepository.findOne(email, code);
+      if (!isCodeCorrect) {
+        return {
+          success: false,
+          message: "Incorrect code",
+          statusCode: 400,
+        };
+      }
+      const passWordRegex =
+        /^(?=.*[A-Za-z].*[A-Za-z].*[A-Za-z].*[A-Za-z])(?=.*\d.*\d)[A-Za-z\d]{8,}$/;
+      if (!passWordRegex.test(password)) {
+        return {
+          success: false,
+          message: "Password needs >=8 characters (>=4 letters & >=2 numbers)",
+          statusCode: 400,
+        };
+      }
+      const hashedPassword = this.hashPassword(password);
+      await this.usersRepository.findOneAndUpdate(
+        { email },
+        { password: hashedPassword }
+      );
+      return {
+        success: true,
+        message: "Password changed",
+        statusCode: 200,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new AuthService(
