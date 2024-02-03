@@ -44,7 +44,7 @@ export class UsersRepository {
 
   async findById(
     id: string | mongoose.Types.ObjectId,
-    select?: string | Record<string, 1 | -1>
+    select?: string | Record<string, 1 | 0>
   ) {
     try {
       let query = this.model.findById(id);
@@ -67,12 +67,17 @@ export class UsersRepository {
   }
 
   async findOneAndUpdate(query: object, updation: object) {
-    const doc = await this.model.findOneAndUpdate(
-      query,
-      { $set: updation },
-      { new: true }
-    );
-    return doc.toObject();
+    try {
+      const doc = await this.model.findOneAndUpdate(
+        query,
+        { $set: updation },
+        { new: true }
+      );
+      if (doc) return doc.toObject();
+      return null;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async create(user: UsersInterface) {

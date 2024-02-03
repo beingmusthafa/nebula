@@ -62,8 +62,48 @@ export class UsersService {
     }
   }
 
-  async findById(id: string | mongoose.Types.ObjectId) {
-    return await this.usersRepository.findById(id, { password: -1 });
+  async findById(id: string | mongoose.Types.ObjectId): Promise<{
+    success: boolean;
+    message: string;
+    statusCode: number;
+    doc?: object;
+  }> {
+    const doc = await this.usersRepository.findById(id, { password: 0 });
+    if (!doc) {
+      return {
+        success: false,
+        message: "user not found",
+        statusCode: 404,
+      };
+    }
+    return {
+      success: true,
+      message: "fetched doc successfully",
+      statusCode: 200,
+      doc,
+    };
+  }
+
+  async changeBlockStatus(
+    email: string,
+    blockStatus: boolean
+  ): Promise<{
+    success: boolean;
+    message: string;
+    statusCode: number;
+  }> {
+    try {
+      await this.usersRepository.findOneAndUpdate(
+        { email },
+        { isBlocked: blockStatus }
+      );
+      const message = blockStatus
+        ? "user blocked successfully"
+        : "user unblocked successfully";
+      return { success: true, message, statusCode: 201 };
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

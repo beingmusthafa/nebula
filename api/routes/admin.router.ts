@@ -6,10 +6,22 @@ const router = express.Router();
 router.use((req: Request, res: Response, next: NextFunction) =>
   authMiddleware.adminAuth(req, res, next)
 );
+
 router.get(
   "/get-all-users",
   (req: Request, res: Response, next: NextFunction) =>
     adminUsersController.getAll(req, res, next)
+);
+
+router.get("/get-user/:id", (req: Request, res: Response, next: NextFunction) =>
+  adminUsersController.getOne(req, res, next)
+);
+
+router.put(
+  "/change-block-status",
+  (req: Request, res: Response, next: NextFunction) => {
+    adminUsersController.changeBlockStatus(req, res, next);
+  }
 );
 
 export default router;
