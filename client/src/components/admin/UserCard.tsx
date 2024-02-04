@@ -1,7 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface Props {
   user: {
+    _id: string;
     name: string;
     email: string;
     image: string;
@@ -9,7 +11,10 @@ interface Props {
 }
 const UserCard: React.FC<Props> = ({ user }) => {
   return (
-    <div className="flex flex-col items-center mt-2">
+    <Link
+      to={`/admin/users/user-details/${user._id}`}
+      className="flex flex-col items-center mt-2"
+    >
       <img
         src={user.image}
         className="w-20 h-20 rounded-full"
@@ -17,7 +22,7 @@ const UserCard: React.FC<Props> = ({ user }) => {
       />
       <p className="mt-2 text-base">{user.name}</p>
       <p className="text-gray-500 mt-1">{user.email}</p>
-    </div>
+    </Link>
   );
 };
 
