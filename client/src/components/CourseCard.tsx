@@ -17,7 +17,7 @@ interface Props {
 const CourseCard: React.FC<Props> = ({ course }) => {
   return (
     <div className="flex flex-col items-start w-fit">
-      <img src={course.thumbnail} className="object-cover w-80 h-36" alt="" />
+      <img src={course.thumbnail} className="object-cover w-72 h-36" alt="" />
       <div className="font-bold text-lg text-wrap" style={{ width: 270 }}>
         {course.title}
       </div>

@@ -14,7 +14,7 @@ const CourseSkeleton = () => {
         initial={{ opacity: 0.3 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.7, repeatType: "mirror", repeat: Infinity }}
-        className="w-80 h-4 bg-slate-300"
+        className="w-72 h-4 bg-slate-300"
         style={{ width: 270 }}
       ></motion.div>
       <motion.div
