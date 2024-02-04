@@ -11,13 +11,25 @@
   --blue-hover: #1185c8;
   --red: #d60c0c;
   --red-hover: #b70e0e;
+  --green: #009400;
+  --green-hover: #007e00;
   --dark-blue: #3464b4;
   --grey: #787878;
   --light: #f7fcff;
+  --toastify-color-progress-light: linear-gradient(
+    to right,
+    var(--blue),
+    black,
+    var(--blue)
+  );
+}
+input[type="file"]::file-selector-button {
+  display: none;
 }
 body {
   font-size: 0.8rem;
   font-family: "DM Sans", sans-serif;
+  /* background-color: var(--light); */
 }
 ._font-tilt-warp {
   font-family: "Tilt Warp", sans-serif;
@@ -80,6 +92,18 @@ body {
 ._fill-btn-blue:hover {
   background-color: var(--blue-hover);
 }
+._fill-btn-black {
+  padding: 0.25rem 0.5rem;
+  border: 2px solid #000000;
+  background-color: #000000;
+  font-weight: bold;
+  color: white;
+  font-size: 0.8rem;
+  transition: 0.3s;
+}
+._fill-btn-black:hover {
+  background-color: #252525;
+}
 ._fill-btn-red {
   padding: 0.25rem 0.5rem;
   background-color: var(--red);
@@ -90,6 +114,17 @@ body {
 }
 ._fill-btn-red:hover {
   background-color: var(--red-hover);
+}
+._fill-btn-green {
+  padding: 0.25rem 0.5rem;
+  background-color: var(--green);
+  font-weight: bold;
+  color: white;
+  font-size: 0.8rem;
+  transition: 0.3s;
+}
+._fill-btn-green:hover {
+  background-color: var(--green-hover);
 }
 ._fill-btn-blue2 {
   padding: 0.25rem 0.5rem;
