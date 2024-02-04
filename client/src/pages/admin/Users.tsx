@@ -3,6 +3,7 @@ import AdminLayout from "../../components/admin/AdminLayout";
 import UserCard from "../../components/admin/UserCard";
 import Loading from "../../components/Loading";
 interface User {
+  _id: string;
   name: string;
   email: string;
   image: string;
@@ -28,7 +29,7 @@ const Users = () => {
     console.log("run");
   }, [page]);
   return (
-    <AdminLayout>
+    <>
       <form action="" className="flex justify-center w-full mb-10">
         <input
           type="text"
@@ -58,7 +59,7 @@ const Users = () => {
           )}
         </div>
       )}
-    </AdminLayout>
+    </>
   );
 };
 
