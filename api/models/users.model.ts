@@ -1,5 +1,27 @@
 import mongoose from "mongoose";
 
+const educationSubSchema = new mongoose.Schema({
+  subject: {
+    type: String,
+    required: true,
+  },
+  institution: {
+    type: String,
+    required: true,
+  },
+});
+
+const experienceSubSchema = new mongoose.Schema({
+  role: {
+    type: String,
+    required: true,
+  },
+  company: {
+    type: String,
+    required: true,
+  },
+});
+
 const Users = new mongoose.Schema(
   {
     name: {
@@ -15,10 +37,14 @@ const Users = new mongoose.Schema(
       type: String,
       required: true,
     },
+    bio: {
+      type: String,
+      default: "",
+    },
     image: {
       type: String,
       default:
-        "https://res.cloudinary.com/dfezowkdc/image/upload/v1706635565/avatar-1577909_1280_g4cn4e.webp",
+        "https://res.cloudinary.com/dfezowkdc/image/upload/v1706951267/gray-photo-placeholder-icon-design-ui-vector-35850819_vupnvf.jpg",
     },
     role: {
       type: String,
@@ -36,6 +62,12 @@ const Users = new mongoose.Schema(
     interests: {
       type: [String],
       default: [],
+    },
+    education: [educationSubSchema],
+    experience: [experienceSubSchema],
+    isAuthExternal: {
+      type: Boolean,
+      required: true,
     },
   },
   { timestamps: true }
