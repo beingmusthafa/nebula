@@ -39,10 +39,11 @@ class AuthMiddleware {
           interests: 1,
         });
       }
-      if (req.user.isBlocked)
+      if (req.user.isBlocked) {
+        req.user = null;
         throw customError(403, "Your account is suspended");
-
-      console.log("auth passed");
+      }
+      console.log("user auth passed", req.user);
       next();
     } catch (error) {
       next(error);
@@ -66,9 +67,11 @@ class AuthMiddleware {
           interests: 1,
         });
       }
-      console.log("auth passed", req.user);
-      if (req.user.role !== "admin" || req.user.isBlocked)
+      if (req.user.role !== "admin" || req.user.isBlocked) {
+        req.user = null;
         throw customError(403, "Forbidden");
+      }
+      console.log("admin auth passed", req.user);
       next();
     } catch (error) {
       next(error);
