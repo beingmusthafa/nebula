@@ -2,8 +2,9 @@ import React from "react";
 
 interface Props {
   rating: number;
+  starSize?: number;
 }
-const RatingStars: React.FC<Props> = ({ rating }) => {
+const RatingStars: React.FC<Props> = ({ rating, starSize }) => {
   let emptyStars = new Array(Math.round(5 - rating)).fill(0);
   let fullStars = [];
   let halfStars = [];
@@ -19,13 +20,25 @@ const RatingStars: React.FC<Props> = ({ rating }) => {
   return (
     <div className="flex items-center gap-1">
       {fullStars.map((_, index) => (
-        <i key={index} className="bx bxs-star text-yellow-500"></i>
+        <i
+          key={index}
+          style={{ fontSize: `${starSize}rem` || "" }}
+          className="bx bxs-star text-yellow-500"
+        ></i>
       ))}
       {halfStars.map((_, index) => (
-        <i key={index} className="bx bxs-star-half text-yellow-500"></i>
+        <i
+          key={index}
+          style={{ fontSize: `${starSize}rem` || "" }}
+          className="bx bxs-star-half text-yellow-500"
+        ></i>
       ))}
       {emptyStars.map((_, index) => (
-        <i key={index} className="bx bxs-star text-slate-400"></i>
+        <i
+          key={index}
+          style={{ fontSize: `${starSize}rem` || "" }}
+          className="bx bxs-star text-slate-400"
+        ></i>
       ))}
     </div>
   );
