@@ -11,7 +11,7 @@ export class CoursesService {
     this.coursesRepository = coursesRepository;
   }
 
-  async getAll(page: number): Promise<{
+  async findPaginate(page: number): Promise<{
     success: boolean;
     message: string;
     statusCode: number;
@@ -28,7 +28,10 @@ export class CoursesService {
     };
   }> {
     try {
-      const docs = await this.coursesRepository.find();
+      const docs = await this.coursesRepository.find(
+        {},
+        { populate: { path: "author", select: "name image bio" } }
+      );
       const totalCount = await this.coursesRepository.count();
       return {
         success: true,
@@ -37,10 +40,10 @@ export class CoursesService {
         result: {
           docs,
           total: docs.length,
-          limit: 3,
+          limit: 20,
           page,
-          pages: Math.ceil(totalCount / 3),
-          hasNextPage: page < Math.ceil(totalCount / 3),
+          pages: Math.ceil(totalCount / 20),
+          hasNextPage: page < Math.ceil(totalCount / 20),
           hasPrevPage: page > 1,
           nextPage: page + 1,
           prevPage: page - 1,
@@ -51,9 +54,29 @@ export class CoursesService {
     }
   }
 
-  async getById(id: string | mongoose.Types.ObjectId) {
+  async findById(id: string | mongoose.Types.ObjectId): Promise<{
+    success: boolean;
+    message: string;
+    statusCode: number;
+    doc?: object;
+  }> {
     try {
-      return await this.coursesRepository.findById(id);
+      const doc = await this.coursesRepository.findById(id, {
+        populate: { path: "author", select: "name image bio" },
+      });
+      if (!doc) {
+        return {
+          success: false,
+          message: "course not found",
+          statusCode: 404,
+        };
+      }
+      return {
+        success: true,
+        message: "fetched doc successfully",
+        statusCode: 200,
+        doc,
+      };
     } catch (error) {
       throw error;
     }
