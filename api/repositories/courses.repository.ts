@@ -1,29 +1,29 @@
-import mongoose from "mongoose";
+import mongoose, { PopulateOptions, QueryOptions } from "mongoose";
 import QueryOptionsInterface from "../interfaces/queryOptions.interface.js";
 import CoursesInterface from "../interfaces/courses.interface.js";
 import coursesModel from "../models/courses.model.js";
 export class CoursesRepository {
   private model = coursesModel;
-  async find(queryFilter: object = {}, options?: QueryOptionsInterface) {
+  async find(queryFilter: object = {}, options?: QueryOptions) {
     try {
       let query = this.model.find(queryFilter);
-      if (options.select) {
+      if (options?.select) {
         query = query.select(options.select);
       }
 
-      if (options.sort) {
+      if (options?.sort) {
         query = query.sort(options.sort);
       }
 
-      if (options.populate) {
-        query = query.populate(options.populate);
+      if (options?.populate) {
+        query = query.populate(options.populate as string | string[]);
       }
 
-      if (options.limit) {
+      if (options?.limit) {
         query = query.limit(options.limit);
       }
 
-      if (options.skip) {
+      if (options?.skip) {
         query = query.skip(options.skip);
       }
 
@@ -41,15 +41,29 @@ export class CoursesRepository {
     }
   }
 
-  async findById(
-    id: string | mongoose.Types.ObjectId,
-    select?: string | Record<string, 1 | 0>
-  ) {
+  async findById(id: string | mongoose.Types.ObjectId, options?: QueryOptions) {
     try {
       let query = this.model.findById(id);
-      if (select) {
-        query = query.select(select);
+      if (options?.select) {
+        query = query.select(options.select);
       }
+
+      if (options?.sort) {
+        query = query.sort(options.sort);
+      }
+
+      if (options?.populate) {
+        query = query.populate(options.populate as string | string[]);
+      }
+
+      if (options?.limit) {
+        query = query.limit(options.limit);
+      }
+
+      if (options?.skip) {
+        query = query.skip(options.skip);
+      }
+
       return query.exec();
     } catch (error) {
       throw error;
