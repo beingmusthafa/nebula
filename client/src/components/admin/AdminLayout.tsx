@@ -5,11 +5,12 @@ interface Props {
   children: React.ReactNode;
 }
 const AdminLayout: React.FC<Props> = ({ children }) => {
-  let [showSidebar, setShowSidebar] = useState(false);
   return (
-    <div className="flex w-full h-full _no-scrollbar md:pl-64">
+    <div className="md:pl-64">
       <Sidebar />
-      <div className="w-full h-full overflow-y-auto p-8">{children}</div>
+      <div className="p-4 md:p-8 overflow-y-auto overflow-x-hidden">
+        {children}
+      </div>
     </div>
   );
 };
