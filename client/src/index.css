@@ -170,8 +170,56 @@ body {
   display: block;
   width: 100%;
   font-family: "DM Serif Display", serif;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
+}
+._section-title2 {
+  padding: 2rem 1rem 0.5rem 1rem;
+  display: block;
+  width: 100%;
+  font-family: "DM Serif Display", serif;
+  font-size: 1.25rem;
 }
 ._no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+._admin-sidebar {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+._admin-content {
+  max-width: 80%;
+  height: 100%;
+  margin-left: 20%;
+  padding: 2rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+._admin-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding-left: 20%;
+}
+@media (max-width: 600px) {
+  ._admin-sidebar {
+    display: none;
+  }
+  ._admin-content {
+    max-width: 100%;
+    margin: 0;
+    padding: 1.5rem;
+  }
+  ._admin-loading {
+    padding-left: 0;
+  }
 }
