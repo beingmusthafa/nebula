@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import AdminLayout from "../../components/admin/AdminLayout";
 import UserCard from "../../components/admin/UserCard";
 import Loading from "../../components/Loading";
+import MiniLoading from "../../components/MiniLoading";
+import AdminLoading from "../../components/admin/AdminLoading";
 interface User {
   _id: string;
   name: string;
   email: string;
   image: string;
 }
-const Users = () => {
+const Users_admin = () => {
   let [users, setUsers] = useState<User[]>([]);
   let [page, setPage] = useState<number>(1);
   let [hasNext, setHasNext] = useState<boolean>(true);
@@ -30,18 +32,21 @@ const Users = () => {
   }, [page]);
   return (
     <>
-      <form action="" className="flex justify-center w-full mb-10">
+      <form
+        action=""
+        className="md:flex w-fit mx-auto justify-center border border-black py-1 px-4 mb-10 rounded-full sticky  bg-white hidden"
+      >
         <input
           type="text"
-          placeholder="Search users..."
-          className="p-1 text-base border border-black pl-4 w-80"
+          placeholder="Search for users"
+          className=" pl-4 w-44 md:w-80 border-0"
         />
-        <button className="_fill-btn-black">
+        <button className="ml-2">
           <i className="bx bx-search-alt-2 text-lg"></i>
         </button>
       </form>
       {loading ? (
-        <Loading />
+        <AdminLoading />
       ) : (
         <div className="flex justify-start gap-8  flex-wrap">
           {users.map((user, i) => (
@@ -63,4 +68,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Users_admin;
