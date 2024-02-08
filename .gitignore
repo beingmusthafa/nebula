@@ -1,3 +1,4 @@
 *.env
 test.js
-text.txt
+test.txt
+testdata
