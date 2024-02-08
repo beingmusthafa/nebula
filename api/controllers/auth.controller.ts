@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import UsersInterface from "../interfaces/users.interface.js";
 import authServiceInstance, { AuthService } from "../services/auth.service.js";
-import { customError } from "../utils/error.js";
+import customError from "../utils/error.js";
 
 class AuthController {
   private authService: AuthService;
@@ -63,6 +63,7 @@ class AuthController {
 
   async googleAuth(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log("reached");
       const response = await this.authService.googleAuth(req.body);
       if (!response.success) {
         return next(customError(response.statusCode, response.message));

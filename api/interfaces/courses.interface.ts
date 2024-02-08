@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export default interface CoursesInterface {
+export default interface ICourses {
   title: string;
   description: string;
   price: number;

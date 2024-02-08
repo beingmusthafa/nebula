@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import UsersInterface from "../../interfaces/users.interface.js";
-import { customError } from "../../utils/error.js";
+import customError from "../../utils/error.js";
 import usersServiceInstance, {
   UsersService,
 } from "../../services/users.service.js";
@@ -20,7 +20,7 @@ class AdminUsersController {
       );
       res.status(200).json(response);
     } catch (error) {
-      next(error);
+      next(customError(500, error.message));
     }
   }
 
@@ -45,7 +45,7 @@ class AdminUsersController {
       console.log(response);
       res.status(200).json(response);
     } catch (error) {
-      next(error);
+      next(customError(500, error.message));
     }
   }
 }

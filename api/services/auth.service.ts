@@ -89,7 +89,7 @@ export class AuthService {
   }
 
   async finishSignUp(
-    user: UsersInterface,
+    user: { name: string; email: string; password: string },
     code: number
   ): Promise<{
     success: boolean;
@@ -111,7 +111,10 @@ export class AuthService {
         };
       }
       user.password = this.hashPassword(user.password);
-      const doc = await this.usersRepository.create(user);
+      const doc = await this.usersRepository.create({
+        ...user,
+        isAuthExternal: false,
+      });
       const token = this.generateToken({ id: doc._id.toString() });
       const { password: _password, ...rest } = doc;
       return {
@@ -168,11 +171,7 @@ export class AuthService {
     }
   }
 
-  async googleAuth(details: {
-    email: string;
-    name: string;
-    image: string;
-  }): Promise<{
+  async googleAuth(details: { email: string; name: string }): Promise<{
     success: boolean;
     message: string;
     statusCode: number;
@@ -180,6 +179,7 @@ export class AuthService {
     doc?: object;
   }> {
     try {
+      console.log("details", details);
       const existingUser = await this.usersRepository.findByEmail(
         details.email
       );
@@ -197,10 +197,10 @@ export class AuthService {
       const generatedPassword = Math.random().toString(36).slice(-8);
       const password = this.hashPassword(generatedPassword);
       const doc = await this.usersRepository.create({
-        image: details.image,
         password,
         email: details.email,
         name: details.name,
+        isAuthExternal: true,
       });
       const { password: _password, ...rest } = doc;
       return {

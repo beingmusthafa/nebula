@@ -31,7 +31,7 @@ const coursesModel = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    author: {
+    tutor: {
       type: mongoose.Types.ObjectId,
       ref: "Users",
       required: true,

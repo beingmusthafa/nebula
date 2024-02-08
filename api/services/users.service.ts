@@ -28,8 +28,8 @@ export class UsersService {
       pages: number;
       hasNextPage: boolean;
       hasPrevPage: boolean;
-      nextPage: number;
-      prevPage: number;
+      nextPage?: number;
+      prevPage?: number;
     };
   }> {
     try {
