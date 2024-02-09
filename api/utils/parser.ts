@@ -10,7 +10,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 });
 
-export const uploadtoCloudinary = async (file: any) => {
+export const uploadtoCloudinary = async (buffer: Buffer) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream((error, result) => {
       if (result) {
@@ -19,6 +19,6 @@ export const uploadtoCloudinary = async (file: any) => {
         reject(error);
       }
     });
-    streamifier.createReadStream(file.buffer).pipe(stream);
+    streamifier.createReadStream(buffer).pipe(stream);
   });
 };
