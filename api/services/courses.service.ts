@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 import coursesRepositoryInstance, {
   CoursesRepository,
 } from "../repositories/courses.repository.js";
-import CoursesInterface from "../interfaces/courses.interface.js";
+import ICourses from "../interfaces/courses.interface.js";
+import ServiceResponse from "../types/serviceresponse.type.js";
+import PaginationResult from "../types/PaginationResult.js";
+import { resizeImage } from "../utils/cropper.js";
+import { uploadtoCloudinary } from "../utils/parser.js";
 
 export class CoursesService {
   private coursesRepository: CoursesRepository;
@@ -11,26 +15,29 @@ export class CoursesService {
     this.coursesRepository = coursesRepository;
   }
 
-  async findPaginate(page: number): Promise<{
-    success: boolean;
-    message: string;
-    statusCode: number;
-    result?: {
-      docs: object[];
-      total: number;
-      limit: number;
-      page: number;
-      pages: number;
-      hasNextPage: boolean;
-      hasPrevPage: boolean;
-      nextPage?: number;
-      prevPage?: number;
-    };
-  }> {
+  async find(query: object): ServiceResponse<{ docs?: object[] }> {
+    try {
+      const docs = await this.coursesRepository.find(query);
+      return {
+        success: true,
+        message: "fetched docs successfully",
+        statusCode: 200,
+        docs,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findPaginate(
+    page: number
+    // search: string,
+    // filter: { minPrice?: number; maxPrice?: number; sort?: string }
+  ): ServiceResponse<PaginationResult> {
     try {
       const docs = await this.coursesRepository.find(
         {},
-        { populate: { path: "author", select: "name image bio" } }
+        { populate: { path: "tutor", select: "name image bio" } }
       );
       const totalCount = await this.coursesRepository.count();
       return {
@@ -54,15 +61,12 @@ export class CoursesService {
     }
   }
 
-  async findById(id: string | mongoose.Types.ObjectId): Promise<{
-    success: boolean;
-    message: string;
-    statusCode: number;
-    doc?: object;
-  }> {
+  async findById(
+    id: string | mongoose.Types.ObjectId
+  ): ServiceResponse<{ doc?: object }> {
     try {
       const doc = await this.coursesRepository.findById(id, {
-        populate: { path: "author", select: "name image bio" },
+        populate: { path: "tutor", select: "name image bio" },
       });
       if (!doc) {
         return {
@@ -83,14 +87,115 @@ export class CoursesService {
   }
 
   async create(
-    data: CoursesInterface
-  ): Promise<{ success: boolean; message: string; statusCode: number }> {
+    data: {
+      title: string;
+      description: string;
+      price: number;
+      category: mongoose.Types.ObjectId | string;
+      tutor: mongoose.Types.ObjectId | string;
+      requirements: string[];
+      benefits: string[];
+      language: string;
+      thumbnail?: string;
+    },
+    image: Buffer
+  ): ServiceResponse {
     try {
-      await this.coursesRepository.create(data);
+      if (data.title.length < 3)
+        return {
+          success: false,
+          message: "Title must be at least 3 characters",
+          statusCode: 400,
+        };
+      if (data.title.length > 50)
+        return {
+          success: false,
+          message: "Title must be at most 50 characters",
+          statusCode: 400,
+        };
+      if (data.description.length < 20)
+        return {
+          success: false,
+          message: "Description must be at least 20 characters",
+          statusCode: 400,
+        };
+      if (data.description.length > 1000)
+        return {
+          success: false,
+          message: "Description must be at most 1000 characters",
+          statusCode: 400,
+        };
+      const croppedBuffer = await resizeImage(image, 800, 450);
+      const { url } = (await uploadtoCloudinary(croppedBuffer)) as {
+        url: string;
+      };
+      data.thumbnail = url;
+      await this.coursesRepository.create(data as ICourses);
       return {
         success: true,
         message: "created doc successfully",
         statusCode: 201,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async edit(
+    id: string,
+    data: {
+      title: string;
+      description: string;
+      price: number;
+      thumbnail: string;
+      category: mongoose.Types.ObjectId | string;
+      tutor: mongoose.Types.ObjectId | string;
+      requirements: string[];
+      benefits: string[];
+      language: string;
+    },
+    image: Buffer | undefined
+  ): ServiceResponse {
+    try {
+      if (data.title.length < 3)
+        return {
+          success: false,
+          message: "Title must be at least 3 characters",
+          statusCode: 400,
+        };
+      if (data.title.length > 50)
+        return {
+          success: false,
+          message: "Title must be at most 50 characters",
+          statusCode: 400,
+        };
+      if (data.description.length < 20)
+        return {
+          success: false,
+          message: "Description must be at least 20 characters",
+          statusCode: 400,
+        };
+      if (data.description.length > 1000)
+        return {
+          success: false,
+          message: "Description must be at most 1000 characters",
+          statusCode: 400,
+        };
+      if (image) {
+        const croppedBuffer = await resizeImage(image, 800, 450);
+        const { url } = (await uploadtoCloudinary(croppedBuffer)) as {
+          url: string;
+        };
+        data.thumbnail = url;
+      } else {
+        delete data.thumbnail;
+      }
+
+      await this.coursesRepository.findOneAndUpdate({ _id: id }, data);
+      return {
+        success: true,
+        message: "Edited doc successfully",
+        statusCode: 200,
       };
     } catch (error) {
       throw error;

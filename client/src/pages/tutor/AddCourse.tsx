@@ -1,19 +1,45 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import uploadImage from "../../assets/image_upload.jpg";
 import CropDemo from "../../components/Crop";
 import { useNavigate } from "react-router-dom";
+import languages from "../../data/languages";
 
 const AddCourse = () => {
+  let [categories, setCategories] = useState<
+    { name: string; _id: string; image: string }[]
+  >([]);
+  let [imageError, setImageError] = useState("");
+  let [titleError, setTitleError] = useState("");
+  let [descriptionError, setDescriptionError] = useState("");
+  let [priceError, setPriceError] = useState("");
+  let [languageError, setLanguageError] = useState("");
+  let [categoryError, setCategoryError] = useState("");
   let [image, setImage] = useState<File | null>(null);
   let [title, setTitle] = useState<string>("");
   let [description, setDescription] = useState<string>("");
   let [category, setCategory] = useState<string>("");
+  let [language, setLanguage] = useState<string>("");
   let [price, setPrice] = useState<number>(0);
   let [requirements, setRequirements] = useState<string[]>([]);
   let [benefits, setBenefits] = useState<string[]>([]);
   let reqInputRef = useRef<HTMLInputElement | null>(null);
   let benInputRef = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch("/api/tutor/get-categories").then((res) =>
+        res.json()
+      );
+      if (!res.success) return toast.error(res.message);
+      setCategories(res.docs);
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+  useEffect(() => {
+    fetchCategories();
+  }, []);
   function addBenefit(ben: string | undefined) {
     console.log(ben);
     if (!ben || !ben.trim()) return;
@@ -42,11 +68,28 @@ const AddCourse = () => {
   }
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!image) setImageError("Choose an image");
+    else setImageError("");
+    if (!title.trim()) setTitleError("Enter a title");
+    else setTitleError("");
+    if (!description.trim()) setDescriptionError("Enter a description");
+    else setDescriptionError("");
+    if (!price) setPriceError("Enter a price");
+    else setPriceError("");
+    if (!language.trim()) setLanguageError("Enter a language");
+    else setLanguageError("");
+    if (!category) setCategoryError("Choose a category");
+    else setCategoryError("");
+    if (!(image && title && description && price && language && category)) {
+      return;
+    }
+    const toastId = toast.loading("Creating course...");
     const formData = new FormData();
     formData.append("thumbnail", image as File);
     formData.append("title", title);
     formData.append("description", description);
     formData.append("category", category);
+    formData.append("language", language);
     formData.append("price", price.toString());
     requirements.forEach((req, i) => {
       formData.append(`requirements[${i}]`, req);
@@ -59,20 +102,28 @@ const AddCourse = () => {
       method: "POST",
       body: formData,
     }).then((res) => res.json());
+    toast.dismiss(toastId);
     if (!res.success) return toast.error(res.message);
     navigate("/tutor");
+    toast.success("Created course successfully");
   }
-  const navigate = useNavigate();
   return (
     <>
-      <div className="w-full _font-dm-display text-2xl m-4">Create course</div>
+      <div className="text-center _font-dm-display text-2xl m-4">
+        Create course
+      </div>
       <div className="flex">
         <form
           onSubmit={handleSubmit}
           action=""
-          className="flex flex-col mx-auto p-4 text-base"
+          className="flex flex-col mx-auto items-center p-4 text-base"
         >
-          <CropDemo src={image ? URL.createObjectURL(image) : ""} />
+          {/* <CropDemo src={image ? URL.createObjectURL(image) : ""} /> */}
+          <img
+            src={image ? URL.createObjectURL(image!) : ""}
+            className="w-40"
+            alt=""
+          />
           <input
             type="file"
             id="uploadThumbnail"
@@ -83,24 +134,42 @@ const AddCourse = () => {
             style={{ background: uploadImage }}
             accept="image/*"
           />
+          {imageError && (
+            <p className="font-semibold text-red-500 text-base mx-auto">
+              {imageError}
+            </p>
+          )}
           <label
             htmlFor="uploadThumbnail"
             className="_fill-btn-black w-fit mx-auto mb-10"
           >
             Choose thumbnail
           </label>
+          {titleError && (
+            <p className="font-semibold text-red-500 text-base">{titleError}</p>
+          )}
           <input
             onChange={(e) => setTitle(e.target.value)}
             type="text"
             placeholder="Course title"
             className="w-96 border-2 border-black p-2 m-2"
           />
+          {descriptionError && (
+            <p className="font-semibold text-red-500 text-base">
+              {descriptionError}
+            </p>
+          )}
           <textarea
             onChange={(e) => setDescription(e.target.value)}
             rows={5}
             placeholder="Course description"
             className="w-96 border-2 border-black  p-2 m-2"
           />
+          {categoryError && (
+            <p className="font-semibold text-red-500 text-base">
+              {categoryError}
+            </p>
+          )}
           <select
             onChange={(e) => setCategory(e.target.value)}
             className="w-52 border-2 border-black  p-2 m-2"
@@ -108,17 +177,41 @@ const AddCourse = () => {
             <option selected value="">
               Select category
             </option>
-            <option value="65c38a47a80c66ffa1dd30ef">Technology</option>
-            <option value="lang">Language</option>
+            {categories?.map((category, i) => (
+              <option key={i} value={category._id}>
+                {category.name}
+              </option>
+            ))}
           </select>
+          {priceError && (
+            <p className="font-semibold text-red-500 text-base">{priceError}</p>
+          )}
           <input
             onChange={(e) => setPrice(Number(e.target.value))}
             type="number"
             placeholder="Enrollment price"
             className="w-52 border-2 border-black  p-2 m-2"
           />
+          {languageError && (
+            <p className="font-semibold text-red-500 text-base">
+              {languageError}
+            </p>
+          )}
+
+          <select
+            onChange={(e) => setLanguage(e.target.value)}
+            className="w-52 border-2 border-black  p-2 m-2"
+            name=""
+            id=""
+          >
+            {languages.map((lang, i) => (
+              <option key={i} value={lang}>
+                {lang}
+              </option>
+            ))}
+          </select>
           <label htmlFor="" className="font-bold my-2">
-            Benefits : what do learners achieve?
+            Benefits : what do learners achieve? (optional)
           </label>
           {benefits.length > 0 ? (
             benefits.map((req, i) => (
@@ -152,7 +245,7 @@ const AddCourse = () => {
             </button>
           </div>
           <label htmlFor="" className="font-bold my-2">
-            Requirements
+            Requirements (optional)
           </label>
           {requirements.length > 0 ? (
             requirements.map((req, i) => (

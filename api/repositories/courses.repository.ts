@@ -2,6 +2,7 @@ import mongoose, { PopulateOptions, QueryOptions } from "mongoose";
 import QueryOptionsInterface from "../interfaces/queryOptions.interface.js";
 import CoursesInterface from "../interfaces/courses.interface.js";
 import coursesModel from "../models/courses.model.js";
+import ICourses from "../interfaces/courses.interface.js";
 export class CoursesRepository {
   private model = coursesModel;
   async find(queryFilter: object = {}, options?: QueryOptions) {
@@ -84,7 +85,16 @@ export class CoursesRepository {
     }
   }
 
-  async create(course: CoursesInterface) {
+  async updateMany(query: object, updation: object) {
+    try {
+      const doc = await this.model.updateMany(query, { $set: updation });
+      return doc.modifiedCount;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async create(course: ICourses) {
     try {
       const doc = await this.model.create(course);
       return doc.toObject();

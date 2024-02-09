@@ -5,10 +5,11 @@ export default interface ICourses {
   description: string;
   price: number;
   thumbnail: string;
-  category: mongoose.Types.ObjectId;
-  author: mongoose.Types.ObjectId;
+  category: mongoose.Types.ObjectId | string;
+  tutor: mongoose.Types.ObjectId | string;
   requirements: string[];
   benefits: string[];
-  offers?: mongoose.Types.ObjectId[];
+  language: string;
+  offers?: mongoose.Types.ObjectId[] | string[];
   isBlocked?: boolean;
 }
