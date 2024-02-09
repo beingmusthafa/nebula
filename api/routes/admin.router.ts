@@ -26,11 +26,30 @@ router.put(
   }
 );
 
+router.get(
+  "/get-categories",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminCategoriesController.getAll(req, res, next)
+);
+
 router.post(
   "/create-category",
   parser.single("image"),
   (req: Request, res: Response, next: NextFunction) =>
-    adminCategoriesController.createCategory(req, res, next)
+    adminCategoriesController.create(req, res, next)
+);
+
+router.put(
+  "/edit-category",
+  parser.single("image"),
+  (req: Request, res: Response, next: NextFunction) =>
+    adminCategoriesController.edit(req, res, next)
+);
+
+router.delete(
+  "/delete-category/:id/move/:targetCategory",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminCategoriesController.delete(req, res, next)
 );
 
 export default router;

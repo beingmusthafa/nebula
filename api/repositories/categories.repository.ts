@@ -37,6 +37,16 @@ export class CategoriesRepository {
     }
   }
 
+  async findOne(query: object, options?: QueryOptions) {
+    try {
+      const doc = await this.model.findOne(query);
+      if (doc) return doc.toObject();
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async findOneAndUpdate(query: object, updation: object) {
     try {
       const doc = await this.model.findOneAndUpdate(
@@ -46,6 +56,15 @@ export class CategoriesRepository {
       );
       if (doc) return doc.toObject();
       return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteOne(query: object) {
+    try {
+      const doc = await this.model.deleteOne(query);
+      return doc.deletedCount;
     } catch (error) {
       throw error;
     }

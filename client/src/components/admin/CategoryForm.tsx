@@ -1,23 +1,28 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 interface Props {
+  onComplete: () => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
   formType: "Add" | "Edit";
   oldName?: string;
   oldImage?: string;
+  id?: string;
 }
 const CategoryForm: React.FC<Props> = ({
   setOpen,
   formType,
   oldName,
   oldImage,
+  id,
+  onComplete,
 }) => {
   let [imageFile, setImageFile] = useState<File | null>(null);
-  let [name, setName] = useState<string>("");
   let [error, setError] = useState<string>("");
+  let nameRef = useRef<HTMLInputElement | null>(null);
   const onAddSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const name = nameRef.current?.value;
     if (!name) return setError("Enter name!");
     if (name.trim().length < 3) return setError("Invalid name!");
     if (!imageFile) return setError("Choose an image!");
@@ -33,20 +38,25 @@ const CategoryForm: React.FC<Props> = ({
       toast.dismiss(toastId);
       if (!res.success) return toast.error(res.message);
       toast.success("Category added successfully");
+      onComplete();
+      setOpen(false);
     } catch (error) {
       toast.error("Something went wrong");
-    } finally {
-      setOpen(false);
     }
   };
   const onEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const name = nameRef.current?.value;
+    if (name === oldName && !imageFile) return setError("No changes detected");
+    if (!name) return setError("Enter name!");
+    if (name.trim().length < 3) return setError("Invalid name!");
+    if (!imageFile && !oldImage) return setError("Choose an image!");
     try {
-      e.preventDefault();
       const toastId = toast.loading("Editing Category");
       const body = new FormData();
       body.append("image", imageFile as File);
       body.append("name", name);
-      body.append("oldName", oldName!);
+      body.append("id", id!);
       const res = await fetch("/api/admin/edit-category", {
         method: "PUT",
         body,
@@ -54,12 +64,10 @@ const CategoryForm: React.FC<Props> = ({
       toast.dismiss(toastId);
       if (!res.success) return toast.error(res.message);
       toast.success("Category edited successfully");
+      onComplete();
+      setOpen(false);
     } catch (error) {
       toast.error("Something went wrong");
-    } finally {
-      setName("");
-      setImageFile(null);
-      setOpen(false);
     }
   };
   return (
@@ -102,7 +110,8 @@ const CategoryForm: React.FC<Props> = ({
           Choose image
         </label>
         <input
-          onChange={(e) => setName(e.target.value)}
+          defaultValue={oldName || ""}
+          ref={nameRef}
           type="text"
           className="border border-black p-2"
           placeholder="Category name"
