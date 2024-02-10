@@ -130,6 +130,8 @@ export class CoursesService {
         url: string;
       };
       data.thumbnail = url;
+      if (!data.requirements) data.requirements = [];
+      if (!data.benefits) data.benefits = [];
       await this.coursesRepository.create(data as ICourses);
       return {
         success: true,
@@ -190,7 +192,8 @@ export class CoursesService {
       } else {
         delete data.thumbnail;
       }
-
+      if (!data.requirements) data.requirements = [];
+      if (!data.benefits) data.benefits = [];
       await this.coursesRepository.findOneAndUpdate({ _id: id }, data);
       return {
         success: true,
