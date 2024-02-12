@@ -7,6 +7,7 @@ import ServiceResponse from "../types/serviceresponse.type.js";
 import PaginationResult from "../types/PaginationResult.js";
 import { resizeImage } from "../utils/cropper.js";
 import { uploadtoCloudinary } from "../utils/parser.js";
+import categoriesRepository from "../repositories/categories.repository.js";
 
 export class CoursesService {
   private coursesRepository: CoursesRepository;
@@ -30,15 +31,55 @@ export class CoursesService {
   }
 
   async findPaginate(
-    page: number
-    // search: string,
-    // filter: { minPrice?: number; maxPrice?: number; sort?: string }
+    page: number,
+    filter?: {
+      search?: string;
+      minPrice: number;
+      maxPrice: number;
+      category?: string;
+      language?: string;
+      sort?: string;
+    }
   ): ServiceResponse<PaginationResult> {
     try {
-      const docs = await this.coursesRepository.find(
-        {},
-        { populate: { path: "tutor", select: "name image bio" } }
-      );
+      let options = {};
+      let query = {};
+      if (filter.search) {
+        query = { title: { $regex: new RegExp(filter.search), $options: "i" } };
+      }
+      query = {
+        ...query,
+        price: {
+          $gte: filter.minPrice >= 0 ? filter.minPrice : 0,
+          $lte: filter.maxPrice <= 99999 ? filter.maxPrice : 99999,
+        },
+      };
+      if (filter.category) {
+        const doc = await categoriesRepository.findOne({
+          name: filter.category,
+        });
+        query = { ...query, category: doc._id };
+      }
+      if (filter.language) {
+        query = { ...query, language: filter.language };
+      }
+      if (filter.sort) {
+        const sort =
+          filter.sort === "newest"
+            ? { createdAt: -1 }
+            : filter.sort === "rating"
+            ? { rating: -1 }
+            : filter.sort === "price_low"
+            ? { price: 1 }
+            : { price: -1 };
+        options = { sort };
+      }
+      const docs = await this.coursesRepository.find(query, {
+        ...options,
+        populate: { path: "tutor", select: "name image" },
+        limit: 5,
+        skip: (page - 1) * 5,
+      });
       const totalCount = await this.coursesRepository.count();
       return {
         success: true,
@@ -47,10 +88,10 @@ export class CoursesService {
         result: {
           docs,
           total: docs.length,
-          limit: 20,
+          limit: 5,
           page,
-          pages: Math.ceil(totalCount / 20),
-          hasNextPage: page < Math.ceil(totalCount / 20),
+          pages: Math.ceil(totalCount / 5),
+          hasNextPage: page < Math.ceil(totalCount / 5),
           hasPrevPage: page > 1,
           nextPage: page + 1,
           prevPage: page - 1,
@@ -125,6 +166,19 @@ export class CoursesService {
           message: "Description must be at most 1000 characters",
           statusCode: 400,
         };
+      if (data.price < 0)
+        return {
+          success: false,
+          message: "Price must be at least 0",
+          statusCode: 400,
+        };
+      if (data.price > 99999) {
+        return {
+          success: false,
+          message: "Price must be at most 99999",
+          statusCode: 400,
+        };
+      }
       const croppedBuffer = await resizeImage(image, 800, 450);
       const { url } = (await uploadtoCloudinary(croppedBuffer)) as {
         url: string;
@@ -183,6 +237,19 @@ export class CoursesService {
           message: "Description must be at most 1000 characters",
           statusCode: 400,
         };
+      if (data.price < 0)
+        return {
+          success: false,
+          message: "Price must be at least 0",
+          statusCode: 400,
+        };
+      if (data.price > 99999) {
+        return {
+          success: false,
+          message: "Price must be at most 99999",
+          statusCode: 400,
+        };
+      }
       if (image) {
         const croppedBuffer = await resizeImage(image, 800, 450);
         const { url } = (await uploadtoCloudinary(croppedBuffer)) as {

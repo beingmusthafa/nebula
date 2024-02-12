@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import lightLogo from "../assets/nebula_light.png";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { signIn, signOut } from "../redux/user/userSlice";
+import { motion } from "framer-motion";
 
 const Header = () => {
+  const location = useLocation();
   const { currentUser } = useSelector((state: any) => state.user);
+  const searchText = new URLSearchParams(location.search).get("search");
   let [showOptions, setShowOptions] = useState(false);
   let [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  let searchInputRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   console.log(currentUser);
-  const location = useLocation();
   const logout = () => {
     dispatch(signOut());
     setShowOptions(false);
@@ -22,6 +30,11 @@ const Header = () => {
   const navigateOptions = (route: string) => {
     setShowOptions(false);
     navigate(route);
+  };
+  const search = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchInputRef.current?.value) return searchInputRef.current?.focus();
+    navigate(`/courses?search=${searchInputRef.current?.value}`);
   };
   return (
     !location.pathname.startsWith("/admin") && (
@@ -39,10 +52,13 @@ const Header = () => {
           </h1>
         </Link>
         <form
+          onSubmit={search}
           action=""
           className="flex justify-center border border-black py-1 px-4 rounded-full"
         >
           <input
+            ref={searchInputRef}
+            defaultValue={searchText || ""}
             type="text"
             placeholder="Search for courses"
             className=" pl-4 w-44 md:w-80 border-0"
@@ -92,7 +108,12 @@ const Header = () => {
           ></i>
         </div>
         {currentUser && showOptions && (
-          <div className="absolute flex md:hidden flex-col top-14 right-0 bg-white px-4">
+          <motion.div
+            initial={{ x: 100 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute flex md:hidden flex-col top-14 right-0 bg-white px-4"
+          >
             <div
               onClick={() => navigateOptions("/wishlist")}
               className="flex items-center gap-2 border-b border-slate-400 p-2"
@@ -130,7 +151,7 @@ const Header = () => {
             >
               Logout
             </button>
-          </div>
+          </motion.div>
         )}
         {!currentUser && showOptions && (
           <div className="absolute flex md:hidden flex-col top-14 right-0 bg-white p-2 gap-2 text-sky-500">

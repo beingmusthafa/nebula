@@ -1,26 +1,78 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect, SetStateAction } from "react";
+import { toast } from "react-toastify";
+import languages from "../data/languages";
+import { useNavigate } from "react-router-dom";
 
-const FiltersBar = () => {
-  const query = new URLSearchParams(window.location.search);
+interface Props {
+  page: number;
+  search: string;
+  filters: {
+    minPrice: number;
+    maxPrice: number;
+    category: string;
+    language: string;
+    sort: string;
+  };
+}
+
+const FiltersBar: React.FC<Props> = ({ page, search, filters }) => {
+  console.log("child");
+  console.log({ filters });
+  let [categories, setCategories] = useState<{ name: string; image: string }[]>(
+    []
+  );
   let [showPriceInput, setShowPriceInput] = React.useState(false);
-  let [minPrice, setMinPrice] = useState<number>(
-    Number(query.get("minP")) || 0
-  );
-  let [maxPrice, setMaxPrice] = useState<number>(
-    Number(query.get("maxP")) || 99999
-  );
+  let [minPrice, setMinPrice] = useState<number>(filters.minPrice);
+  let [maxPrice, setMaxPrice] = useState<number>(filters.maxPrice);
   console.log({ minPrice, maxPrice });
   let minInputRef = useRef<HTMLInputElement | null>(null);
   let maxInputRef = useRef<HTMLInputElement | null>(null);
+  let categoryInputRef = useRef<HTMLSelectElement | null>(null);
+  let languageInputRef = useRef<HTMLSelectElement | null>(null);
+  let sortInputRef = useRef<HTMLSelectElement | null>(null);
+  const navigate = useNavigate();
   const handlePriceChange = () => {
     if (minInputRef.current && maxInputRef.current) {
-      setMinPrice(Number(minInputRef.current.value));
-      setMaxPrice(Number(maxInputRef.current.value));
+      setMinPrice(
+        Number(minInputRef.current.value) >= 0
+          ? Number(minInputRef.current.value)
+          : 0
+      );
+      setMaxPrice(
+        Number(maxInputRef.current.value) <= 99999
+          ? Number(maxInputRef.current.value)
+          : 99999
+      );
       setShowPriceInput(false);
     }
   };
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch("/api/tutor/get-categories").then((res) =>
+        res.json()
+      );
+      if (!res.success) return toast.error(res.message);
+      setCategories(res.docs);
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+  const applyFilters = () => {
+    navigate(
+      `/courses?page=${page}&search=${search}&minPrice=${minPrice}&maxPrice=${maxPrice}&category=${categoryInputRef.current?.value}&language=${languageInputRef.current?.value}&sort=${sortInputRef.current?.value}`
+    );
+  };
+  const clearFilters = () => {
+    navigate(`/courses?page=${1}&search=${search}`);
+  };
   return (
-    <div className="flex justify-between  h-12 sticky top-14 mb-4 border-b-black font-semibold bg-white  border-b-2 ">
+    <div
+      className="flex justify-between  h-12 sticky top-14 mb-4 border-b-black font-semibold bg-white  border-b-2 "
+      style={{ zIndex: 9 }}
+    >
       <div className="flex items-center w-fit justify-center p-4">
         <i className="bx bx-filter text-3xl"></i>
       </div>
@@ -55,25 +107,103 @@ const FiltersBar = () => {
         <button onClick={() => setShowPriceInput(!showPriceInput)}>
           Set price
         </button>
-        <select className="border-2 h-fit p-1 rounded-full border-slate-400">
-          <option selected value="">
-            Category
-          </option>
-          <option value="">Technology</option>
-          <option value="">Music</option>
+
+        <select
+          ref={categoryInputRef}
+          className="border-2 h-fit p-1 rounded-full border-slate-400"
+        >
+          {filters.category ? (
+            <option value="">All categories</option>
+          ) : (
+            <option selected value="">
+              All categories
+            </option>
+          )}
+          {categories.map((category) =>
+            category.name === filters.category ? (
+              <option selected value={category.name} key={category.name}>
+                {category.name}
+              </option>
+            ) : (
+              <option value={category.name} key={category.name}>
+                {category.name}
+              </option>
+            )
+          )}
         </select>
-        <select className="border-2 h-fit p-1 rounded-full border-slate-400">
-          <option selected value="">
-            Sort
-          </option>
-          <option value="">Rating</option>
-          <option value="">Newest</option>
-          <option value="">Price: low to high</option>
-          <option value="">Price: high to low</option>
+
+        <select
+          ref={languageInputRef}
+          className="border-2 h-fit p-1 rounded-full border-slate-400"
+        >
+          {filters.language ? (
+            <option value="">All languages</option>
+          ) : (
+            <option selected value="">
+              All languages
+            </option>
+          )}
+          {languages.map((lang) =>
+            lang === filters.language ? (
+              <option selected value={lang} key={lang}>
+                {lang}
+              </option>
+            ) : (
+              <option value={lang} key={lang}>
+                {lang}
+              </option>
+            )
+          )}
+        </select>
+
+        <select
+          ref={sortInputRef}
+          className="border-2 h-fit p-1 rounded-full border-slate-400"
+        >
+          {filters.sort ? (
+            <option disabled value="">
+              Select sort
+            </option>
+          ) : (
+            <option selected value="">
+              Select sort
+            </option>
+          )}
+          {filters.sort === "rating" ? (
+            <option selected value="rating">
+              Rating
+            </option>
+          ) : (
+            <option value="rating">Rating</option>
+          )}
+          {filters.sort === "newest" ? (
+            <option selected value="newest">
+              Newest
+            </option>
+          ) : (
+            <option value="newest">Newest</option>
+          )}
+          {filters.sort === "price_low" ? (
+            <option value="price_low">Price: low to high</option>
+          ) : (
+            <option value="price_low">Price: low to high</option>
+          )}
+          {filters.sort === "price_high" ? (
+            <option selected value="price_high">
+              Price: high to low
+            </option>
+          ) : (
+            <option value="price_high">Price: high to low</option>
+          )}
         </select>
       </div>
       <div className="flex items-center w-fit justify-center">
-        <button className="_fill-btn-blue m-4">Apply</button>
+        <button onClick={clearFilters} className="_fill-btn-red">
+          X
+        </button>
+        <button onClick={applyFilters} className="_fill-btn-blue m-4">
+          Apply
+        </button>
       </div>
     </div>
   );
