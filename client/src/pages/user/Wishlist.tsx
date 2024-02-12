@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import Loading from "../../components/Loading";
 import RatingStars from "../../components/RatingStars";
 import { Link } from "react-router-dom";
+import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 
 interface Course {
   _id: string;
@@ -24,7 +25,7 @@ interface Course {
 const Wishlist = () => {
   let [courses, setCourses] = useState<Course[]>([]);
   let [loading, setLoading] = useState<boolean>(true);
-  console.log(courses);
+  let skeletons = new Array(7).fill(0);
   async function getWishlistCourses() {
     setLoading(true);
     const res = await fetch("/api/get-wishlist-courses").then((res) =>
@@ -83,7 +84,11 @@ const Wishlist = () => {
     }
   };
   return loading ? (
-    <Loading />
+    <div className="flex md:flex-row flex-wrap justify-center md:justify-start h-full w-full p-8">
+      {skeletons.map((_, index) => (
+        <CourseSkeleton key={index} />
+      ))}
+    </div>
   ) : courses.length > 0 ? (
     <div className="flex justify-evenly md:justify-start flex-wrap gap-8 p-8">
       {courses.map((course, i) => (
