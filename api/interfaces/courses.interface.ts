@@ -10,6 +10,6 @@ export default interface ICourses {
   requirements: string[];
   benefits: string[];
   language: string;
-  offers?: mongoose.Types.ObjectId[] | string[];
+  discount?: number;
   isBlocked?: boolean;
 }

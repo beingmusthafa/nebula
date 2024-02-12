@@ -44,15 +44,9 @@ const coursesModel = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    offers: {
-      type: [
-        {
-          type: mongoose.Types.ObjectId,
-          default: [],
-        },
-      ],
-      ref: "Offers",
-      default: [],
+    discount: {
+      type: Number,
+      default: 0,
     },
     isActive: {
       type: Boolean,
