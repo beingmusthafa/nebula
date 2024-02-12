@@ -19,7 +19,7 @@ const AddCourse = () => {
   let [title, setTitle] = useState<string>("");
   let [description, setDescription] = useState<string>("");
   let [category, setCategory] = useState<string>("");
-  let [language, setLanguage] = useState<string>("");
+  let [language, setLanguage] = useState<string>("English");
   let [price, setPrice] = useState<number>(0);
   let [requirements, setRequirements] = useState<string[]>([]);
   let [benefits, setBenefits] = useState<string[]>([]);
@@ -78,6 +78,7 @@ const AddCourse = () => {
     else setPriceError("");
     if (!language.trim()) setLanguageError("Enter a language");
     else setLanguageError("");
+    console.log({ language });
     if (!category) setCategoryError("Choose a category");
     else setCategoryError("");
     if (!(image && title && description && price && language && category)) {
@@ -204,11 +205,17 @@ const AddCourse = () => {
             name=""
             id=""
           >
-            {languages.map((lang, i) => (
-              <option key={i} value={lang}>
-                {lang}
-              </option>
-            ))}
+            {languages.map((lang, i) =>
+              lang === "English" ? (
+                <option selected key={i} value={lang}>
+                  {lang}
+                </option>
+              ) : (
+                <option key={i} value={lang}>
+                  {lang}
+                </option>
+              )
+            )}
           </select>
           <label htmlFor="" className="font-bold my-2">
             Benefits : what do learners achieve? (optional)

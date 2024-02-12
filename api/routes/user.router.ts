@@ -20,19 +20,31 @@ router.get(
 );
 
 router.get(
-  "/get-course-details/:courseId/user/:userId",
+  "/search-courses",
+  (req: Request, res: Response, next: NextFunction) =>
+    userCoursesController.searchCourses(req, res, next)
+);
+router.get(
+  "/get-course-details/:id",
   (req: Request, res: Response, next: NextFunction) =>
     userCoursesController.getCourseById(req, res, next)
 );
 
-router.post(
-  "/check-cart-and-wishlist",
+router.get(
+  "/check-cart-and-wishlist/:courseId",
   (req: Request, res: Response, next: NextFunction) =>
     authMiddleware.userAuth(req, res, next),
   (req: Request, res: Response, next: NextFunction) =>
     userPurchaseController.checkCartAndWishlist(req, res, next)
 );
 
+router.get(
+  "/get-cart-courses",
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userPurchaseController.getCart(req, res, next)
+);
 router.post(
   "/add-to-cart",
   (req: Request, res: Response, next: NextFunction) =>
@@ -47,6 +59,14 @@ router.post(
     authMiddleware.userAuth(req, res, next),
   (req: Request, res: Response, next: NextFunction) =>
     userPurchaseController.removeFromCart(req, res, next)
+);
+
+router.get(
+  "/get-wishlist-courses",
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userPurchaseController.getWishlist(req, res, next)
 );
 
 router.post(

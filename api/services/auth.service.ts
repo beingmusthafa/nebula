@@ -8,6 +8,7 @@ import otpsRepositoryInstance, {
   OtpsRepository,
 } from "../repositories/otps.repository.js";
 import mailerInstance, { Mailer } from "../utils/mailer.js";
+import ServiceResponse from "../types/serviceresponse.type.js";
 
 export class AuthService {
   private usersRepository: UsersRepository;
@@ -37,9 +38,7 @@ export class AuthService {
     this.mailer = mailer;
   }
 
-  async startSignUp(
-    user: UsersInterface
-  ): Promise<{ success: boolean; message: string; statusCode: number }> {
+  async startSignUp(user: UsersInterface): ServiceResponse {
     try {
       console.log("service");
       console.log(user);
@@ -91,13 +90,7 @@ export class AuthService {
   async finishSignUp(
     user: { name: string; email: string; password: string },
     code: number
-  ): Promise<{
-    success: boolean;
-    message: string;
-    statusCode: number;
-    token?: string;
-    doc?: object;
-  }> {
+  ): ServiceResponse<{ token?: string; doc?: object }> {
     try {
       const isCodeCorrect = await this.otpsRepository.findOne({
         email: user.email,
@@ -129,13 +122,10 @@ export class AuthService {
     }
   }
 
-  async signIn(credentials: { email: string; password: string }): Promise<{
-    success: boolean;
-    message: string;
-    statusCode: number;
-    token?: string;
-    doc?: object;
-  }> {
+  async signIn(credentials: {
+    email: string;
+    password: string;
+  }): ServiceResponse<{ token?: string; doc?: object }> {
     try {
       const existingUser = await this.usersRepository.findByEmail(
         credentials.email
@@ -171,13 +161,10 @@ export class AuthService {
     }
   }
 
-  async googleAuth(details: { email: string; name: string }): Promise<{
-    success: boolean;
-    message: string;
-    statusCode: number;
-    token?: string;
-    doc?: object;
-  }> {
+  async googleAuth(details: {
+    email: string;
+    name: string;
+  }): ServiceResponse<{ token?: string; doc?: object }> {
     try {
       console.log("details", details);
       const existingUser = await this.usersRepository.findByEmail(
@@ -215,9 +202,7 @@ export class AuthService {
     }
   }
 
-  async sendRecoveryCode(
-    email: string
-  ): Promise<{ success: boolean; message: string; statusCode: number }> {
+  async sendRecoveryCode(email: string): ServiceResponse {
     try {
       const user = await this.usersRepository.findByEmail(email);
       if (!user) {
@@ -244,13 +229,7 @@ export class AuthService {
     email: string,
     code: number,
     password: string
-  ): Promise<{
-    success: boolean;
-    message: string;
-    statusCode: number;
-    token?: string;
-    doc?: object;
-  }> {
+  ): ServiceResponse<{ token?: string; doc?: object }> {
     try {
       const isCodeCorrect = await this.otpsRepository.findOne({ email, code });
       if (!isCodeCorrect) {
@@ -275,11 +254,13 @@ export class AuthService {
         { password: hashedPassword }
       );
       const { password: _password, ...doc } = user;
+      const token = this.generateToken({ id: user._id.toString() });
       console.log(doc);
       return {
         success: true,
         message: "Password changed",
         statusCode: 200,
+        token,
         doc,
       };
     } catch (error) {

@@ -131,7 +131,7 @@ const EditCourse = () => {
     }).then((res) => res.json());
     toast.dismiss(toastId);
     if (!res.success) return toast.error(res.message);
-    navigate("/tutor");
+    navigate(-1);
     toast.success("Edited course successfully");
   }
   return (
