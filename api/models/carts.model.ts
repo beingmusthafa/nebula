@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 const cartsModel = new mongoose.Schema({
-  courseId: {
+  course: {
     type: mongoose.Types.ObjectId,
     ref: "Courses",
     required: true,
   },
-  userId: {
+  user: {
     type: mongoose.Types.ObjectId,
     ref: "Users",
     required: true,

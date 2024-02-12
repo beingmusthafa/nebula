@@ -1,34 +1,58 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose, { QueryOptions, mongo } from "mongoose";
 import cartsModel from "../models/carts.model.js";
 export class CartsRepository {
   private model = cartsModel;
   async delete(query: {
     _id?: string | mongoose.Types.ObjectId;
-    courseId?: string | mongoose.Types.ObjectId;
-    userId?: string | mongoose.Types.ObjectId;
+    course?: string | mongoose.Types.ObjectId;
+    user?: string | mongoose.Types.ObjectId;
   }) {
     await this.model.deleteMany(query);
   }
 
   async deleteOne(query: {
     _id?: string | mongoose.Types.ObjectId;
-    courseId?: string | mongoose.Types.ObjectId;
-    userId?: string | mongoose.Types.ObjectId;
+    course?: string | mongoose.Types.ObjectId;
+    user?: string | mongoose.Types.ObjectId;
   }) {
     await this.model.deleteOne(query);
   }
 
-  async find(query: { userId: string | mongoose.Types.ObjectId }) {
+  async find(
+    filter: { user: string | mongoose.Types.ObjectId },
+    options?: QueryOptions
+  ) {
     try {
-      return await this.model.find(query);
+      let query = this.model.find(filter);
+      if (options?.select) {
+        query = query.select(options.select);
+      }
+
+      if (options?.sort) {
+        query = query.sort(options.sort);
+      }
+
+      if (options?.populate) {
+        query = query.populate(options.populate as string | string[]);
+      }
+
+      if (options?.limit) {
+        query = query.limit(options.limit);
+      }
+
+      if (options?.skip) {
+        query = query.skip(options.skip);
+      }
+
+      return await query.exec();
     } catch (error) {
       throw error;
     }
   }
 
   async findOne(query: {
-    courseId: string | mongoose.Types.ObjectId;
-    userId: string | mongoose.Types.ObjectId;
+    course: string | mongoose.Types.ObjectId;
+    user: string | mongoose.Types.ObjectId;
   }) {
     try {
       return await this.model.findOne(query);
@@ -38,8 +62,8 @@ export class CartsRepository {
   }
 
   async create(data: {
-    courseId: string | mongoose.Types.ObjectId;
-    userId: string | mongoose.Types.ObjectId;
+    course: string | mongoose.Types.ObjectId;
+    user: string | mongoose.Types.ObjectId;
   }) {
     try {
       const cartExists = await this.model.findOne(data);

@@ -10,6 +10,16 @@ class UserPurchaseController {
     this.wishlistsService = new WishlistsService();
   }
 
+  async getCart(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.user._id;
+      const response = await this.cartsService.getCart(userId);
+      return res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
   async addToCart(req: Request, res: Response, next: NextFunction) {
     try {
       const { courseId } = req.body;
@@ -26,6 +36,16 @@ class UserPurchaseController {
       const { courseId } = req.body;
       const userId = req.user._id;
       const response = await this.cartsService.removeFromCart(userId, courseId);
+      return res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async getWishlist(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.user._id;
+      const response = await this.wishlistsService.getWishlist(userId);
       return res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));
@@ -63,7 +83,7 @@ class UserPurchaseController {
 
   async checkCartAndWishlist(req: Request, res: Response, next: NextFunction) {
     try {
-      const { courseId } = req.body;
+      const { courseId } = req.params;
       const userId = req.user._id;
       const { inCart } = await this.cartsService.checkCart(userId, courseId);
       const { inWishlist } = await this.wishlistsService.checkWishlist(

@@ -9,19 +9,45 @@ export default class CartsService {
     this.cartsRepository = new CartsRepository();
   }
 
+  async getCart(
+    userId: string | mongoose.Types.ObjectId
+  ): ServiceResponse<{ docs?: object[] }> {
+    try {
+      const result = await this.cartsRepository.find(
+        { user: userId },
+        {
+          populate: [
+            { path: "course" },
+            { path: "course.tutor", select: "name image" },
+          ],
+          projection: "course",
+        }
+      );
+      const docs = result.map((wishlist) => wishlist.course);
+      return {
+        success: true,
+        message: "fetched carts succesfully",
+        statusCode: 200,
+        docs,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async addtoCart(
     userId: string | mongoose.Types.ObjectId,
     courseId: string | mongoose.Types.ObjectId
   ): ServiceResponse {
     try {
       const cartExists = await this.cartsRepository.findOne({
-        userId,
-        courseId,
+        user: userId,
+        course: courseId,
       });
       if (cartExists) {
         return { success: true, message: "Already in cart", statusCode: 200 };
       }
-      await this.cartsRepository.create({ userId, courseId });
+      await this.cartsRepository.create({ user: userId, course: courseId });
       return { success: true, message: "Added to cart", statusCode: 200 };
     } catch (error) {
       throw error;
@@ -33,7 +59,7 @@ export default class CartsService {
     courseId: string | mongoose.Types.ObjectId
   ): ServiceResponse {
     try {
-      await this.cartsRepository.deleteOne({ userId, courseId });
+      await this.cartsRepository.deleteOne({ user: userId, course: courseId });
       return { success: true, message: "Removed from cart", statusCode: 200 };
     } catch (error) {
       throw error;
@@ -46,8 +72,8 @@ export default class CartsService {
   ) {
     try {
       const cartExists = await this.cartsRepository.findOne({
-        userId,
-        courseId,
+        user: userId,
+        course: courseId,
       });
       return { inCart: cartExists ? true : false };
     } catch (error) {
