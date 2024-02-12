@@ -65,7 +65,7 @@ export class CoursesRepository {
         query = query.skip(options.skip);
       }
 
-      return query.exec();
+      return (await query.exec()).toObject();
     } catch (error) {
       throw error;
     }

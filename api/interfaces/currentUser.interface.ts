@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export default interface ICurrentUser {
-  _id: mongoose.Types.ObjectId;
+  _id: mongoose.Types.ObjectId | string;
   name: string;
   email: string;
   image: string;

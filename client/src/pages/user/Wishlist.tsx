@@ -24,6 +24,7 @@ interface Course {
 }
 const Wishlist = () => {
   let [courses, setCourses] = useState<Course[]>([]);
+  console.log(courses);
   let [loading, setLoading] = useState<boolean>(true);
   let skeletons = new Array(7).fill(0);
   async function getWishlistCourses() {
@@ -93,7 +94,7 @@ const Wishlist = () => {
     <div className="flex justify-evenly md:justify-start flex-wrap gap-8 p-8">
       {courses.map((course, i) => (
         <div key={i} className="flex flex-col items-start w-fit">
-          <Link to={"/courses/course-details/" + course._id}>
+          <Link to={"/course-details/" + course._id}>
             <img
               src={course.thumbnail}
               className="object-cover w-64 h-36"
@@ -118,7 +119,7 @@ const Wishlist = () => {
             <RatingStars rating={course.rating} />({course.ratingCount})
           </div>
           <div className="flex justify-between w-64">
-            <p className="font-bold text-lg">{course.price}</p>
+            <p className="font-bold text-lg">&#8377; {course.price}</p>
             <div className="flex ">
               <button
                 onClick={() => moveToCart(course._id)}

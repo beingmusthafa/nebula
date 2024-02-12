@@ -106,7 +106,13 @@ class AuthController {
       if (!response.success) {
         return next(customError(response.statusCode, response.message));
       }
-      res.status(response.statusCode).json(response);
+      res
+        .cookie("access_token", response.token, {
+          httpOnly: true,
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
+        })
+        .status(response.statusCode)
+        .json(response);
     } catch (error) {
       next(customError(500, error.message));
     }

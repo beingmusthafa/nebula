@@ -83,7 +83,7 @@ const Cart = () => {
       <div className="flex justify-evenly md:justify-start flex-wrap gap-8 p-8 _cart-content">
         {courses.map((course, i) => (
           <div className="flex flex-col items-start w-fit">
-            <Link to={"/courses/course-details/" + course._id}>
+            <Link to={"/course-details/" + course._id}>
               <img
                 src={course.thumbnail}
                 className="object-cover w-64 h-36"
