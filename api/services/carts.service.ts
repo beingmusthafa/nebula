@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { CartsRepository } from "../repositories/carts.repository.js";
 import { WishlistsRepository } from "../repositories/wishlists.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
+import ICourses from "../interfaces/courses.interface.js";
 
 export default class CartsService {
   private cartsRepository: CartsRepository;
@@ -9,9 +10,10 @@ export default class CartsService {
     this.cartsRepository = new CartsRepository();
   }
 
-  async getCart(
-    userId: string | mongoose.Types.ObjectId
-  ): ServiceResponse<{ docs?: object[] }> {
+  async getCart(userId: string | mongoose.Types.ObjectId): ServiceResponse<{
+    docs?: ICourses[];
+    bill?: { totalPrice: number; totalDiscount: number; finalTotal: number };
+  }> {
     try {
       const result = await this.cartsRepository.find(
         { user: userId },
@@ -23,12 +25,21 @@ export default class CartsService {
           projection: "course",
         }
       );
-      const docs = result.map((wishlist) => wishlist.course);
+      const docs = result.map((wishlist) => wishlist.course) as ICourses[];
+      let totalPrice = 0,
+        totalDiscount = 0,
+        finalTotal = 0;
+      docs.forEach((doc) => {
+        totalPrice += doc?.price;
+        totalDiscount += doc?.discount;
+      });
+      finalTotal = totalPrice - totalDiscount;
       return {
         success: true,
         message: "fetched carts succesfully",
         statusCode: 200,
         docs,
+        bill: { totalPrice, totalDiscount, finalTotal },
       };
     } catch (error) {
       throw error;

@@ -22,8 +22,14 @@ interface Course {
   benefits: string[];
   requirements: string[];
 }
+interface Bill {
+  totalPrice: number;
+  totalDiscount: number;
+  finalTotal: number;
+}
 const Cart = () => {
   let [courses, setCourses] = useState<Course[]>([]);
+  let [bill, setBill] = useState<Bill | null>(null);
   let [loading, setLoading] = useState<boolean>(true);
   let skeletons = new Array(7).fill(0);
   const [couponMessage, setCouponMessage] = useState("");
@@ -33,6 +39,7 @@ const Cart = () => {
     const res = await fetch("/api/get-cart-courses").then((res) => res.json());
     if (!res.success) return toast.error(res.message);
     setCourses(res.docs);
+    setBill(res.bill);
     setLoading(false);
   }
   useEffect(() => {
@@ -104,7 +111,7 @@ const Cart = () => {
               <RatingStars rating={course.rating} />({course.ratingCount})
             </div>
             <div className="flex justify-between w-64">
-              <p className="font-bold text-lg">{course.price}</p>
+              <p className="font-bold text-lg">&#8377; {course.price}</p>
               <button
                 onClick={() => removeFromCart(course._id)}
                 className="_fill-btn-blue ml-4"
@@ -120,16 +127,18 @@ const Cart = () => {
           Bill summary
         </p>
         <div className="flex justify-between border-b border-slate-500 p-4">
-          Cart total
-          <span className="font-semibold">7800</span>
+          Total price
+          <span className=" text-slate-500">&#8377; {bill?.totalPrice}</span>
         </div>
         <div className="flex justify-between border-b border-slate-500 p-4">
           Discount
-          <span className="font-semibold text-green-600">7800</span>
+          <span className=" text-green-600">
+            - &#8377; {bill?.totalDiscount}
+          </span>
         </div>
         <div className="flex justify-between border-b border-slate-500 p-4">
           Final total
-          <span className="font-bold text-xl">7800</span>
+          <span className="font-bold text-xl">&#8377; {bill?.finalTotal}</span>
         </div>
         <div className="flex justify-between border text-sm">
           <input type="text" placeholder="COUPON CODE" className="p-2 w-full" />
