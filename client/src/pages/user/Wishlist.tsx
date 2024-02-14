@@ -44,8 +44,6 @@ const Wishlist = () => {
       };
     } catch {
       toast.error("Something went wrong");
-    } finally {
-      setLoading(false);
     }
   }, []);
   const removeFromWishlist = async (id: string) => {
@@ -84,27 +82,34 @@ const Wishlist = () => {
       console.log(error);
     }
   };
-  return loading ? (
-    <div className="flex md:flex-row flex-wrap justify-center md:justify-start h-full w-full p-8">
-      {skeletons.map((_, index) => (
-        <CourseSkeleton key={index} />
-      ))}
-    </div>
-  ) : courses.length > 0 ? (
-    <div className="flex justify-evenly md:justify-start flex-wrap gap-8 p-8">
-      {courses.map((course, i) => (
-        <div key={i} className="flex flex-col items-start w-fit">
-          <Link to={"/course-details/" + course._id}>
-            <img
-              src={course.thumbnail}
-              className="object-cover w-64 h-36"
-              alt=""
-            />
-            <div className="font-bold text-lg text-wrap" style={{ width: 270 }}>
-              {course.title}
-            </div>
-          </Link>
-          {/* <div className="flex gap-2 items-center">
+  if (loading) {
+    return (
+      <div className="flex md:flex-row flex-wrap justify-center md:justify-start h-full w-full gap-6 p-8">
+        {skeletons.map((_, index) => (
+          <CourseSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
+  if (courses.length > 0) {
+    return (
+      <div className="flex justify-evenly md:justify-start flex-wrap gap-8 p-8">
+        {courses.map((course, i) => (
+          <div key={i} className="flex flex-col items-start w-fit">
+            <Link to={"/course-details/" + course._id}>
+              <img
+                src={course.thumbnail}
+                className="object-cover w-64 h-36"
+                alt=""
+              />
+              <div
+                className="font-bold text-lg text-wrap"
+                style={{ width: 270 }}
+              >
+                {course.title}
+              </div>
+            </Link>
+            {/* <div className="flex gap-2 items-center">
             <img
               src={course.tutor.image}
               alt=""
@@ -112,45 +117,48 @@ const Wishlist = () => {
             />
             <p>{course.tutor.name}</p>
           </div> */}
-          <div className="flex items-center">
-            <span className="_font-tilt-warp mr-2 text-lg">
-              {course.rating}
-            </span>
-            <RatingStars rating={course.rating} />({course.ratingCount})
-          </div>
-          <div className="flex justify-between w-64">
-            <p className="font-bold text-lg">&#8377; {course.price}</p>
-            <div className="flex ">
-              <button
-                onClick={() => moveToCart(course._id)}
-                className="_fill-btn-blue"
-              >
-                <i className="bx bx-cart-add text-lg"></i>
-              </button>
-              <button
-                onClick={() => removeFromWishlist(course._id)}
-                className="_fill-btn-blue ml-4"
-              >
-                <i className="bx bx-trash-alt text-lg"></i>
-              </button>
+            <div className="flex items-center">
+              <span className="_font-tilt-warp mr-2 text-lg">
+                {course.rating}
+              </span>
+              <RatingStars rating={course.rating} />({course.ratingCount})
+            </div>
+            <div className="flex justify-between w-64">
+              <p className="font-bold text-lg">&#8377; {course.price}</p>
+              <div className="flex ">
+                <button
+                  onClick={() => moveToCart(course._id)}
+                  className="_fill-btn-blue"
+                >
+                  <i className="bx bx-cart-add text-lg"></i>
+                </button>
+                <button
+                  onClick={() => removeFromWishlist(course._id)}
+                  className="_fill-btn-blue ml-4"
+                >
+                  <i className="bx bx-trash-alt text-lg"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
-    </div>
-  ) : (
-    <div className="flex w-full mt-52 items-center justify-center">
-      <div className="flex flex-col">
-        <img src="" alt="" />
-        <p className="font-semibold text-lg">
-          No courses in wishlist. <br className="block md:hidden" />
-          <Link to={"/courses"} className="text-sky-600">
-            Explore courses
-          </Link>
-        </p>
+        ))}
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="flex w-full mt-52 items-center justify-center">
+        <div className="flex flex-col">
+          <img src="" alt="" />
+          <p className="font-semibold text-lg">
+            No courses in wishlist. <br className="block md:hidden" />
+            <Link to={"/courses"} className="text-sky-600">
+              Explore courses
+            </Link>
+          </p>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default Wishlist;

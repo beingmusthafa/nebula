@@ -77,21 +77,21 @@ export class CoursesService {
       const docs = await this.coursesRepository.find(query, {
         ...options,
         populate: { path: "tutor", select: "name image" },
-        limit: 5,
-        skip: (page - 1) * 5,
+        limit: 8,
+        skip: (page - 1) * 8,
       });
-      const totalCount = await this.coursesRepository.count();
+      const totalCount = await this.coursesRepository.count(query);
       return {
         success: true,
         message: "fetched docs successfully",
         statusCode: 200,
         result: {
           docs,
-          total: docs.length,
-          limit: 5,
+          total: totalCount,
+          limit: 8,
           page,
-          pages: Math.ceil(totalCount / 5),
-          hasNextPage: page < Math.ceil(totalCount / 5),
+          pages: Math.ceil(totalCount / 8),
+          hasNextPage: page < Math.ceil(totalCount / 8),
           hasPrevPage: page > 1,
           nextPage: page + 1,
           prevPage: page - 1,
