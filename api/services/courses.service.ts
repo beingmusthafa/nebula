@@ -210,9 +210,17 @@ export class CoursesService {
       benefits: string[];
       language: string;
     },
-    image: Buffer | undefined
+    image: Buffer | undefined,
+    currentUserId: string | mongoose.Types.ObjectId
   ): ServiceResponse {
     try {
+      const existingDoc = await this.coursesRepository.findById(id);
+      if (existingDoc.tutor.toString() !== currentUserId.toString())
+        return {
+          success: false,
+          message: "You are not authorized to edit this course",
+          statusCode: 401,
+        };
       if (data.title.length < 3)
         return {
           success: false,
