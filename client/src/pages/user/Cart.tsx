@@ -4,6 +4,7 @@ import Loading from "../../components/Loading";
 import RatingStars from "../../components/RatingStars";
 import { Link } from "react-router-dom";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
+import CourseCard from "../../components/CourseCard";
 
 interface Course {
   _id: string;
@@ -82,38 +83,21 @@ const Cart = () => {
   if (courses.length > 0) {
     return (
       <div className="flex flex-col md:flex-row">
-        <div className="flex justify-evenly md:justify-start flex-wrap gap-8 p-8 _cart-content">
+        <div className="flex justify-evenly md:justify-start h-fit flex-wrap gap-8 p-8 _cart-content">
           {courses.map((course, i) => (
-            <div className="flex flex-col items-start w-fit">
-              <Link to={"/course-details/" + course._id}>
-                <img
-                  src={course.thumbnail}
-                  className="object-cover w-64 h-36"
-                  alt=""
-                />
-                <div
-                  className="font-bold text-lg text-wrap"
-                  style={{ width: 270 }}
-                >
-                  {course.title}
-                </div>
-              </Link>
-              <div className="flex items-center">
-                <span className="_font-tilt-warp mr-2 text-lg">
-                  {course.rating}
-                </span>
-                <RatingStars rating={course.rating} />({course.ratingCount})
-              </div>
-              <div className="flex justify-between w-64">
-                <p className="font-bold text-lg">&#8377; {course.price}</p>
+            <CourseCard
+              key={course._id}
+              course={course}
+              showTutor={false}
+              extraElement={
                 <button
                   onClick={() => removeFromCart(course._id)}
                   className="_fill-btn-blue ml-4"
                 >
-                  <i className="bx bx-trash-alt text-lg"></i>
+                  <i className="bx bx-trash-alt text-base"></i>
                 </button>
-              </div>
-            </div>
+              }
+            />
           ))}
         </div>
         <div className="flex flex-col text-base p-8 _cart-bill">

@@ -4,6 +4,7 @@ import Loading from "../../components/Loading";
 import RatingStars from "../../components/RatingStars";
 import { Link } from "react-router-dom";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
+import CourseCard from "../../components/CourseCard";
 
 interface Course {
   _id: string;
@@ -95,52 +96,27 @@ const Wishlist = () => {
     return (
       <div className="flex justify-evenly md:justify-start flex-wrap gap-8 p-8">
         {courses.map((course, i) => (
-          <div key={i} className="flex flex-col items-start w-fit">
-            <Link to={"/course-details/" + course._id}>
-              <img
-                src={course.thumbnail}
-                className="object-cover w-64 h-36"
-                alt=""
-              />
-              <div
-                className="font-bold text-lg text-wrap"
-                style={{ width: 270 }}
-              >
-                {course.title}
-              </div>
-            </Link>
-            {/* <div className="flex gap-2 items-center">
-            <img
-              src={course.tutor.image}
-              alt=""
-              className="w-6 h-6 rounded-full"
-            />
-            <p>{course.tutor.name}</p>
-          </div> */}
-            <div className="flex items-center">
-              <span className="_font-tilt-warp mr-2 text-lg">
-                {course.rating}
-              </span>
-              <RatingStars rating={course.rating} />({course.ratingCount})
-            </div>
-            <div className="flex justify-between w-64">
-              <p className="font-bold text-lg">&#8377; {course.price}</p>
+          <CourseCard
+            key={course._id}
+            course={course}
+            showTutor={false}
+            extraElement={
               <div className="flex ">
                 <button
                   onClick={() => moveToCart(course._id)}
                   className="_fill-btn-blue"
                 >
-                  <i className="bx bx-cart-add text-lg"></i>
+                  <i className="bx bx-cart-add text-base"></i>
                 </button>
                 <button
                   onClick={() => removeFromWishlist(course._id)}
                   className="_fill-btn-blue ml-4"
                 >
-                  <i className="bx bx-trash-alt text-lg"></i>
+                  <i className="bx bx-trash-alt text-base"></i>
                 </button>
               </div>
-            </div>
-          </div>
+            }
+          />
         ))}
       </div>
     );
