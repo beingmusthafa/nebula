@@ -10,11 +10,14 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { signIn, signOut } from "../redux/user/userSlice";
 import { motion } from "framer-motion";
+import ConfirmationPopup from "./ConfirmationPopup";
 
 const Header = () => {
-  const location = useLocation();
   const { currentUser } = useSelector((state: any) => state.user);
-  const searchText = new URLSearchParams(location.search).get("search");
+  const searchText = location.pathname.startsWith("/courses")
+    ? new URLSearchParams(useLocation().search).get("search")
+    : "";
+  console.log({ searchText });
   let [showOptions, setShowOptions] = useState(false);
   let [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   let searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -170,24 +173,11 @@ const Header = () => {
           </div>
         )}
         {showLogoutConfirm && (
-          <div className="flex fixed w-full justify-center">
-            <div className="flex flex-col p-6 fixed top-1/3 border-2 border-black bg-white">
-              <div className="text-base font-medium">
-                Are you sure you want to logout?
-              </div>
-              <div className="flex gap-10 mx-auto mt-4">
-                <button
-                  onClick={() => setShowLogoutConfirm(false)}
-                  className="_fill-btn-black"
-                >
-                  Cancel
-                </button>
-                <button onClick={logout} className="_fill-btn-red">
-                  Yes
-                </button>
-              </div>
-            </div>
-          </div>
+          <ConfirmationPopup
+            confirmText="Are you sure you want to logout?"
+            onCancel={() => setShowLogoutConfirm(false)}
+            onConfirm={logout}
+          />
         )}
       </div>
     )

@@ -5,6 +5,7 @@ import RatingStars from "../../components/RatingStars";
 import { Link } from "react-router-dom";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 import CourseCard from "../../components/CourseCard";
+import ConfirmationPopup from "../../components/ConfirmationPopup";
 
 interface Course {
   _id: string;
@@ -32,6 +33,8 @@ const Cart = () => {
   let [loading, setLoading] = useState<boolean>(true);
   let [courses, setCourses] = useState<Course[]>([]);
   let [bill, setBill] = useState<Bill | null>(null);
+  let [selected, setSelected] = useState<Course | null>(null);
+  let [showConfirm, setShowConfirm] = useState(false);
   let skeletons = new Array(7).fill(0);
   const [couponMessage, setCouponMessage] = useState("");
   console.log(courses);
@@ -82,56 +85,71 @@ const Cart = () => {
   }
   if (courses.length > 0) {
     return (
-      <div className="flex flex-col md:flex-row">
-        <div className="flex justify-evenly md:justify-start h-fit flex-wrap gap-8 p-8 _cart-content">
-          {courses.map((course, i) => (
-            <CourseCard
-              key={course._id}
-              course={course}
-              showTutor={false}
-              extraElement={
-                <button
-                  onClick={() => removeFromCart(course._id)}
-                  className="_fill-btn-blue ml-4"
-                >
-                  <i className="bx bx-trash-alt text-base"></i>
-                </button>
-              }
-            />
-          ))}
+      <>
+        <div className="flex flex-col md:flex-row">
+          <div className="flex justify-evenly md:justify-start h-fit flex-wrap gap-8 p-8 _cart-content">
+            {courses.map((course, i) => (
+              <CourseCard
+                key={course._id}
+                course={course}
+                showTutor={false}
+                extraElement={
+                  <button
+                    onClick={() => {
+                      setSelected(course);
+                      setShowConfirm(true);
+                    }}
+                    className="_fill-btn-blue ml-4"
+                  >
+                    <i className="bx bx-trash-alt text-base"></i>
+                  </button>
+                }
+              />
+            ))}
+          </div>
+          <div className="flex flex-col text-base p-8 _cart-bill">
+            <p className="text-xl _font-dm-display mx-auto mb-8 border-b border-black">
+              Bill summary
+            </p>
+            <div className="flex justify-between border-b border-slate-500 p-4">
+              Total price
+              <span className=" text-slate-500">
+                &#8377; {bill?.totalPrice}
+              </span>
+            </div>
+            <div className="flex justify-between border-b border-slate-500 p-4">
+              Discount
+              <span className=" text-green-600">
+                - &#8377; {bill?.totalDiscount}
+              </span>
+            </div>
+            <div className="flex justify-between border-b border-slate-500 p-4">
+              Final total
+              <span className="font-bold text-xl">
+                &#8377; {bill?.finalTotal}
+              </span>
+            </div>
+            <div className="flex justify-between border text-sm">
+              <input
+                type="text"
+                placeholder="COUPON CODE"
+                className="p-2 w-full"
+              />
+              <button className="_fill-btn-blue">Apply</button>
+            </div>
+            {couponMessage && <p className="font-semibold">{couponMessage}</p>}
+            <button className="_fill-btn-black uppercase mt-8">Checkout</button>
+          </div>
         </div>
-        <div className="flex flex-col text-base p-8 _cart-bill">
-          <p className="text-xl _font-dm-display mx-auto mb-8 border-b border-black">
-            Bill summary
-          </p>
-          <div className="flex justify-between border-b border-slate-500 p-4">
-            Total price
-            <span className=" text-slate-500">&#8377; {bill?.totalPrice}</span>
-          </div>
-          <div className="flex justify-between border-b border-slate-500 p-4">
-            Discount
-            <span className=" text-green-600">
-              - &#8377; {bill?.totalDiscount}
-            </span>
-          </div>
-          <div className="flex justify-between border-b border-slate-500 p-4">
-            Final total
-            <span className="font-bold text-xl">
-              &#8377; {bill?.finalTotal}
-            </span>
-          </div>
-          <div className="flex justify-between border text-sm">
-            <input
-              type="text"
-              placeholder="COUPON CODE"
-              className="p-2 w-full"
-            />
-            <button className="_fill-btn-blue">Apply</button>
-          </div>
-          {couponMessage && <p className="font-semibold">{couponMessage}</p>}
-          <button className="_fill-btn-black uppercase mt-8">Checkout</button>
-        </div>
-      </div>
+
+        {showConfirm && (
+          <ConfirmationPopup
+            confirmText={`Remove this course from cart? :\n "${selected?.title}"`}
+            onCancel={() => setShowConfirm(false)}
+            onConfirm={() => removeFromCart(selected?._id!)}
+          />
+        )}
+      </>
     );
   } else {
     return (

@@ -5,6 +5,7 @@ import RatingStars from "../../components/RatingStars";
 import { Link } from "react-router-dom";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 import CourseCard from "../../components/CourseCard";
+import ConfirmationPopup from "../../components/ConfirmationPopup";
 
 interface Course {
   _id: string;
@@ -27,6 +28,8 @@ const Wishlist = () => {
   let [courses, setCourses] = useState<Course[]>([]);
   console.log(courses);
   let [loading, setLoading] = useState<boolean>(true);
+  let [selected, setSelected] = useState<Course | null>(null);
+  let [showConfirm, setShowConfirm] = useState(false);
   let skeletons = new Array(7).fill(0);
   async function getWishlistCourses() {
     setLoading(true);
@@ -94,31 +97,43 @@ const Wishlist = () => {
   }
   if (courses.length > 0) {
     return (
-      <div className="flex justify-evenly md:justify-start flex-wrap gap-8 p-8">
-        {courses.map((course, i) => (
-          <CourseCard
-            key={course._id}
-            course={course}
-            showTutor={false}
-            extraElement={
-              <div className="flex ">
-                <button
-                  onClick={() => moveToCart(course._id)}
-                  className="_fill-btn-blue"
-                >
-                  <i className="bx bx-cart-add text-base"></i>
-                </button>
-                <button
-                  onClick={() => removeFromWishlist(course._id)}
-                  className="_fill-btn-blue ml-4"
-                >
-                  <i className="bx bx-trash-alt text-base"></i>
-                </button>
-              </div>
-            }
+      <>
+        <div className="flex justify-evenly md:justify-start flex-wrap gap-8 p-8">
+          {courses.map((course, i) => (
+            <CourseCard
+              key={course._id}
+              course={course}
+              showTutor={false}
+              extraElement={
+                <div className="flex ">
+                  <button
+                    onClick={() => moveToCart(course._id)}
+                    className="_fill-btn-blue"
+                  >
+                    <i className="bx bx-cart-add text-base"></i>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelected(course);
+                      setShowConfirm(true);
+                    }}
+                    className="_fill-btn-blue ml-4"
+                  >
+                    <i className="bx bx-trash-alt text-base"></i>
+                  </button>
+                </div>
+              }
+            />
+          ))}
+        </div>
+        {showConfirm && (
+          <ConfirmationPopup
+            confirmText={`Remove this course from wishlist? :\n "${selected?.title}"`}
+            onCancel={() => setShowConfirm(false)}
+            onConfirm={() => removeFromWishlist(selected?._id!)}
           />
-        ))}
-      </div>
+        )}
+      </>
     );
   } else {
     return (
