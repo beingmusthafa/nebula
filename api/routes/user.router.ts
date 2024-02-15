@@ -84,4 +84,12 @@ router.post(
   (req: Request, res: Response, next: NextFunction) =>
     userPurchaseController.removeFromWishlist(req, res, next)
 );
+
+router.get(
+  "/create-checkout-session",
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userPurchaseController.createCheckoutSession(req, res, next)
+);
 export default router;

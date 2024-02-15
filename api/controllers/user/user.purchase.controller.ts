@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import CartsService from "../../services/carts.service.js";
 import WishlistsService from "../../services/wishlists.service.js";
 import customError from "../../utils/error.js";
+
 class UserPurchaseController {
   private cartsService: CartsService;
   private wishlistsService: WishlistsService;
@@ -96,6 +97,16 @@ class UserPurchaseController {
         statusCode: 200,
         data: { inCart, inWishlist },
       });
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async createCheckoutSession(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.user._id;
+      const response = await this.cartsService.createCheckoutSession(userId);
+      return res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));
     }

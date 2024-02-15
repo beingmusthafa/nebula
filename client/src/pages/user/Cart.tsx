@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 import CourseCard from "../../components/CourseCard";
 import ConfirmationPopup from "../../components/ConfirmationPopup";
+import { loadStripe } from "@stripe/stripe-js";
 
 interface Course {
   _id: string;
@@ -74,6 +75,16 @@ const Cart = () => {
       console.log(error);
     }
   };
+  const goToPayment = async () => {
+    const stripe = await loadStripe(import.meta.env.VITE_STRIPE_CLIENT_KEY!);
+    const res = await fetch("/api/create-checkout-session").then((res) =>
+      res.json()
+    );
+    if (!res.success) return toast.error(res.message);
+    const { sessionId } = res;
+    const result = await stripe?.redirectToCheckout({ sessionId });
+    if (result?.error) console.log(result.error.message);
+  };
   if (loading) {
     return (
       <div className="flex md:flex-row flex-wrap justify-center md:justify-start h-full w-full md:w-4/5 gap-4 p-8">
@@ -138,7 +149,12 @@ const Cart = () => {
               <button className="_fill-btn-blue">Apply</button>
             </div>
             {couponMessage && <p className="font-semibold">{couponMessage}</p>}
-            <button className="_fill-btn-black uppercase mt-8">Checkout</button>
+            <button
+              onClick={goToPayment}
+              className="_fill-btn-black uppercase mt-8"
+            >
+              Checkout
+            </button>
           </div>
         </div>
 
