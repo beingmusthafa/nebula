@@ -1,9 +1,13 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 const chaptersModel = new mongoose.Schema({
   course: {
     type: mongoose.Types.ObjectId,
     ref: "Courses",
+    required: true,
+  },
+  order: {
+    type: Number,
     required: true,
   },
   title: {
