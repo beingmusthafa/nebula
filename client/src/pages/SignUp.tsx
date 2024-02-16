@@ -5,10 +5,16 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signIn } from "../redux/user/userSlice";
-import GoogleAuth from "../components/GoogleAuth";
+import GoogleAuth from "../components/auth/GoogleAuth";
 
 const SignUp = () => {
   let [error, setError] = useState<string | null>(null);
+  let [nameError, setNameError] = useState<string | null>(null);
+  let [emailError, setEmailError] = useState<string | null>(null);
+  let [passwordError, setPasswordError] = useState<string | null>(null);
+  let [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(
+    null
+  );
   let [verificationStarted, setVerificationStarted] = useState<boolean>(false);
   let [verificationCode, setVerificationCode] = useState<number | null>(null);
   let [email, setEmail] = useState<string>("");
@@ -21,6 +27,14 @@ const SignUp = () => {
   async function handleSignUp(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setProcessing(true);
+    if (!name.trim()) setNameError("Enter name!");
+    else setNameError("");
+    if (!email.trim()) setEmailError("Enter email!");
+    else setEmailError("");
+    if (!password.trim()) setPasswordError("Enter password!");
+    else setPasswordError("");
+    if (!confirmPassword.trim()) setConfirmPasswordError("Confirm password!");
+    else setConfirmPasswordError("");
     if (
       !(
         email.trim() &&
@@ -29,10 +43,10 @@ const SignUp = () => {
         confirmPassword.trim()
       )
     ) {
-      return setError("All fields are required");
+      return;
     }
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setConfirmPasswordError("Passwords do not match");
       return;
     }
     const res = await fetch("/api/auth/start-sign-up", {
@@ -121,9 +135,9 @@ const SignUp = () => {
         </motion.p>
       </div>
       <div className="flex flex-col items-center w-full md:w-1/2">
-        <div className="flex md:hidden items-center">
-          <img src={logo} className="w-16 h-16 mr-4" alt="" />
-          <p className="_font-tilt-warp text-5xl">nebula</p>
+        <div className="flex md:hidden items-center mt-20">
+          <img src={logo} className="w-14 h-14 mr-4" alt="" />
+          <p className="_font-tilt-warp text-4xl">nebula</p>
         </div>
         {verificationStarted ? (
           <form
@@ -167,24 +181,44 @@ const SignUp = () => {
                 {error}
               </p>
             )}
+            {nameError && (
+              <p className="font-semibold text-base text-red-500 w-72">
+                {nameError}
+              </p>
+            )}
             <input
               onChange={(e) => setName(e.target.value)}
               type="name"
               placeholder="Full name"
               className="p-2 text-base border border-black pl-4 w-64 md:w-80"
             />
+            {emailError && (
+              <p className="font-semibold text-base text-red-500 w-72">
+                {emailError}
+              </p>
+            )}
             <input
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="Email"
               className="p-2 text-base border border-black pl-4 w-64 md:w-80"
             />
+            {passwordError && (
+              <p className="font-semibold text-base text-red-500 w-72">
+                {passwordError}
+              </p>
+            )}
             <input
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               placeholder="Password"
               className="p-2 text-base border border-black pl-4 w-64 md:w-80"
             />
+            {confirmPasswordError && (
+              <p className="font-semibold text-base text-red-500 w-72">
+                {confirmPasswordError}
+              </p>
+            )}
             <input
               onChange={(e) => setConfirmPassword(e.target.value)}
               type="password"
