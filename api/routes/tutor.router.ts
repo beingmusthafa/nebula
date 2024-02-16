@@ -8,6 +8,12 @@ router.use((req: Request, res: Response, next: NextFunction) =>
   authMiddleware.userAuth(req, res, next)
 );
 
+router.get(
+  "/get-all-courses",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorController.getAllCourses(req, res, next)
+);
+
 router.post(
   "/create-course",
   parser.single("thumbnail"),
@@ -32,5 +38,24 @@ router.get(
   "/get-category-details/:id",
   (req: Request, res: Response, next: NextFunction) =>
     tutorController.getDetails(req, res, next)
+);
+
+router.post(
+  "/create-chapter",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorController.createChapter(req, res, next)
+);
+
+router.post(
+  "/create-exercise",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorController.createExercise(req, res, next)
+);
+
+router.post(
+  "/add-video",
+  parser.single("video"),
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorController.addVideo(req, res, next)
 );
 export default router;
