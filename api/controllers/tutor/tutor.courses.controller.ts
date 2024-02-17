@@ -112,46 +112,6 @@ class TutorController {
       next(customError(500, error.message));
     }
   }
-
-  async createChapter(req: Request, res: Response, next: NextFunction) {
-    try {
-      const response = await this.chaptersService.create(req.body);
-      res.status(response.statusCode).json(response);
-    } catch (error) {
-      next(customError(500, error.message));
-    }
-  }
-
-  async createExercise(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { course, chapter, question, answer, options } = req.body;
-      const response = await this.exercisesService.create({
-        course,
-        chapter,
-        question,
-        answer,
-        order: 0,
-        options,
-      });
-      res.status(response.statusCode).json(response);
-    } catch (error) {
-      next(customError(500, error.message));
-    }
-  }
-
-  async addVideo(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { title, course, chapter } = req.body;
-      const response = await this.videosService.create(req.file.buffer, {
-        title,
-        course,
-        chapter,
-      });
-      res.status(response.statusCode).json(response);
-    } catch (error) {
-      next(customError(500, error.message));
-    }
-  }
 }
 
 export default new TutorController(
