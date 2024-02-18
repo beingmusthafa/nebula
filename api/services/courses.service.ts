@@ -8,12 +8,31 @@ import PaginationResult from "../types/PaginationResult.js";
 import { resizeImage } from "../utils/cropper.js";
 import { uploadtoCloudinary } from "../utils/parser.js";
 import categoriesRepository from "../repositories/categories.repository.js";
+import chaptersRepositoryInstance, {
+  ChaptersRepository,
+} from "../repositories/chapters.repository.js";
+import videosRepositoryInstance, {
+  VideosRepository,
+} from "../repositories/videos.repository.js";
+import exercisesRepositoryInstance, {
+  ExercisesRepository,
+} from "../repositories/exercises.repository.js";
 
 export class CoursesService {
   private coursesRepository: CoursesRepository;
-
-  constructor(coursesRepository: CoursesRepository) {
+  private chaptersRepository: ChaptersRepository;
+  private videosRepository: VideosRepository;
+  private exercisesRepository: ExercisesRepository;
+  constructor(
+    coursesRepository: CoursesRepository,
+    chaptersRepository: ChaptersRepository,
+    videosRepository: VideosRepository,
+    exercisesRepository: ExercisesRepository
+  ) {
     this.coursesRepository = coursesRepository;
+    this.chaptersRepository = chaptersRepository;
+    this.videosRepository = videosRepository;
+    this.exercisesRepository = exercisesRepository;
   }
 
   async find(query: object): ServiceResponse<{ docs?: object[] }> {
@@ -279,5 +298,33 @@ export class CoursesService {
       throw error;
     }
   }
+
+  async deleteCourse(id: string, userId: string): ServiceResponse {
+    try {
+      const existingDoc = await this.coursesRepository.findById(id);
+      if (existingDoc.tutor.toString() !== userId)
+        return {
+          success: false,
+          message: "You are not authorized to delete this course",
+          statusCode: 401,
+        };
+      await this.coursesRepository.deleteOne({ _id: id });
+      await this.chaptersRepository.delete({ course: id });
+      await this.videosRepository.delete({ course: id });
+      await this.exercisesRepository.delete({ course: id });
+      return {
+        success: true,
+        message: "Deleted course and contents successfully",
+        statusCode: 200,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }
-export default new CoursesService(coursesRepositoryInstance);
+export default new CoursesService(
+  coursesRepositoryInstance,
+  chaptersRepositoryInstance,
+  videosRepositoryInstance,
+  exercisesRepositoryInstance
+);

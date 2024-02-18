@@ -102,6 +102,24 @@ export class CoursesRepository {
       throw error;
     }
   }
+
+  async deleteOne(query: object) {
+    try {
+      const doc = await this.model.deleteOne(query);
+      return doc.deletedCount;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteMany(query: object) {
+    try {
+      const doc = await this.model.deleteMany(query);
+      return doc.deletedCount;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new CoursesRepository();

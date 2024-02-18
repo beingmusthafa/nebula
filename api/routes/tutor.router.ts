@@ -31,6 +31,12 @@ router.put(
     tutorCoursesController.editCourse(req, res, next)
 );
 
+router.delete(
+  "/delete-course/:courseId",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorCoursesController.deleteCourse(req, res, next)
+);
+
 router.get(
   "/get-categories",
   (req: Request, res: Response, next: NextFunction) =>

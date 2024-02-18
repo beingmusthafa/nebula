@@ -112,6 +112,19 @@ class TutorController {
       next(customError(500, error.message));
     }
   }
+
+  async deleteCourse(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { courseId } = req.params;
+      const response = await this.coursesService.deleteCourse(
+        courseId,
+        req.user._id as string
+      );
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
 }
 
 export default new TutorController(

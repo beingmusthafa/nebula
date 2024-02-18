@@ -6,7 +6,7 @@ export class ChaptersRepository {
 
   async delete(query: {
     course?: string | mongoose.Types.ObjectId;
-    _id: string | mongoose.Types.ObjectId;
+    _id?: string | mongoose.Types.ObjectId;
   }) {
     await this.model.deleteMany(query);
   }
