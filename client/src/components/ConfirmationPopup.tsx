@@ -1,4 +1,5 @@
 import React, { SetStateAction } from "react";
+import { motion } from "framer-motion";
 
 interface Props {
   confirmText: string;
@@ -14,9 +15,15 @@ const ConfirmationPopup: React.FC<Props> = ({
 }) => {
   return (
     <div className="flex fixed w-full justify-center">
-      <div className="flex flex-col p-6 fixed top-1/3 border-2 border-black bg-white max-w-96">
-        <div className="text-base font-medium">{confirmText}</div>
-        <div className="flex gap-10 mx-auto mt-4">
+      <motion.div
+        initial={{ y: 150, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        style={{ zIndex: 15 }}
+        className="_screen-center p-6 border-4 _border-blue-black-gradient2 bg-white max-w-96"
+      >
+        <div className="text-base font-medium text-center">{confirmText}</div>
+        <div className="flex gap-10 mx-auto mt-10">
           <button
             onClick={onCancel}
             className={isActionPositive ? "_fill-btn-red" : "_fill-btn-black"}
@@ -30,7 +37,7 @@ const ConfirmationPopup: React.FC<Props> = ({
             Yes
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

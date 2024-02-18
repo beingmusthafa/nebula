@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { motion, useAnimate } from "framer-motion";
 
-interface AccordionProps {
-  title: string;
+export interface AccordionProps {
+  title: JSX.Element | string;
   content: JSX.Element[] | string;
 }
 const Accordion: React.FC<AccordionProps> = ({ title, content }) => {
@@ -23,9 +23,8 @@ const Accordion: React.FC<AccordionProps> = ({ title, content }) => {
     </div>
   );
 };
-
 interface Props {
-  data: { title: string; content: JSX.Element[] | string }[];
+  data: { title: string | JSX.Element; content: JSX.Element[] | string }[];
 }
 
 const Accordions: React.FC<Props> = ({ data }) => {

@@ -5,7 +5,7 @@ import logo from "../assets/nebula_light.png";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { signIn } from "../redux/user/userSlice";
-import GoogleAuth from "../components/GoogleAuth";
+import GoogleAuth from "../components/auth/GoogleAuth";
 
 const SignIn = () => {
   let [error, setError] = useState<string | null>(null);
@@ -73,9 +73,9 @@ const SignIn = () => {
         </motion.p>
       </div>
       <div className="flex flex-col items-center w-full md:w-1/2">
-        <div className="flex md:hidden items-center">
-          <img src={logo} className="w-16 h-16 mr-4" alt="" />
-          <p className="_font-tilt-warp text-5xl">nebula</p>
+        <div className="flex md:hidden items-center mt-20">
+          <img src={logo} className="w-14 h-14 mr-4" alt="" />
+          <p className="_font-tilt-warp text-4xl">nebula</p>
         </div>
         <form
           onSubmit={handleSubmit}

@@ -17,17 +17,19 @@ interface Props {
     };
   };
   extraElement?: ReactNode;
+  redirectTo?: string;
 }
 
 const CourseCard: React.FC<Props> = ({
   course,
   showTutor = true,
   extraElement,
+  redirectTo,
 }) => {
   const navigate = useNavigate();
   return (
     <div
-      onClick={() => navigate(`/course-details/${course._id}`)}
+      onClick={() => navigate(redirectTo || `/course-details/${course._id}`)}
       className="flex flex-col items-start w-fit cursor-pointer"
     >
       <img src={course.thumbnail} className="object-cover w-64 h-36" alt="" />

@@ -62,7 +62,11 @@ const FiltersBar: React.FC<Props> = ({ page, search, filters }) => {
   }, []);
   const applyFilters = () => {
     navigate(
-      `/courses?page=${page}&search=${search}&minPrice=${minPrice}&maxPrice=${maxPrice}&category=${categoryInputRef.current?.value}&language=${languageInputRef.current?.value}&sort=${sortInputRef.current?.value}`
+      `/courses?page=${1}&search=${search}&minPrice=${minPrice}&maxPrice=${maxPrice}&category=${
+        categoryInputRef.current?.value
+      }&language=${languageInputRef.current?.value}&sort=${
+        sortInputRef.current?.value
+      }`
     );
   };
   const clearFilters = () => {
@@ -110,7 +114,7 @@ const FiltersBar: React.FC<Props> = ({ page, search, filters }) => {
 
         <select
           ref={categoryInputRef}
-          className="border-2 h-fit p-1 rounded-full border-slate-400"
+          className="border h-fit p-1 rounded-full border-black"
         >
           {filters.category ? (
             <option value="">All categories</option>
@@ -134,7 +138,7 @@ const FiltersBar: React.FC<Props> = ({ page, search, filters }) => {
 
         <select
           ref={languageInputRef}
-          className="border-2 h-fit p-1 rounded-full border-slate-400"
+          className="border h-fit p-1 rounded-full border-black"
         >
           {filters.language ? (
             <option value="">All languages</option>
@@ -158,7 +162,7 @@ const FiltersBar: React.FC<Props> = ({ page, search, filters }) => {
 
         <select
           ref={sortInputRef}
-          className="border-2 h-fit p-1 rounded-full border-slate-400"
+          className="border h-fit p-1 rounded-full border-black"
         >
           {filters.sort ? (
             <option disabled value="">
@@ -198,7 +202,7 @@ const FiltersBar: React.FC<Props> = ({ page, search, filters }) => {
         </select>
       </div>
       <div className="flex items-center w-fit justify-center">
-        <button onClick={clearFilters} className="_fill-btn-red">
+        <button onClick={clearFilters} className="_fill-btn-red ml-4">
           X
         </button>
         <button onClick={applyFilters} className="_fill-btn-blue m-4">
