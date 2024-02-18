@@ -1,9 +1,14 @@
 import mongoose from "mongoose";
-import { CartsRepository } from "../repositories/carts.repository.js";
+import cartsRepositoryInstance, {
+  CartsRepository,
+} from "../repositories/carts.repository.js";
 import { WishlistsRepository } from "../repositories/wishlists.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import ICourses from "../interfaces/courses.interface.js";
 import Stripe from "stripe";
+import purchasesRepositoryInstance, {
+  PurchasesRepository,
+} from "../repositories/purchases.repository.js";
 const stripe = new Stripe(process.env.STRIPE_KEY);
 
 interface User {
@@ -32,10 +37,15 @@ interface Cart {
   };
 }
 
-export default class CartsService {
+export class CartsService {
   private cartsRepository: CartsRepository;
-  constructor() {
-    this.cartsRepository = new CartsRepository();
+  private purchasesRepository: PurchasesRepository;
+  constructor(
+    cartsRepository: CartsRepository,
+    purchasesRepository: PurchasesRepository
+  ) {
+    this.cartsRepository = cartsRepository;
+    this.purchasesRepository = purchasesRepository;
   }
 
   async getCart(userId: string | mongoose.Types.ObjectId): ServiceResponse<{
@@ -147,6 +157,11 @@ export default class CartsService {
         mode: "payment",
         success_url: "http://localhost:5173/payment-success",
         cancel_url: "http://localhost:5173/payment-failure",
+        payment_intent_data: {
+          metadata: {
+            userId: userId.toString(),
+          },
+        },
       });
       return {
         success: true,
@@ -158,4 +173,49 @@ export default class CartsService {
       throw error;
     }
   }
+
+  async confirmPurchase(
+    eventHeader: string | string[],
+    requestBody: string,
+    userId: string | mongoose.Types.ObjectId
+  ) {
+    try {
+      stripe.checkout.sessions.retrieve;
+      const event = stripe.webhooks.constructEvent(
+        requestBody,
+        eventHeader,
+        process.env.STRIPE_WEBHOOK_SECRET
+      );
+      let intent = null;
+      if (event["type"] === "payment_intent.succeeded") {
+        intent = event.data.object;
+        console.log("metadata:::::", intent.metadata);
+        if (intent.metadata.userId !== userId.toString()) {
+          throw new Error("Unauthorized");
+        }
+        const carts = (await this.cartsRepository.find(
+          { user: userId },
+          { populate: { path: "course", select: "price discount" } }
+        )) as { course: any }[];
+        const purchases = carts.map((cart) => {
+          return {
+            user: userId,
+            course: cart.course,
+            price: cart.course.price - cart.course.discount,
+          };
+        });
+        await this.purchasesRepository.createMany(purchases);
+        await this.cartsRepository.deleteMany({ user: userId });
+        console.log("payment succeeded");
+        return;
+      }
+      console.log("Payment failed");
+    } catch (error) {
+      throw error;
+    }
+  }
 }
+export default new CartsService(
+  cartsRepositoryInstance,
+  purchasesRepositoryInstance
+);

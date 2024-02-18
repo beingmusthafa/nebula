@@ -1,13 +1,21 @@
 import { NextFunction, Request, Response } from "express";
-import CartsService from "../../services/carts.service.js";
+import cartsServiceInstance, {
+  CartsService,
+} from "../../services/carts.service.js";
 import WishlistsService from "../../services/wishlists.service.js";
 import customError from "../../utils/error.js";
-
+declare global {
+  namespace Express {
+    interface Request {
+      session?: any;
+    }
+  }
+}
 class UserPurchaseController {
   private cartsService: CartsService;
   private wishlistsService: WishlistsService;
-  constructor() {
-    this.cartsService = new CartsService();
+  constructor(cartsService: CartsService) {
+    this.cartsService = cartsService;
     this.wishlistsService = new WishlistsService();
   }
 
@@ -111,6 +119,18 @@ class UserPurchaseController {
       next(customError(500, error.message));
     }
   }
+
+  async confirmPurchase(req: Request, res: Response, next: NextFunction) {
+    try {
+      await this.cartsService.confirmPurchase(
+        req.headers["stripe-signature"],
+        req.body,
+        req.user._id
+      );
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
 }
 
-export default new UserPurchaseController();
+export default new UserPurchaseController(cartsServiceInstance);

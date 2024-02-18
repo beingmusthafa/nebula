@@ -92,4 +92,5 @@ router.get(
   (req: Request, res: Response, next: NextFunction) =>
     userPurchaseController.createCheckoutSession(req, res, next)
 );
+
 export default router;

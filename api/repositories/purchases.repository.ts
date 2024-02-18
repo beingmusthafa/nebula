@@ -1,27 +1,9 @@
 import mongoose, { QueryOptions, mongo } from "mongoose";
-import cartsModel from "../models/carts.model.js";
-export class CartsRepository {
-  private model = cartsModel;
-  async deleteMany(query: {
-    _id?: string | mongoose.Types.ObjectId;
-    course?: string | mongoose.Types.ObjectId;
-    user?: string | mongoose.Types.ObjectId;
-  }) {
-    await this.model.deleteMany(query);
-  }
+import purchasesModel from "../models/purchases.model.js";
+export class PurchasesRepository {
+  private model = purchasesModel;
 
-  async deleteOne(query: {
-    _id?: string | mongoose.Types.ObjectId;
-    course?: string | mongoose.Types.ObjectId;
-    user?: string | mongoose.Types.ObjectId;
-  }) {
-    await this.model.deleteOne(query);
-  }
-
-  async find(
-    filter: { user: string | mongoose.Types.ObjectId },
-    options?: QueryOptions
-  ) {
+  async find(filter: object, options?: QueryOptions) {
     try {
       let query = this.model.find(filter);
       if (options?.select) {
@@ -51,8 +33,8 @@ export class CartsRepository {
   }
 
   async findOne(query: {
-    course: string | mongoose.Types.ObjectId;
-    user: string | mongoose.Types.ObjectId;
+    course?: string | mongoose.Types.ObjectId;
+    user?: string | mongoose.Types.ObjectId;
   }) {
     try {
       return await this.model.findOne(query);
@@ -64,15 +46,33 @@ export class CartsRepository {
   async create(data: {
     course: string | mongoose.Types.ObjectId;
     user: string | mongoose.Types.ObjectId;
+    price: number;
   }) {
     try {
-      const cartExists = await this.model.findOne(data);
-      if (cartExists) return;
+      const docExists = await this.model.findOne({
+        course: data.course,
+        user: data.user,
+      });
+      if (docExists) throw new Error("Purchase already made!");
       await this.model.create(data);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createMany(
+    data: {
+      course: string | mongoose.Types.ObjectId;
+      user: string | mongoose.Types.ObjectId;
+      price: number;
+    }[]
+  ) {
+    try {
+      await this.model.insertMany(data);
     } catch (error) {
       throw error;
     }
   }
 }
 
-export default new CartsRepository();
+export default new PurchasesRepository();

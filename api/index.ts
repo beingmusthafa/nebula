@@ -8,9 +8,20 @@ import tutorRouter from "./routes/tutor.router.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import coursesModel from "./models/courses.model.js";
+import chaptersModel from "./models/chapters.model.js";
+import userPurchaseController from "./controllers/user/user.purchase.controller.js";
+import authMiddleware from "./middlewares/auth.middleware.js";
 const app = express();
 connectDb();
 
+app.post(
+  "/stripe-webhook",
+  express.raw({ type: "application/json" }),
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userPurchaseController.confirmPurchase(req, res, next)
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
