@@ -22,3 +22,19 @@ export const uploadtoCloudinary = async (buffer: Buffer) => {
     streamifier.createReadStream(buffer).pipe(stream);
   });
 };
+
+export const uploadVideoToCloudinary = async (buffer: Buffer) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { resource_type: "video" },
+      (error, result) => {
+        if (result) {
+          resolve(result);
+        } else {
+          reject(error);
+        }
+      }
+    );
+    streamifier.createReadStream(buffer).pipe(stream);
+  });
+};

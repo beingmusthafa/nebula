@@ -1,4 +1,8 @@
-import mongoose, { ObjectId, QueryOptions } from "mongoose";
+import mongoose, {
+  ObjectId,
+  ObtainSchemaGeneric,
+  QueryOptions,
+} from "mongoose";
 import exercisesModel from "../models/exercises.model.js";
 import IExercises from "../interfaces/exercises.interface.js";
 export class ExercisesRepository {
@@ -12,7 +16,12 @@ export class ExercisesRepository {
   }
 
   async deleteOne(query: { _id?: string | mongoose.Types.ObjectId }) {
-    await this.model.deleteOne(query);
+    try {
+      const doc = await this.model.findOneAndDelete(query);
+      return doc;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async find(
@@ -50,7 +59,7 @@ export class ExercisesRepository {
     }
   }
 
-  async findOne(query: { _id: string | mongoose.Types.ObjectId }) {
+  async findOne(query: object) {
     try {
       return await this.model.findOne(query);
     } catch (error) {
@@ -58,9 +67,23 @@ export class ExercisesRepository {
     }
   }
 
+  async updateOne(filter: object, updation: object) {
+    try {
+      const doc = await this.model.findOneAndUpdate(filter, updation, {
+        new: true,
+      });
+      return doc;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async create(data: IExercises) {
     try {
-      await this.model.create(data);
+      const doc = await this.model.create(data);
+      if (doc) {
+        return doc.toObject();
+      }
     } catch (error) {
       throw error;
     }

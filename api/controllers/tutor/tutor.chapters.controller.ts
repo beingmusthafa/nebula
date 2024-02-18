@@ -37,7 +37,7 @@ class TutorController {
     this.videosService = videosService;
   }
 
-  async createChapter(req: Request, res: Response, next: NextFunction) {
+  async add(req: Request, res: Response, next: NextFunction) {
     try {
       const response = await this.chaptersService.create(req.body);
       res.status(response.statusCode).json(response);
@@ -46,10 +46,44 @@ class TutorController {
     }
   }
 
-  async getChapters(req: Request, res: Response, next: NextFunction) {
+  async getByCourse(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
-      const response = await this.chaptersService.getAll(id);
+      const { courseId } = req.params;
+      const response = await this.chaptersService.getByCourse(courseId);
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async countByCourse(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { courseId } = req.params;
+      const response = await this.chaptersService.count(courseId);
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async edit(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { chapterId } = req.params;
+      const { title, order } = req.body;
+      const response = await this.chaptersService.edit(chapterId, {
+        title,
+        order,
+      });
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { chapterId } = req.params;
+      const response = await this.chaptersService.deleteChapter(chapterId);
       res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));

@@ -16,7 +16,11 @@ export class VideosRepository {
     course?: string | mongoose.Types.ObjectId;
     chapter?: string | mongoose.Types.ObjectId;
   }) {
-    await this.model.deleteOne(query);
+    try {
+      return await this.model.findOneAndDelete(query);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async find(
@@ -64,17 +68,32 @@ export class VideosRepository {
 
   async create(data: IVideos) {
     try {
-      const docExists = await this.model.findOne(data);
-      if (docExists) return;
-      await this.model.create(data);
+      const doc = await this.model.create(data);
+      if (doc) return doc.toObject();
     } catch (error) {
       throw error;
     }
   }
 
-  async count(query?: IVideos) {
+  async count(query?: object) {
     try {
       return await this.model.countDocuments(query);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async update(filter: object, updation: object) {
+    try {
+      return await this.model.updateMany(filter, updation);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateOne(filter: object, updation: object) {
+    try {
+      return await this.model.updateOne(filter, updation);
     } catch (error) {
       throw error;
     }

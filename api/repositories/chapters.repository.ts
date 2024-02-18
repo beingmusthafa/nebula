@@ -12,12 +12,19 @@ export class ChaptersRepository {
   }
 
   async deleteOne(id: string | mongoose.Types.ObjectId) {
-    await this.model.deleteOne({ _id: id });
+    try {
+      return await this.model.findOneAndDelete({ _id: id });
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async find(course: string | mongoose.Types.ObjectId, options?: QueryOptions) {
+  async find(
+    filter: { course?: string | mongoose.Types.ObjectId },
+    options?: QueryOptions
+  ) {
     try {
-      let query = this.model.find({ course });
+      let query = this.model.find(filter);
       if (options?.select) {
         query = query.select(options.select);
       }
@@ -38,7 +45,7 @@ export class ChaptersRepository {
         query = query.skip(options.skip);
       }
 
-      return await query.exec();
+      return await query.lean().exec();
     } catch (error) {
       throw error;
     }
@@ -59,17 +66,30 @@ export class ChaptersRepository {
 
   async create(data: IChapters) {
     try {
-      const docExists = await this.model.findOne(data);
-      if (docExists) return;
       await this.model.create(data);
     } catch (error) {
       throw error;
     }
   }
 
-  async count(query?: IChapters) {
+  async count(query?: object) {
     try {
       return await this.model.countDocuments(query);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async update(filter: object, updation: object) {
+    try {
+      return await this.model.updateMany(filter, updation);
+    } catch (error) {
+      throw error;
+    }
+  }
+  async updateOne(filter: object, updation: object) {
+    try {
+      return await this.model.updateOne(filter, updation);
     } catch (error) {
       throw error;
     }

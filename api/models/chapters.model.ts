@@ -14,16 +14,6 @@ const chaptersModel = new mongoose.Schema({
     type: String,
     required: true,
   },
-  videos: {
-    type: [mongoose.Types.ObjectId],
-    ref: "Videos",
-    default: [],
-  },
-  exercises: {
-    type: [mongoose.Types.ObjectId],
-    ref: "Exercises",
-    default: [],
-  },
 });
 
 export default mongoose.model("Chapters", chaptersModel);
