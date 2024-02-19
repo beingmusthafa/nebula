@@ -46,6 +46,10 @@ const Users = new mongoose.Schema(
       default:
         "https://res.cloudinary.com/dfezowkdc/image/upload/v1706951267/gray-photo-placeholder-icon-design-ui-vector-35850819_vupnvf.jpg",
     },
+    imagePublicId: {
+      type: String,
+      default: "",
+    },
     role: {
       type: String,
       default: "user",

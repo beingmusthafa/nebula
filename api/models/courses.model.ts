@@ -18,6 +18,10 @@ const coursesModel = new mongoose.Schema(
       type: String,
       required: true,
     },
+    imagePublicId: {
+      type: String,
+      required: true,
+    },
     category: {
       type: mongoose.Types.ObjectId,
       ref: "Categories",

@@ -17,22 +17,29 @@ import videosRepositoryInstance, {
 import exercisesRepositoryInstance, {
   ExercisesRepository,
 } from "../repositories/exercises.repository.js";
+import purchasesRepositoryInstance, {
+  PurchasesRepository,
+} from "../repositories/purchases.repository.js";
+import { v2 as cloudinary } from "cloudinary";
 
 export class CoursesService {
   private coursesRepository: CoursesRepository;
   private chaptersRepository: ChaptersRepository;
   private videosRepository: VideosRepository;
   private exercisesRepository: ExercisesRepository;
+  private purchasesRepository: PurchasesRepository;
   constructor(
     coursesRepository: CoursesRepository,
     chaptersRepository: ChaptersRepository,
     videosRepository: VideosRepository,
-    exercisesRepository: ExercisesRepository
+    exercisesRepository: ExercisesRepository,
+    purchasesRepository: PurchasesRepository
   ) {
     this.coursesRepository = coursesRepository;
     this.chaptersRepository = chaptersRepository;
     this.videosRepository = videosRepository;
     this.exercisesRepository = exercisesRepository;
+    this.purchasesRepository = purchasesRepository;
   }
 
   async find(query: object): ServiceResponse<{ docs?: object[] }> {
@@ -51,6 +58,7 @@ export class CoursesService {
 
   async findPaginate(
     page: number,
+    userId: string | mongoose.Types.ObjectId = null,
     filter?: {
       search?: string;
       minPrice: number;
@@ -63,32 +71,48 @@ export class CoursesService {
     try {
       let options = {};
       let query = {};
-      if (filter.search) {
-        query = { title: { $regex: new RegExp(filter.search), $options: "i" } };
+      if (userId) {
+        const purchasedCourses = await this.purchasesRepository.find(
+          { user: userId },
+          { projection: "course" }
+        );
+        const purchasedCoursesIds = purchasedCourses.map(
+          (purchase) => purchase.course
+        );
+        query = {
+          _id: {
+            $nin: purchasedCoursesIds,
+          },
+        };
+      }
+      if (filter?.search) {
+        query = {
+          title: { $regex: new RegExp(filter?.search), $options: "i" },
+        };
       }
       query = {
         ...query,
         price: {
-          $gte: filter.minPrice >= 0 ? filter.minPrice : 0,
-          $lte: filter.maxPrice <= 99999 ? filter.maxPrice : 99999,
+          $gte: filter?.minPrice >= 0 ? filter?.minPrice : 0,
+          $lte: filter?.maxPrice <= 99999 ? filter?.maxPrice : 99999,
         },
       };
-      if (filter.category) {
+      if (filter?.category) {
         const doc = await categoriesRepository.findOne({
-          name: filter.category,
+          name: filter?.category,
         });
         query = { ...query, category: doc._id };
       }
-      if (filter.language) {
-        query = { ...query, language: filter.language };
+      if (filter?.language) {
+        query = { ...query, language: filter?.language };
       }
-      if (filter.sort) {
+      if (filter?.sort) {
         const sort =
-          filter.sort === "newest"
+          filter?.sort === "newest"
             ? { createdAt: -1 }
-            : filter.sort === "rating"
+            : filter?.sort === "rating"
             ? { rating: -1 }
-            : filter.sort === "price_low"
+            : filter?.sort === "price_low"
             ? { price: 1 }
             : { price: -1 };
         options = { sort };
@@ -157,6 +181,7 @@ export class CoursesService {
       benefits: string[];
       language: string;
       thumbnail?: string;
+      imagePublicId?: string;
     },
     image: Buffer
   ): ServiceResponse {
@@ -199,10 +224,12 @@ export class CoursesService {
         };
       }
       const croppedBuffer = await resizeImage(image, 800, 450);
-      const { url } = (await uploadtoCloudinary(croppedBuffer)) as {
+      const result = (await uploadtoCloudinary(croppedBuffer)) as {
         url: string;
+        public_id: string;
       };
-      data.thumbnail = url;
+      data.thumbnail = result.url;
+      data.imagePublicId = result.public_id;
       if (!data.requirements) data.requirements = [];
       if (!data.benefits) data.benefits = [];
       await this.coursesRepository.create(data as ICourses);
@@ -277,18 +304,26 @@ export class CoursesService {
           statusCode: 400,
         };
       }
+      let imageData: { thumbnail?: string; imagePublicId?: string } = {};
       if (image) {
         const croppedBuffer = await resizeImage(image, 800, 450);
-        const { url } = (await uploadtoCloudinary(croppedBuffer)) as {
+        const { url, public_id } = (await uploadtoCloudinary(
+          croppedBuffer
+        )) as {
           url: string;
+          public_id: string;
         };
-        data.thumbnail = url;
+        imageData.thumbnail = url;
+        imageData.imagePublicId = public_id;
       } else {
         delete data.thumbnail;
       }
       if (!data.requirements) data.requirements = [];
       if (!data.benefits) data.benefits = [];
-      await this.coursesRepository.findOneAndUpdate({ _id: id }, data);
+      await this.coursesRepository.findOneAndUpdate(
+        { _id: id },
+        { ...data, ...imageData }
+      );
       return {
         success: true,
         message: "Edited doc successfully",
@@ -309,7 +344,13 @@ export class CoursesService {
           statusCode: 401,
         };
       await this.coursesRepository.deleteOne({ _id: id });
-      await this.chaptersRepository.delete({ course: id });
+      await cloudinary.uploader.destroy(existingDoc.imagePublicId);
+      const videos = await this.videosRepository.find({ course: id });
+      videos.forEach(async (video) => {
+        await cloudinary.uploader.destroy(video.videoPublicId, {
+          resource_type: "video",
+        });
+      });
       await this.videosRepository.delete({ course: id });
       await this.exercisesRepository.delete({ course: id });
       return {
@@ -326,5 +367,6 @@ export default new CoursesService(
   coursesRepositoryInstance,
   chaptersRepositoryInstance,
   videosRepositoryInstance,
-  exercisesRepositoryInstance
+  exercisesRepositoryInstance,
+  purchasesRepositoryInstance
 );

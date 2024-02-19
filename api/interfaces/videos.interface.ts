@@ -6,6 +6,7 @@ export default interface IVideos {
   chapter: string | mongoose.Types.ObjectId;
   course: string | mongoose.Types.ObjectId;
   video: string;
+  videoPublicId: string;
   duration: number;
   isBlocked?: boolean;
 }

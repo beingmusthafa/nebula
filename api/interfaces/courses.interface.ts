@@ -5,6 +5,7 @@ export default interface ICourses {
   description: string;
   price: number;
   thumbnail: string;
+  imagePublicId?: string;
   category: mongoose.Types.ObjectId | string;
   tutor: mongoose.Types.ObjectId | string;
   requirements: string[];

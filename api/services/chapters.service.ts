@@ -10,6 +10,7 @@ import exercisesRepositoryInstance, {
 import videosRepositoryInstance, {
   VideosRepository,
 } from "../repositories/videos.repository.js";
+import { v2 as cloudinary } from "cloudinary";
 
 export class ChaptersService {
   private chaptersRepository: ChaptersRepository;
@@ -139,6 +140,12 @@ export class ChaptersService {
         { course: doc.course, order: { $gt: doc.order } },
         { $inc: { order: -1 } }
       );
+      const videos = await this.videosRepository.find({ chapter: doc._id });
+      videos.forEach(async (video) => {
+        await cloudinary.uploader.destroy(video.videoPublicId, {
+          resource_type: "video",
+        });
+      });
       await this.videosRepository.delete({ chapter: doc._id });
       await this.exercisesRepository.delete({ chapter: doc._id });
       return {

@@ -12,7 +12,7 @@ class AdminBannersController {
 
   async getBanners(req: Request, res: Response, next: NextFunction) {
     try {
-      const response = await this.bannersService.getBanners();
+      const response = await this.bannersService.getBanners(true);
       res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));

@@ -9,6 +9,7 @@ import videosRepositoryInstance, {
 } from "../repositories/videos.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import { uploadVideoToCloudinary } from "../utils/parser.js";
+import { v2 as cloudinary } from "cloudinary";
 
 export class VideosService {
   private videosRepository: VideosRepository;
@@ -50,6 +51,7 @@ export class VideosService {
       const result = (await uploadVideoToCloudinary(video)) as {
         url: string;
         duration: number;
+        public_id: string;
       };
       console.log({ result });
       const chapter = await this.chaptersRepository.findOne({
@@ -60,6 +62,7 @@ export class VideosService {
       const doc = await this.videosRepository.create({
         ...data,
         video: result.url,
+        videoPublicId: result.public_id,
         duration: Math.floor(result.duration),
         order,
         chapter: chapter._id,
@@ -101,6 +104,7 @@ export class VideosService {
         title?: string;
         video?: string;
         duration?: number;
+        videoPublicId?: string;
         order?: number;
       } = { title: data.title };
       const oldDoc = await this.videosRepository.findOne({ _id: id });
@@ -108,11 +112,13 @@ export class VideosService {
         const result = (await uploadVideoToCloudinary(data.video)) as {
           url: string;
           duration: number;
+          public_id: string;
         };
         updation = {
           ...updation,
           video: result.url,
           duration: result.duration,
+          videoPublicId: result.public_id,
         };
       }
       if (data.order !== oldDoc.order) {
@@ -136,6 +142,15 @@ export class VideosService {
   async deleteVideo(id: string): ServiceResponse {
     try {
       const doc = await this.videosRepository.deleteOne({ _id: id });
+      if (doc) {
+        await this.videosRepository.updateMany(
+          { order: { $gt: doc.order } },
+          { $inc: { order: -1 } }
+        );
+        await cloudinary.uploader.destroy(doc.videoPublicId, {
+          resource_type: "video",
+        });
+      }
       return {
         success: true,
         message: "Video deleted successfully",
