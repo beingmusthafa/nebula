@@ -3,6 +3,7 @@ import authMiddleware from "../middlewares/auth.middleware.js";
 import adminUsersController from "../controllers/admin/admin.users.controller.js";
 import adminCategoriesController from "../controllers/admin/admin.categories.controller.js";
 import { parser } from "../utils/parser.js";
+import adminBannersController from "../controllers/admin/admin.banners.controller.js";
 
 const router = express.Router();
 router.use((req: Request, res: Response, next: NextFunction) =>
@@ -50,6 +51,41 @@ router.delete(
   "/delete-category/:id/move/:targetCategory",
   (req: Request, res: Response, next: NextFunction) =>
     adminCategoriesController.delete(req, res, next)
+);
+
+router.get("/get-banners", (req: Request, res: Response, next: NextFunction) =>
+  adminBannersController.getBanners(req, res, next)
+);
+
+router.post(
+  "/add-banner",
+  parser.single("image"),
+  (req: Request, res: Response, next: NextFunction) =>
+    adminBannersController.addBanner(req, res, next)
+);
+
+router.put(
+  "/edit-banner/:bannerId",
+  parser.single("image"),
+  (req: Request, res: Response, next: NextFunction) =>
+    adminBannersController.editBanner(req, res, next)
+);
+
+router.patch(
+  "/enable-banner/:bannerId",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminBannersController.enableBanner(req, res, next)
+);
+router.patch(
+  "/disable-banner/:bannerId",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminBannersController.disableBanner(req, res, next)
+);
+
+router.delete(
+  "/delete-banner/:bannerId",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminBannersController.deleteBanner(req, res, next)
 );
 
 export default router;
