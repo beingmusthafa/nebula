@@ -10,6 +10,7 @@ interface Props {
     rating: number;
     ratingCount: number;
     price: number;
+    discount: number;
     thumbnail: string;
     tutor: {
       name: string;
@@ -52,8 +53,23 @@ const CourseCard: React.FC<Props> = ({
       </div>
       {extraElement ? (
         <div className="flex justify-between items-center w-full pr-4">
-          <p className="font-bold text-lg">&#8377; {course.price}</p>
+          <p className="font-bold text-sm line-through">
+            &#8377; {course.price}
+          </p>
+          <p className="font-bold text-lg text-green-600">
+            &#8377; {course.price - course.discount}
+          </p>
+
           <div onClick={(e) => e.stopPropagation()}>{extraElement}</div>
+        </div>
+      ) : course.discount > 0 ? (
+        <div className="flex gap-2 items-center">
+          <p className="font-bold text-sm line-through">
+            &#8377; {course.price}
+          </p>
+          <p className="font-bold text-lg text-green-600">
+            &#8377; {course.price - course.discount}
+          </p>
         </div>
       ) : (
         <p className="font-bold text-lg">&#8377; {course.price}</p>
