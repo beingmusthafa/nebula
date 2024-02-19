@@ -19,7 +19,7 @@ const BannerAddForm: React.FC<Props> = ({ setShow, getData }) => {
       if (!image) throw new Error("No image selected");
       if (!linkRef.current?.value.trim()) throw new Error("No link provided");
       if (linkRef.current!.value.length < 10) throw new Error("Invalid link");
-      if (linkRef.current!.value.length > 100) throw new Error("Link too long");
+      if (linkRef.current!.value.length > 500) throw new Error("Link too long");
       formData.append("image", image!);
       formData.append("link", linkRef.current!.value);
       const res = await fetch("/api/admin/add-banner", {

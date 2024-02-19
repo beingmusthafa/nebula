@@ -18,6 +18,9 @@ const BannerEditForm: React.FC<Props> = ({ setShow, data, getData }) => {
     try {
       const formData = new FormData();
       if (image) formData.append("image", image!);
+      if (!linkRef.current?.value.trim()) throw new Error("No link provided");
+      if (linkRef.current!.value.length < 10) throw new Error("Invalid link");
+      if (linkRef.current!.value.length > 500) throw new Error("Link too long");
       formData.append("link", linkRef.current!.value);
       const res = await fetch("/api/admin/edit-banner/" + data._id, {
         method: "PUT",
