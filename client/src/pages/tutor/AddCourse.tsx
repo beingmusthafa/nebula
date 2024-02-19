@@ -32,7 +32,7 @@ const AddCourse = () => {
         res.json()
       );
       if (!res.success) return toast.error(res.message);
-      setCategories(res.docs);
+      setCategories(res.categories);
     } catch (error) {
       toast.error("Something went wrong");
     }

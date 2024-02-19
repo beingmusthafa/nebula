@@ -39,6 +39,7 @@ const Banners_admin = () => {
   }, []);
   const handleDelete = async () => {
     try {
+      setShowDeleteConfirm(false);
       setLoading(true);
       const res = await fetch(
         "/api/admin/delete-banner/" + selectedBanner?._id,
@@ -48,7 +49,6 @@ const Banners_admin = () => {
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       setLoading(false);
-      setShowDeleteConfirm(false);
       getBanners();
     } catch (error) {
       setLoading(false);

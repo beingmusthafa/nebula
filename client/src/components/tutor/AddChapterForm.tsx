@@ -33,7 +33,7 @@ const AddChapterForm: React.FC<Props> = ({ course, setShow }) => {
   return (
     <div className="flex w-full justify-center">
       <form
-        className="_screen-center _no-scrollbar bg-white border-4 _border-blue-black-gradient gap-4 p-8 min-w-72"
+        className="_screen-center flex flex-col _no-scrollbar bg-white border-4 _border-blue-black-gradient gap-4 p-8 min-w-72"
         style={{ zIndex: 15 }}
         onSubmit={handleAdd}
       >

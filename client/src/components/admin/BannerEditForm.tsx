@@ -40,7 +40,7 @@ const BannerEditForm: React.FC<Props> = ({ setShow, data, getData }) => {
   return (
     <div className="flex w-full justify-center">
       <form
-        className="_screen-center _no-scrollbar bg-white border-4 _border-blue-black-gradient gap-4 p-6 min-w-72"
+        className="_screen-center flex flex-col _no-scrollbar bg-white border-4 _border-blue-black-gradient gap-4 p-6 min-w-72"
         style={{ zIndex: 15 }}
       >
         <h1 className="_font-dm-display text-center text-lg">Edit banner</h1>

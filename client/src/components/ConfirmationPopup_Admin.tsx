@@ -7,14 +7,14 @@ interface Props {
   onCancel: (p: any) => any | React.Dispatch<SetStateAction<any>>;
   isActionPositive?: boolean;
 }
-const ConfirmationPopup: React.FC<Props> = ({
+const ConfirmationPopup_Admin: React.FC<Props> = ({
   confirmText,
   onConfirm,
   onCancel,
   isActionPositive = false,
 }) => {
   return (
-    <div className="flex fixed w-full justify-center">
+    <div className="flex fixed w-full justify-center _admin-center">
       <motion.div
         initial={{ y: 150, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -42,4 +42,4 @@ const ConfirmationPopup: React.FC<Props> = ({
   );
 };
 
-export default ConfirmationPopup;
+export default ConfirmationPopup_Admin;
