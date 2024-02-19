@@ -11,24 +11,33 @@ import { useDispatch } from "react-redux";
 import { signIn, signOut } from "../redux/user/userSlice";
 import { motion } from "framer-motion";
 import ConfirmationPopup from "./ConfirmationPopup";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const { currentUser } = useSelector((state: any) => state.user);
   const searchText = location.pathname.startsWith("/courses")
     ? new URLSearchParams(useLocation().search).get("search")
     : "";
-  console.log({ searchText });
   let [showOptions, setShowOptions] = useState(false);
   let [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   let searchInputRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(currentUser);
-  const logout = () => {
-    dispatch(signOut());
-    setShowOptions(false);
-    setShowLogoutConfirm(false);
-    navigate("/sign-in");
+  const logout = async () => {
+    const toastId = toast.loading("Logging out");
+    try {
+      const res = await fetch("/api/auth/sign-out").then((res) => res.json());
+      if (!res.success) throw new Error(res.message);
+      toast.dismiss(toastId);
+      dispatch(signOut());
+      setShowOptions(false);
+      setShowLogoutConfirm(false);
+      navigate("/sign-in");
+    } catch (error: any) {
+      setShowLogoutConfirm(false);
+      toast.dismiss(toastId);
+      console.log(error.message);
+    }
   };
   const navigateOptions = (route: string) => {
     setShowOptions(false);

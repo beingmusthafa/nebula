@@ -117,6 +117,21 @@ class AuthController {
       next(customError(500, error.message));
     }
   }
+
+  async signOut(req: Request, res: Response, next: NextFunction) {
+    try {
+      res.cookie("access_token", "", { httpOnly: true, expires: new Date(0) });
+      req.user = null;
+      console.log("current user:::", req.user);
+      res.status(200).json({
+        success: true,
+        message: "user successfully logged out",
+        statusCode: 200,
+      });
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
 }
 
 export default new AuthController(authServiceInstance);
