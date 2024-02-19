@@ -6,22 +6,40 @@ import coursesServiceInstance, {
 import categoriesServiceInstance, {
   CategoriesService,
 } from "../../services/categories.service.js";
+import chaptersServiceInstance, {
+  ChaptersService,
+} from "../../services/chapters.service.js";
+import bannersServiceInstance, {
+  BannersService,
+} from "../../services/banners.service.js";
 
 class UserCoursesController {
   private coursesService: CoursesService;
   private categoriesService: CategoriesService;
+  private chaptersService: ChaptersService;
+  private bannersService: BannersService;
   constructor(
     coursesService: CoursesService,
-    categoriesService: CategoriesService
+    categoriesService: CategoriesService,
+    chaptersService: ChaptersService,
+    bannersService: BannersService
   ) {
     this.coursesService = coursesService;
     this.categoriesService = categoriesService;
+    this.chaptersService = chaptersService;
+    this.bannersService = bannersService;
   }
 
-  async getHomeCourses(req: Request, res: Response, next: NextFunction) {
+  async getHomeData(req: Request, res: Response, next: NextFunction) {
     try {
-      const response = await this.coursesService.findPaginate(1);
-      res.status(response.statusCode).json(response);
+      console.log(req.user);
+      const { results } = await this.coursesService.findByMultipleCategories(
+        req.user?.interests
+      );
+      const response = await this.bannersService.getBanners();
+      res
+        .status(response.statusCode)
+        .json({ ...response, categories: results });
     } catch (error) {
       next(customError(500, error.message));
     }
@@ -42,6 +60,7 @@ class UserCoursesController {
       });
       const response = await this.coursesService.findPaginate(
         Number(page) || 1,
+        req.user?._id,
         {
           search: search as string,
           minPrice: Number(minPrice) || 0,
@@ -61,7 +80,9 @@ class UserCoursesController {
     try {
       const { id } = req.params;
       const response = await this.coursesService.findById(id);
-      res.status(response.statusCode).json(response);
+      const { chapters } = await this.chaptersService.getByCourse(id);
+      console.log({ chapters });
+      res.status(response.statusCode).json({ ...response, chapters });
     } catch (error) {
       next(customError(500, error.message));
     }
@@ -79,5 +100,7 @@ class UserCoursesController {
 
 export default new UserCoursesController(
   coursesServiceInstance,
-  categoriesServiceInstance
+  categoriesServiceInstance,
+  chaptersServiceInstance,
+  bannersServiceInstance
 );

@@ -12,9 +12,12 @@ export class BannersService {
     this.bannersRepository = bannersRepository;
   }
 
-  async getBanners(): ServiceResponse<{ banners: object[] }> {
+  async getBanners(
+    forAdmin: boolean = false
+  ): ServiceResponse<{ banners: object[] }> {
     try {
-      const banners = await this.bannersRepository.find({});
+      const filter = forAdmin ? {} : { isActive: true };
+      const banners = await this.bannersRepository.find(filter);
       return {
         success: true,
         message: "Fetched banners successfully",
@@ -63,6 +66,13 @@ export class BannersService {
   }
   async editBanner(bannerId: string, data: { image: Buffer; link: string }) {
     try {
+      if (data.link.length < 10) {
+        return {
+          success: false,
+          message: "Valid link is required",
+          statusCode: 400,
+        };
+      }
       let newDoc: any = {};
       if (data.image) {
         const oldDoc = await this.bannersRepository.findOne(bannerId);

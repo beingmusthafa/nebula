@@ -17,6 +17,7 @@ const Cart = lazy(() => import("./pages/user/Cart.tsx"));
 const Wishlist = lazy(() => import("./pages/user/Wishlist.tsx"));
 const Users_admin = lazy(() => import("./pages/admin/Users_admin.tsx"));
 const Courses_admin = lazy(() => import("./pages/admin/Courses_admin.tsx"));
+const Banners_admin = lazy(() => import("./pages/admin/Banners_admin.tsx"));
 const UserDetails_admin = lazy(
   () => import("./pages/admin/UserDetails_admin.tsx")
 );
@@ -32,21 +33,14 @@ const PaymentSuccess = lazy(() => import("./pages/user/PaymentSuccess.tsx"));
 const PaymentFailure = lazy(() => import("./pages/user/PaymentFailure.tsx"));
 import "react-toastify/dist/ReactToastify.css";
 import HideAuth from "./components/auth/HideAuth.tsx";
-
+const Interests = lazy(() => import("./pages/user/Interests.tsx"));
+import InterestsGate from "./components/InterestsGate.tsx";
 const App = () => {
   return (
     <BrowserRouter>
       <Header />
       <ToastContainer transition={Slide} />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Suspense fallback={<Loading />}>
-              <Home />
-            </Suspense>
-          }
-        />
         <Route element={<HideAuth />}>
           <Route
             path="/sign-up"
@@ -81,99 +75,117 @@ const App = () => {
             }
           />
         </Route>
-
         <Route
-          path="/payment-success"
+          path="/add-interests"
           element={
             <Suspense fallback={<Loading />}>
-              <PaymentSuccess />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/payment-failure"
-          element={
-            <Suspense fallback={<Loading />}>
-              <PaymentFailure />
+              <Interests />
             </Suspense>
           }
         />
 
-        <Route
-          path="/courses"
-          element={
-            <Suspense fallback={<Loading />}>
-              <Courses />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/course-details/:id"
-          element={
-            <Suspense fallback={<Loading />}>
-              <CourseDetails />
-            </Suspense>
-          }
-        />
-        <Route element={<UserAuth />}>
+        <Route element={<InterestsGate />}>
           <Route
-            path="/cart"
+            path="/"
             element={
               <Suspense fallback={<Loading />}>
-                <Cart />
+                <Home />
               </Suspense>
             }
           />
           <Route
-            path="/wishlist"
+            path="/payment-success"
             element={
               <Suspense fallback={<Loading />}>
-                <Wishlist />
+                <PaymentSuccess />
               </Suspense>
             }
           />
           <Route
-            path="/tutor"
+            path="/payment-failure"
             element={
               <Suspense fallback={<Loading />}>
-                <TutorDashboard />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/tutor/add-course"
-            element={
-              <Suspense fallback={<Loading />}>
-                <AddCourse />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/tutor/edit-course/:id"
-            element={
-              <Suspense fallback={<Loading />}>
-                <EditCourse />
+                <PaymentFailure />
               </Suspense>
             }
           />
 
           <Route
-            path="/tutor/manage-course-content/:id"
+            path="/courses"
             element={
               <Suspense fallback={<Loading />}>
-                <ManageContent />
+                <Courses />
               </Suspense>
             }
           />
-
           <Route
-            path="/tutor/course/:id"
+            path="/course-details/:id"
             element={
               <Suspense fallback={<Loading />}>
-                <Course_tutor />
+                <CourseDetails />
               </Suspense>
             }
           />
+          <Route element={<UserAuth />}>
+            <Route
+              path="/cart"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Cart />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/wishlist"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Wishlist />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/tutor"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <TutorDashboard />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/tutor/add-course"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <AddCourse />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/tutor/edit-course/:id"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <EditCourse />
+                </Suspense>
+              }
+            />
+
+            <Route
+              path="/tutor/manage-course-content/:id"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <ManageContent />
+                </Suspense>
+              }
+            />
+
+            <Route
+              path="/tutor/course/:id"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Course_tutor />
+                </Suspense>
+              }
+            />
+          </Route>
         </Route>
         {/* Admin routes */}
         <Route path="/admin/*" element={<AdminAuth />}>
@@ -182,6 +194,14 @@ const App = () => {
             element={
               <Suspense fallback={<Loading />}>
                 <Users_admin />
+              </Suspense>
+            }
+          />
+          <Route
+            path="banners"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Banners_admin />
               </Suspense>
             }
           />

@@ -7,7 +7,9 @@ import ServiceResponse from "../types/serviceresponse.type.js";
 import PaginationResult from "../types/PaginationResult.js";
 import { resizeImage } from "../utils/cropper.js";
 import { uploadtoCloudinary } from "../utils/parser.js";
-import categoriesRepository from "../repositories/categories.repository.js";
+import categoriesRepositoryInstance, {
+  CategoriesRepository,
+} from "../repositories/categories.repository.js";
 import chaptersRepositoryInstance, {
   ChaptersRepository,
 } from "../repositories/chapters.repository.js";
@@ -24,22 +26,64 @@ import { v2 as cloudinary } from "cloudinary";
 
 export class CoursesService {
   private coursesRepository: CoursesRepository;
+  private categoriesRepository: CategoriesRepository;
   private chaptersRepository: ChaptersRepository;
   private videosRepository: VideosRepository;
   private exercisesRepository: ExercisesRepository;
   private purchasesRepository: PurchasesRepository;
   constructor(
     coursesRepository: CoursesRepository,
+    categoriesRepository: CategoriesRepository,
     chaptersRepository: ChaptersRepository,
     videosRepository: VideosRepository,
     exercisesRepository: ExercisesRepository,
     purchasesRepository: PurchasesRepository
   ) {
     this.coursesRepository = coursesRepository;
+    this.categoriesRepository = categoriesRepository;
     this.chaptersRepository = chaptersRepository;
     this.videosRepository = videosRepository;
     this.exercisesRepository = exercisesRepository;
     this.purchasesRepository = purchasesRepository;
+  }
+
+  async findByMultipleCategories(
+    interests?: string[] | mongoose.Types.ObjectId[]
+  ): ServiceResponse<{ results: object[] }> {
+    try {
+      console.log("interests:::", interests);
+      const filter = interests
+        ? {
+            _id: { $in: interests },
+          }
+        : {};
+      const categories = await this.categoriesRepository.find(filter, {
+        projection: "_id name",
+        limit: 5,
+      });
+      let queries = categories.map(async (category) => {
+        const courses = await this.coursesRepository.find(
+          {
+            category: category._id,
+          },
+          { populate: { path: "tutor", select: "name image" } }
+        );
+        return {
+          category: category.name,
+          courses,
+        };
+      });
+      const results = await Promise.all(queries);
+      console.log("result:::", results.toString());
+      return {
+        success: true,
+        message: "fetched docs successfully",
+        statusCode: 200,
+        results,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   async find(query: object): ServiceResponse<{ docs?: object[] }> {
@@ -98,7 +142,7 @@ export class CoursesService {
         },
       };
       if (filter?.category) {
-        const doc = await categoriesRepository.findOne({
+        const doc = await this.categoriesRepository.findOne({
           name: filter?.category,
         });
         query = { ...query, category: doc._id };
@@ -365,6 +409,7 @@ export class CoursesService {
 }
 export default new CoursesService(
   coursesRepositoryInstance,
+  categoriesRepositoryInstance,
   chaptersRepositoryInstance,
   videosRepositoryInstance,
   exercisesRepositoryInstance,

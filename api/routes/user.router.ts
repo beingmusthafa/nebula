@@ -13,10 +13,26 @@ router.get(
     userProfileController.getProfile
 );
 
-router.get(
-  "/get-home-courses",
+router.put(
+  "/add-interests",
   (req: Request, res: Response, next: NextFunction) =>
-    userCoursesController.getHomeCourses(req, res, next)
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userProfileController.addInterests(req, res, next)
+);
+
+router.get(
+  "/get-home-data",
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userIdentify(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userCoursesController.getHomeData(req, res, next)
+);
+
+router.get(
+  "/get-categories",
+  (req: Request, res: Response, next: NextFunction) =>
+    userCoursesController.getCategories(req, res, next)
 );
 
 router.get(
@@ -45,6 +61,7 @@ router.get(
   (req: Request, res: Response, next: NextFunction) =>
     userPurchaseController.getCart(req, res, next)
 );
+
 router.post(
   "/add-to-cart",
   (req: Request, res: Response, next: NextFunction) =>

@@ -5,6 +5,8 @@ import usersRepositoryInstance, {
   UsersRepository,
 } from "../repositories/users.repository.js";
 import mongoose from "mongoose";
+import ServiceResponse from "../types/serviceresponse.type.js";
+import PaginationResult from "../types/PaginationResult.js";
 
 export class UsersService {
   private usersRepository: UsersRepository;
@@ -16,22 +18,7 @@ export class UsersService {
   async findAll(
     currentUserEmail: string,
     page: number
-  ): Promise<{
-    success: boolean;
-    message: string;
-    statusCode: number;
-    result?: {
-      docs: object[];
-      total: number;
-      limit: number;
-      page: number;
-      pages: number;
-      hasNextPage: boolean;
-      hasPrevPage: boolean;
-      nextPage?: number;
-      prevPage?: number;
-    };
-  }> {
+  ): ServiceResponse<PaginationResult> {
     try {
       console.log("reached service");
       const docs = await this.usersRepository.find(
@@ -62,12 +49,9 @@ export class UsersService {
     }
   }
 
-  async findById(id: string | mongoose.Types.ObjectId): Promise<{
-    success: boolean;
-    message: string;
-    statusCode: number;
-    doc?: object;
-  }> {
+  async findById(
+    id: string | mongoose.Types.ObjectId
+  ): ServiceResponse<{ doc?: object }> {
     const doc = await this.usersRepository.findById(id, { password: 0 });
     if (!doc) {
       return {
@@ -87,20 +71,37 @@ export class UsersService {
   async changeBlockStatus(
     email: string,
     blockStatus: boolean
-  ): Promise<{
-    success: boolean;
-    message: string;
-    statusCode: number;
-  }> {
+  ): ServiceResponse {
     try {
-      await this.usersRepository.findOneAndUpdate(
+      await this.usersRepository.updateOne(
         { email },
-        { isBlocked: blockStatus }
+        { $set: { isBlocked: blockStatus } }
       );
       const message = blockStatus
         ? "user blocked successfully"
         : "user unblocked successfully";
       return { success: true, message, statusCode: 201 };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async addInterests(
+    _id: string | mongoose.Types.ObjectId,
+    interests: string[]
+  ): ServiceResponse<{ user: object }> {
+    try {
+      const newData = await this.usersRepository.updateOne(
+        { _id },
+        { $addToSet: { interests: { $each: interests } } }
+      );
+      const { password: _password, ...rest } = newData;
+      return {
+        success: true,
+        message: "interests added successfully",
+        statusCode: 201,
+        user: rest,
+      };
     } catch (error) {
       throw error;
     }

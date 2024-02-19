@@ -64,7 +64,8 @@ const Users = new mongoose.Schema(
       default: 0,
     },
     interests: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Categories",
       default: [],
     },
     education: [educationSubSchema],

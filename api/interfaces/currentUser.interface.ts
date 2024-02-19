@@ -10,6 +10,6 @@ export default interface ICurrentUser {
   experience: object[];
   isBlocked: boolean;
   appointmentCost: number;
-  interests: string[];
+  interests: mongoose.Types.ObjectId[] | string[];
   bio?: string;
 }

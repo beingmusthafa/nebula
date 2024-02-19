@@ -20,14 +20,14 @@ export class CategoriesService {
     this.coursesRepository = coursesRepository;
   }
 
-  async getAll(): ServiceResponse<{ docs?: ICategories[] }> {
+  async getAll(): ServiceResponse<{ categories?: ICategories[] }> {
     try {
       const docs = await this.categoriesRepository.find();
       return {
         success: true,
         message: "fetched docs successfully",
         statusCode: 200,
-        docs,
+        categories: docs,
       };
     } catch (error) {
       throw error;
