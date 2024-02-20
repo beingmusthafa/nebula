@@ -51,7 +51,6 @@ export class CoursesService {
     interests?: string[] | mongoose.Types.ObjectId[]
   ): ServiceResponse<{ results: object[] }> {
     try {
-      console.log("interests:::", interests);
       const filter = interests
         ? {
             _id: { $in: interests },
@@ -74,7 +73,6 @@ export class CoursesService {
         };
       });
       const results = await Promise.all(queries);
-      console.log("result:::", results.toString());
       return {
         success: true,
         message: "fetched docs successfully",

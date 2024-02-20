@@ -32,7 +32,6 @@ class UserCoursesController {
 
   async getHomeData(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log(req.user);
       const { results } = await this.coursesService.findByMultipleCategories(
         req.user?.interests
       );
