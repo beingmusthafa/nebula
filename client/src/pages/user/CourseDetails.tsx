@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import RatingStars from "../../components/RatingStars";
 import Accordions from "../../components/Accordions";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import MiniLoading from "../../components/MiniLoading";
 import { motion } from "framer-motion";
 import TutorDetailsSkeletion from "../../components/skeletons/TutorDetailsSkeletion";
 import ChaptersAccordionSkeletion from "../../components/skeletons/ChaptersAccordionSkeletion";
 import CourseDetailsSkeleton from "../../components/skeletons/CourseDetailsSkeleton";
+import { useSelector } from "react-redux";
+import ReviewCard from "../../components/user/ReviewCard";
+import EditReviewForm from "../../components/user/EditReviewForm";
+import ConfirmationPopup from "../../components/ConfirmationPopup";
 
 interface Course {
   title: string;
@@ -15,7 +18,8 @@ interface Course {
   thumbnail: string;
   price: number;
   rating: number;
-  author: {
+  language: string;
+  tutor: {
     name: string;
     image: string;
     bio: string;
@@ -30,26 +34,43 @@ interface Tutor {
   courseCount: number;
   studentCount: number;
   rating: number;
+  inWishlist?: boolean;
+  inCart?: boolean;
 }
 interface Chapter {
+  _id: string;
   title: string;
+  order: number;
   videos: { title: string; duration: string }[];
   exercises: { title: string; duration: string }[];
 }
+interface Review {
+  _id: string;
+  user: {
+    _id: string;
+    name: string;
+    image: string;
+  };
+  rating: number;
+  comment: string;
+}
 const CourseDetails = () => {
   const { id } = useParams();
-  // let course = courses[Number(id) - 1];
+  const { currentUser } = useSelector((state: any) => state.user);
   let [course, setCourse] = useState<Course | null>(null);
+  let [reviews, setReviews] = useState<Review[]>([]);
+  let [selectedReview, setSelectedReview] = useState<Review | null>(null);
+  let [showDeleteReview, setShowDeleteReview] = useState(false);
+  let [showEditReview, setShowEditReview] = useState(false);
+  let [data, setData] = useState<{
+    inCart: Boolean | undefined;
+    inWishlist: boolean | undefined;
+  }>();
   let [chapters, setChapters] = useState<Chapter[] | null>(null);
   let [tutor, setTutor] = useState<Tutor | null>(null);
   let [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
   console.log(course);
-  // const tutor = {
-  //   bio: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sit similique, ducimus dolorum dolore, laboriosam magni, quae sapiente culpa soluta commodi autem nostrum modi aliquam! Nam, accusamus pariatur? Possimus, sint ratione",
-  //   courseCount: 10,
-  //   studentCount: 56700,
-  //   rating: 4,
-  // };
   useEffect(() => {
     try {
       setLoading(true);
@@ -60,14 +81,41 @@ const CourseDetails = () => {
         console.log(res);
         if (!res.success) return toast.error(res.message);
         setCourse(res.doc);
-        setLoading(false);
+        setChapters(res.chapters);
+        console.log("chapters", res.chapters);
+        if (currentUser) {
+          const res = await fetch(`/api/check-cart-and-wishlist/${id}`).then(
+            (res) => res.json()
+          );
+          if (!res.success) return toast.error(res.message);
+          setData(res.data);
+        }
       }
-      setTimeout(() => getCourse(), 1000);
+      getCourse();
+      getReviews();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }, []);
-  const accordionData: { title: string; content: JSX.Element[] }[] = [];
+
+  const getReviews = async () => {
+    try {
+      const res = await fetch(`/api/get-reviews/${id}`).then((res) =>
+        res.json()
+      );
+      if (!res.success) throw new Error(res.message);
+      console.log({ res });
+      setReviews(res.reviews);
+      console.log(res);
+    } catch (error: any) {
+      toast.error(error?.message || error);
+      console.log(error);
+    }
+  };
+
+  let accordionData: { title: string; content: JSX.Element[] }[] = [];
   if (chapters) {
     chapters.forEach((chapter, i) => {
       let content: JSX.Element[] = [];
@@ -93,13 +141,129 @@ const CourseDetails = () => {
         );
       });
       accordionData.push({
-        title: `Chapter ${i + 1} - ${chapter.title}`,
+        title: `Chapter ${chapter.order} - ${chapter.title}`,
         content,
       });
     });
   }
+  const addtoCart = async () => {
+    try {
+      if (!currentUser) navigate("/sign-in");
+      const res = await fetch("/api/add-to-cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          courseId: id,
+        }),
+      }).then((res) => res.json());
+      if (!res.success) return toast.error(res.message);
+      const newData = { inCart: true, inWishlist: data?.inWishlist };
+      setData(newData);
+      toast.success(res.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const removeFromCart = async () => {
+    try {
+      if (!currentUser) navigate("/sign-in");
+      const res = await fetch("/api/remove-from-cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          courseId: id,
+        }),
+      }).then((res) => res.json());
+      if (!res.success) return toast.error(res.message);
+      const newData = { inCart: false, inWishlist: data?.inWishlist };
+      setData(newData);
+      toast.success(res.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const addtoWishlist = async () => {
+    try {
+      if (!currentUser) navigate("/sign-in");
+      const res = await fetch("/api/add-to-wishlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          courseId: id,
+        }),
+      }).then((res) => res.json());
+      if (!res.success) return toast.error(res.message);
+      const newData = { inCart: data?.inCart, inWishlist: true };
+      setData(newData);
+      toast.success(res.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const removeFromWishlist = async () => {
+    try {
+      if (!currentUser) navigate("/sign-in");
+      const res = await fetch("/api/remove-from-wishlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          courseId: id,
+        }),
+      }).then((res) => res.json());
+      if (!res.success) return toast.error(res.message);
+      const newData = { inCart: data?.inCart, inWishlist: false };
+      setData(newData);
+      toast.success(res.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleDeleteReview = async () => {
+    const toastId = toast.loading("Deleting review");
+    try {
+      const res = await fetch(`/api/delete-review/${selectedReview?._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => res.json());
+      if (!res.success) throw new Error(res.message);
+      toast.success(res.message);
+      setSelectedReview(null);
+      setShowDeleteReview(false);
+      getReviews();
+    } catch (error: any) {
+      toast.dismiss(toastId);
+      toast.error(error);
+      console.log(error);
+    }
+  };
+
   return (
     <>
+      {showEditReview && (
+        <EditReviewForm
+          review={selectedReview!}
+          setShow={setShowEditReview}
+          getReviews={getReviews}
+        />
+      )}
+      {showDeleteReview && (
+        <ConfirmationPopup
+          isActionPositive={false}
+          confirmText="Do you want to delete this review?"
+          onCancel={() => setShowDeleteReview(false)}
+          onConfirm={handleDeleteReview}
+        />
+      )}
       {course ? (
         <>
           <div className="bg-gray-800 h-fit w-full flex  md:flex-row flex-col justify-center gap-20 p-10">
@@ -109,16 +273,15 @@ const CourseDetails = () => {
                 {course.description}
               </p>
               <div className="flex">
-                <p className="_font-tilt-warp text-lg mr-4">3.7</p>
+                <p className="_font-tilt-warp text-lg mr-4">{course.rating}</p>
                 <RatingStars rating={course.rating} starSize={1} />
               </div>
-              <div className="flex gap-10">
-                <div className="flex items-center text-base gap-2">
-                  <i className="bx bx-time-five text-xl"></i>1 hour 10 minutes
-                </div>
-                <div className="flex items-center text-base gap-2">
-                  <i className="bx bx-user-voice text-xl"></i>English
-                </div>
+              <p className="font-bold text-bold text-2xl">
+                &#8377; {course.price}
+              </p>
+              <div className="flex items-center text-base gap-2">
+                <i className="bx bx-user-voice text-xl"></i>
+                {course.language}
               </div>
             </div>
 
@@ -129,49 +292,71 @@ const CourseDetails = () => {
                 alt=""
               />
               <div className="flex mx-auto gap-4 mt-4">
-                <button className="_fill-btn-blue">Add to cart</button>
-                <button
-                  className="_fill-btn-blue"
-                  // onClick={addtoWishlist}
-                >
-                  <i className="bx bx-heart text-xl"></i>
-                </button>
-                <button
-                  className="_fill-btn-blue"
-                  // onClick={removetoWishlist}
-                >
-                  <i className="bx bxs-heart text-xl"></i>
-                </button>
+                {currentUser && data?.inCart ? (
+                  <div
+                    onClick={removeFromCart}
+                    className="_fill-btn-blue flex items-center gap-2"
+                  >
+                    Remove from cart <i className="bx bx-trash text-xl"></i>
+                  </div>
+                ) : (
+                  <div
+                    onClick={addtoCart}
+                    className="_fill-btn-blue flex items-center gap-2"
+                  >
+                    Add to cart <i className="bx bx-cart-add text-xl"></i>
+                  </div>
+                )}
+                {currentUser && data?.inWishlist ? (
+                  <button
+                    className="_fill-btn-blue"
+                    onClick={removeFromWishlist}
+                  >
+                    <i className="bx bxs-heart text-xl"></i>
+                  </button>
+                ) : (
+                  <button className="_fill-btn-blue" onClick={addtoWishlist}>
+                    <i className="bx bx-heart text-xl"></i>
+                  </button>
+                )}
               </div>
             </div>
           </div>
-          <h2 className="_section-title2">Course benefits</h2>
-          <div className="flex flex-col items-start mx-auto px-10 gap-2">
-            {course.benefits.map((benefit, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-2 text-base text-wrap overflow-hidden text-ellipsis"
-                style={{ maxWidth: "90%" }}
-              >
-                <i className="bx bx-check text-2xl text-green-600"></i>
-                {benefit}
+          {course.benefits.length > 0 && (
+            <>
+              <h2 className="_section-title2">Course benefits</h2>
+              <div className="flex flex-col items-start mx-auto px-10 gap-2">
+                {course.benefits.map((benefit, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-2 text-base text-wrap overflow-hidden text-ellipsis"
+                    style={{ maxWidth: "90%" }}
+                  >
+                    <i className="bx bx-check text-2xl text-green-600"></i>
+                    {benefit}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <h2 className="_section-title2">Pre-requisites</h2>
-          <div className="flex flex-col items-start mx-auto px-10 gap-2">
-            {course.requirements.map((requirement, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-2 text-base text-wrap overflow-hidden text-ellipsis"
-                style={{ maxWidth: "90%" }}
-              >
-                <i className="bx bx-info-circle text-2xl"></i>
-                {requirement}
+            </>
+          )}
+          {course.requirements.length > 0 && (
+            <>
+              <h2 className="_section-title2">Pre-requisites</h2>
+              <div className="flex flex-col items-start mx-auto px-10 gap-2">
+                {course.requirements.map((requirement, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-2 text-base text-wrap overflow-hidden text-ellipsis"
+                    style={{ maxWidth: "90%" }}
+                  >
+                    <i className="bx bx-info-circle text-2xl"></i>
+                    {requirement}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <h1 className="_section-title2">Course contents</h1>
+            </>
+          )}
+          <h1 className="_section-title2 text-center">Course contents</h1>
         </>
       ) : (
         <CourseDetailsSkeleton />
@@ -181,21 +366,21 @@ const CourseDetails = () => {
       ) : (
         <ChaptersAccordionSkeletion />
       )}
-      {course && course.author ? (
+      {course && course.tutor ? (
         <div className="flex flex-col border-2 w-4/5 md:w-1/2 mx-auto mt-10 p-6 rounded-2xl border-slate-300">
           <h1 className="font-bold uppercase text-base mb-4 text-slate-500">
             AUTHOR details
           </h1>
           <div className="flex items-start">
             <img
-              src={course.author?.image}
+              src={course.tutor?.image}
               className="w-32 h-32 mr-4 rounded-full"
               alt=""
             />
             <div className="flex flex-col">
-              <p className="text-lg font-semibold">{course.author?.name}</p>
+              <p className="text-lg font-semibold">{course.tutor?.name}</p>
               <p className="text-sm mb-4 text-slate-600">
-                {course.author.bio || "No bio provided"}
+                {course.tutor.bio || "No bio provided"}
               </p>
               {/* <div className="flex items-center gap-2 font-semibold">
                 <i className="bx bx-movie-play text-xl"></i>
@@ -214,6 +399,27 @@ const CourseDetails = () => {
         </div>
       ) : (
         <TutorDetailsSkeletion />
+      )}
+      {reviews.length > 0 && (
+        <>
+          <h1 className="_section-title2 text-center">Reviews</h1>
+          <div className="flex gap-4 whitespace-nowrap overflow-x-auto px-6 _no-scrollbar bg-white my-10">
+            {reviews.map((review, i) => (
+              <ReviewCard
+                key={review._id}
+                review={review}
+                onDelete={() => {
+                  setSelectedReview(review);
+                  setShowDeleteReview(true);
+                }}
+                onEdit={() => {
+                  setSelectedReview(review);
+                  setShowEditReview(true);
+                }}
+              />
+            ))}
+          </div>
+        </>
       )}
     </>
   );
