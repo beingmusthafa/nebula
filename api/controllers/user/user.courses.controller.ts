@@ -87,9 +87,67 @@ class UserCoursesController {
     }
   }
 
+  async getPurchasedCourses(req: Request, res: Response, next: NextFunction) {
+    try {
+      const response = await this.coursesService.getPurchasedCourses(
+        req.user?._id
+      );
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
   async getCategories(req: Request, res: Response, next: NextFunction) {
     try {
       const response = await this.categoriesService.getAll();
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async getChapterRedirectInfo(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const response = await this.coursesService.getChapterRedirectInfo(
+        req.user?._id,
+        req.params.courseId,
+        req.params.chapterId
+      );
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async getVideoDetails(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { courseId, chapterId, videoOrder } = req.params;
+      const response = await this.coursesService.getVideoDetails(
+        req.user?._id,
+        courseId,
+        chapterId,
+        Number(videoOrder)
+      );
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async getExerciseDetails(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { courseId, chapterId, exerciseOrder } = req.params;
+      const response = await this.coursesService.getExerciseDetails(
+        req.user?._id,
+        courseId,
+        chapterId,
+        Number(exerciseOrder)
+      );
       res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));

@@ -58,7 +58,7 @@ export class VideosRepository {
     }
   }
 
-  async findOne(query: { _id: string | mongoose.Types.ObjectId }) {
+  async findOne(query: object) {
     try {
       return await this.model.findOne(query);
     } catch (error) {
@@ -83,7 +83,7 @@ export class VideosRepository {
     }
   }
 
-  async update(filter: object, updation: object) {
+  async updateMany(filter: object, updation: object) {
     try {
       return await this.model.updateMany(filter, updation);
     } catch (error) {

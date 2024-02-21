@@ -404,6 +404,251 @@ export class CoursesService {
       throw error;
     }
   }
+
+  async getPurchasedCourses(
+    userId: string | mongoose.Types.ObjectId
+  ): ServiceResponse<{ courses: object[] }> {
+    try {
+      const purchasedCourses = await this.purchasesRepository.find(
+        { user: userId },
+        { projection: "course" }
+      );
+      const courses = await this.coursesRepository.find(
+        {
+          _id: { $in: purchasedCourses.map((course) => course.course) },
+        },
+        { populate: { path: "tutor", select: "name image" } }
+      );
+      return {
+        success: true,
+        message: "Fetched purchased courses successfully",
+        statusCode: 200,
+        courses,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getChapterRedirectInfo(
+    userId: string | mongoose.Types.ObjectId,
+    courseId: string | mongoose.Types.ObjectId,
+    chapterId: string | mongoose.Types.ObjectId
+  ): ServiceResponse<{ nextResource?: string }> {
+    try {
+      const enrolled = await this.purchasesRepository.findOne({
+        user: userId,
+        course: courseId,
+      });
+      if (!enrolled) {
+        return {
+          success: false,
+          message: "You are not enrolled in this course",
+          statusCode: 401,
+        };
+      }
+      let resourceType = "";
+      let resourceId = "";
+      const videoExists = await this.videosRepository.findOne({
+        course: courseId,
+        chapter: chapterId,
+        order: 1,
+      });
+      if (videoExists) {
+        resourceType = "video";
+        resourceId = videoExists._id.toString();
+        return {
+          success: true,
+          message: "Fetched initial redirect info successfully",
+          statusCode: 200,
+          nextResource: resourceType,
+        };
+      }
+      const exerciseExists = await this.exercisesRepository.findOne({
+        course: courseId,
+        chapter: chapterId,
+        order: 1,
+      });
+      if (exerciseExists) {
+        resourceType = "exercise";
+        resourceId = exerciseExists._id.toString();
+        return {
+          success: true,
+          message: "Fetched initial redirect info successfully",
+          statusCode: 200,
+          nextResource: resourceType,
+        };
+      }
+      return {
+        success: false,
+        message: "No resources found",
+        statusCode: 404,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getVideoDetails(
+    userId: string | mongoose.Types.ObjectId,
+    courseId: string | mongoose.Types.ObjectId,
+    chapterId: string | mongoose.Types.ObjectId,
+    videoOrder: number
+  ): ServiceResponse<{
+    video?: object;
+    nextData?: {
+      nextVideo?: boolean;
+      nextExercise?: Boolean;
+      nextChapter?: boolean | string | mongoose.Types.ObjectId;
+    };
+  }> {
+    try {
+      let nextData = {
+        nextVideo: false,
+        nextExercise: false,
+        nextChapter: false,
+      };
+      const video = await this.videosRepository.findOne({
+        course: courseId,
+        chapter: chapterId,
+        order: videoOrder,
+      });
+      if (!video) {
+        return {
+          success: false,
+          message: "No video found",
+          statusCode: 404,
+        };
+      }
+      const nextVideo = await this.videosRepository.findOne({
+        course: courseId,
+        chapter: chapterId,
+        order: videoOrder + 1,
+      });
+      if (nextVideo) {
+        nextData.nextVideo = true;
+        return {
+          success: true,
+          message: "Fetched video details successfully",
+          statusCode: 200,
+          video,
+          nextData,
+        };
+      }
+      const nextExercise = await this.exercisesRepository.findOne({
+        course: courseId,
+        chapter: chapterId,
+      });
+      if (nextExercise) {
+        nextData.nextExercise = true;
+        return {
+          success: true,
+          message: "Fetched video details successfully",
+          statusCode: 200,
+          video,
+          nextData,
+        };
+      }
+      const currentChapter = await this.chaptersRepository.findOne({
+        _id: chapterId,
+      });
+      const nextChapter = await this.chaptersRepository.findOne({
+        course: courseId,
+        order: currentChapter.order + 1,
+      });
+      if (nextChapter) {
+        nextData.nextChapter = true;
+        return {
+          success: true,
+          message: "Fetched video details successfully",
+          statusCode: 200,
+          video,
+          nextData,
+        };
+      }
+      return {
+        success: true,
+        message: "No further resource found",
+        statusCode: 200,
+        video,
+        nextData,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getExerciseDetails(
+    userId: string | mongoose.Types.ObjectId,
+    courseId: string | mongoose.Types.ObjectId,
+    chapterId: string | mongoose.Types.ObjectId,
+    exerciseOrder: number
+  ): ServiceResponse<{
+    exercise?: object;
+    nextData?: {
+      nextExercise?: boolean;
+      nextChapter?: boolean | string | mongoose.Types.ObjectId;
+    };
+  }> {
+    try {
+      let nextData: any = {
+        nextExercise: false,
+        nextChapter: false,
+      };
+      const exercise = await this.exercisesRepository.findOne({
+        course: courseId,
+        chapter: chapterId,
+        order: exerciseOrder,
+      });
+      if (!exercise) {
+        return {
+          success: false,
+          message: "No exercise found",
+          statusCode: 404,
+        };
+      }
+      const nextExercise = await this.exercisesRepository.findOne({
+        course: courseId,
+        chapter: chapterId,
+        order: exerciseOrder + 1,
+      });
+      if (nextExercise) {
+        nextData.nextExercise = true;
+        return {
+          success: true,
+          message: "Fetched video details successfully",
+          statusCode: 200,
+          exercise,
+          nextData,
+        };
+      }
+      const currentChapter = await this.chaptersRepository.findOne({
+        _id: chapterId,
+      });
+      const nextChapter = await this.chaptersRepository.findOne({
+        course: courseId,
+        order: currentChapter.order + 1,
+      });
+      if (nextChapter) {
+        nextData.nextChapter = nextChapter._id;
+        return {
+          success: true,
+          message: "Fetched video details successfully",
+          statusCode: 200,
+          exercise,
+          nextData,
+        };
+      }
+      return {
+        success: false,
+        message: "No further resource found",
+        statusCode: 200,
+        exercise,
+        nextData,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 export default new CoursesService(
   coursesRepositoryInstance,
