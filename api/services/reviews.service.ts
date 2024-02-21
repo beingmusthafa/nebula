@@ -4,11 +4,38 @@ import reviewsRepositoryInstance, {
 } from "../repositories/reviews.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import path from "path";
+import coursesRepositoryInstance, {
+  CoursesRepository,
+} from "../repositories/courses.repository.js";
 
 export class ReviewsService {
   private reviewsRepository: ReviewsRepository;
-  constructor(reviewsRepository: ReviewsRepository) {
+  private coursesRepository: CoursesRepository;
+  constructor(
+    reviewsRepository: ReviewsRepository,
+    coursesRepository: CoursesRepository
+  ) {
     this.reviewsRepository = reviewsRepository;
+    this.coursesRepository = coursesRepository;
+  }
+
+  private async updateAvgReview(courseId: string | mongoose.Types.ObjectId) {
+    try {
+      const reviews = await this.reviewsRepository.find(
+        {
+          course: courseId,
+        },
+        { projection: "rating" }
+      );
+      const avgRating =
+        reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length;
+      await this.coursesRepository.updateOne(
+        { _id: courseId },
+        { rating: avgRating }
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async addReview(review: {
@@ -47,6 +74,7 @@ export class ReviewsService {
         };
       }
       await this.reviewsRepository.create(review);
+      await this.updateAvgReview(review.course);
       return {
         success: true,
         message: "Review added successfully",
@@ -79,6 +107,8 @@ export class ReviewsService {
         };
       }
       await this.reviewsRepository.updateOne({ _id: reviewId }, data);
+      const review = await this.reviewsRepository.findOne({ _id: reviewId });
+      await this.updateAvgReview(review.course);
       return {
         success: true,
         message: "Review updated successfully",
@@ -91,7 +121,12 @@ export class ReviewsService {
 
   async deleteReview(reviewId: string): ServiceResponse {
     try {
+      const review = await this.reviewsRepository.findOne(
+        { _id: reviewId },
+        { projection: "course" }
+      );
       await this.reviewsRepository.deleteOne({ _id: reviewId });
+      await this.updateAvgReview(review.course);
       return {
         success: true,
         message: "Review deleted successfully",
@@ -120,4 +155,7 @@ export class ReviewsService {
   }
 }
 
-export default new ReviewsService(reviewsRepositoryInstance);
+export default new ReviewsService(
+  reviewsRepositoryInstance,
+  coursesRepositoryInstance
+);

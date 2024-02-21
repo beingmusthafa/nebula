@@ -30,7 +30,7 @@ class UsersReviewsController {
         rating: Number(rating),
         comment,
       });
-      res.status(response.statusCode).json({ response });
+      res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));
     }
@@ -55,7 +55,7 @@ class UsersReviewsController {
     try {
       const { reviewId } = req.params;
       const response = await this.reviewsService.deleteReview(reviewId);
-      res.status(response.statusCode).json({ response });
+      res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));
     }
