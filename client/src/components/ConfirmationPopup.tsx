@@ -16,11 +16,11 @@ const ConfirmationPopup: React.FC<Props> = ({
   return (
     <div className="flex fixed w-full justify-center">
       <motion.div
-        initial={{ y: 150, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.3 }}
+        initial={{ opacity: 0, scale: 0.3 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3, type: "spring" }}
         style={{ zIndex: 15 }}
-        className="_screen-center flex flex-col p-6 border-4 _border-blue-black-gradient2 bg-white max-w-96"
+        className="_screen-center flex flex-col p-8 border-4 rounded-3xl border-sky-300 bg-white max-w-96"
       >
         <div className="text-base font-medium text-center">{confirmText}</div>
         <div className="flex gap-10 mx-auto mt-10">
