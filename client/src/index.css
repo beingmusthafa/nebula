@@ -217,12 +217,13 @@ body {
 }
 /* flex flex-col p-6 fixed top-1/3 border-4 _border-blue-black-gradient2 bg-white max-w-96 */
 ._screen-center {
-  display: flex;
-  flex-direction: column;
   position: fixed;
   top: 20%;
   max-height: 70vh;
   overflow-y: auto;
+}
+._transition-0-3 {
+  transition: 0.3s;
 }
 @media (max-width: 600px) {
   ._admin-sidebar {

@@ -4,7 +4,7 @@ import Loading from "../../components/Loading";
 import RatingStars from "../../components/RatingStars";
 import { Link } from "react-router-dom";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
-import CourseCard from "../../components/CourseCard";
+import CourseCard from "../../components/user/CourseCard";
 import ConfirmationPopup from "../../components/ConfirmationPopup";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -14,6 +14,7 @@ interface Course {
   description: string;
   thumbnail: string;
   price: number;
+  discount: number;
   rating: number;
   ratingCount: number;
   language: string;
@@ -140,14 +141,14 @@ const Cart = () => {
                 &#8377; {bill?.finalTotal}
               </span>
             </div>
-            <div className="flex justify-between border text-sm">
+            {/* <div className="flex justify-between border text-sm">
               <input
                 type="text"
                 placeholder="COUPON CODE"
                 className="p-2 w-full"
               />
               <button className="_fill-btn-blue">Apply</button>
-            </div>
+            </div> */}
             {couponMessage && <p className="font-semibold">{couponMessage}</p>}
             <button
               onClick={goToPayment}

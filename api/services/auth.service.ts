@@ -249,7 +249,7 @@ export class AuthService {
         };
       }
       const hashedPassword = this.hashPassword(password);
-      const user = await this.usersRepository.findOneAndUpdate(
+      const user = await this.usersRepository.updateOne(
         { email },
         { password: hashedPassword }
       );

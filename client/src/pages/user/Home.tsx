@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CourseCard from "../../components/CourseCard";
+import CourseCard from "../../components/user/CourseCard";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 import { Link } from "react-router-dom";
 

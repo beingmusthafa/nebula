@@ -88,6 +88,9 @@ const Header = () => {
               >
                 Logout
               </button>
+              <Link to={"/my-courses"}>
+                <i className="bx bxs-videos text-2xl cursor-pointer"></i>
+              </Link>
               <Link to={"/wishlist"}>
                 <i className="bx bx-heart text-2xl cursor-pointer"></i>
               </Link>
@@ -126,6 +129,13 @@ const Header = () => {
             transition={{ duration: 0.2 }}
             className="absolute flex md:hidden flex-col top-14 right-0 bg-white px-4"
           >
+            <div
+              onClick={() => navigateOptions("/my-courses")}
+              className="flex items-center gap-2 border-b border-slate-400 p-2"
+            >
+              <i className="bx bxs-videos text-2xl"></i>
+              My courses
+            </div>
             <div
               onClick={() => navigateOptions("/wishlist")}
               className="flex items-center gap-2 border-b border-slate-400 p-2"

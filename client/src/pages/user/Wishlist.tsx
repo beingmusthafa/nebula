@@ -4,7 +4,7 @@ import Loading from "../../components/Loading";
 import RatingStars from "../../components/RatingStars";
 import { Link } from "react-router-dom";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
-import CourseCard from "../../components/CourseCard";
+import CourseCard from "../../components/user/CourseCard";
 import ConfirmationPopup from "../../components/ConfirmationPopup";
 
 interface Course {

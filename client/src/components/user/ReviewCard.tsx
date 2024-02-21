@@ -19,7 +19,7 @@ interface Props {
 const ReviewCard: React.FC<Props> = ({ review, onEdit, onDelete }) => {
   const { currentUser } = useSelector((state: any) => state.user);
   return (
-    <div className="flex flex-col gap-2 border-2 border-sky-300 p-6 rounded-2xl _bg-light min-w-fit">
+    <div className="flex flex-col gap-2 border-2 border-sky-200 p-6 rounded-2xl  min-w-fit">
       <div className="flex items-center gap-4 justify-between">
         <div className="flex gap-4 items-center">
           <img

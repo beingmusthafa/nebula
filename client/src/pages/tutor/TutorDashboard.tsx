@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CourseCard from "../../components/CourseCard";
+import CourseCard from "../../components/user/CourseCard";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ interface Course {
   rating: number;
   ratingCount: number;
   price: number;
+  discount: number;
   thumbnail: string;
   tutor: {
     name: string;

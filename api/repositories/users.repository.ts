@@ -66,13 +66,11 @@ export class UsersRepository {
     }
   }
 
-  async findOneAndUpdate(query: object, updation: object) {
+  async updateOne(query: object, updation: object) {
     try {
-      const doc = await this.model.findOneAndUpdate(
-        query,
-        { $set: updation },
-        { new: true }
-      );
+      const doc = await this.model.findOneAndUpdate(query, updation, {
+        new: true,
+      });
       if (doc) return doc.toObject();
       return null;
     } catch (error) {

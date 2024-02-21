@@ -15,6 +15,10 @@ router.post(
     authController.finishSignUp(req, res, next)
 );
 
+router.get("/sign-out", (req: Request, res: Response, next: NextFunction) =>
+  authController.signOut(req, res, next)
+);
+
 router.post("/sign-in", (req: Request, res: Response, next: NextFunction) =>
   authController.signIn(req, res, next)
 );

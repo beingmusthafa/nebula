@@ -51,12 +51,7 @@ export class ChaptersRepository {
     }
   }
 
-  async findOne(
-    filter:
-      | { _id: string | mongoose.Types.ObjectId }
-      | { title: string }
-      | { order: number }
-  ) {
+  async findOne(filter: object) {
     try {
       return await this.model.findOne(filter);
     } catch (error) {

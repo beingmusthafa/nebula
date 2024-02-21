@@ -94,6 +94,15 @@ export class CoursesRepository {
     }
   }
 
+  async updateOne(query: object, updation: object) {
+    try {
+      const doc = await this.model.updateOne(query, { $set: updation });
+      return doc.modifiedCount;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async create(course: ICourses) {
     try {
       const doc = await this.model.create(course);

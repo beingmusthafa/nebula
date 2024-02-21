@@ -34,6 +34,13 @@ const PaymentFailure = lazy(() => import("./pages/user/PaymentFailure.tsx"));
 import "react-toastify/dist/ReactToastify.css";
 import HideAuth from "./components/auth/HideAuth.tsx";
 const Interests = lazy(() => import("./pages/user/Interests.tsx"));
+const MyCourses = lazy(() => import("./pages/user/MyCourses.tsx"));
+const LearnCourse = lazy(() => import("./pages/user/LearnCourse.tsx"));
+const ChapterInitialRedirect = lazy(
+  () => import("./pages/user/ChapterInitialRedirect.tsx")
+);
+const CourseVideo = lazy(() => import("./pages/user/CourseVideo.tsx"));
+const CourseExercise = lazy(() => import("./pages/user/CourseExercise.tsx"));
 import InterestsGate from "./components/InterestsGate.tsx";
 const App = () => {
   return (
@@ -127,6 +134,48 @@ const App = () => {
             }
           />
           <Route element={<UserAuth />}>
+            <Route
+              path="/my-courses"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <MyCourses />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/my-courses/learn/:courseId"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <LearnCourse />
+                </Suspense>
+              }
+            />
+
+            <Route
+              path="/my-courses/learn/:courseId/:chapterId"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <ChapterInitialRedirect />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/my-courses/learn/:courseId/:chapterId/video/:videoOrder"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <CourseVideo />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/my-courses/learn/:courseId/:chapterId/exercise/:exerciseOrder"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <CourseExercise />
+                </Suspense>
+              }
+            />
+
             <Route
               path="/cart"
               element={

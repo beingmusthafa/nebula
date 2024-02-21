@@ -41,7 +41,7 @@ interface Chapter {
   _id: string;
   title: string;
   order: number;
-  videos: { title: string; duration: string }[];
+  videos: { title: string; duration: number }[];
   exercises: { title: string; duration: string }[];
 }
 interface Review {
@@ -120,24 +120,38 @@ const CourseDetails = () => {
     chapters.forEach((chapter, i) => {
       let content: JSX.Element[] = [];
       chapter.videos.forEach((video, i) => {
+        const mins = Math.floor(video.duration / 60);
+        const seconds = Math.floor(video.duration % 60);
         content.push(
-          <div key={i} className="flex justify-between w-11/12">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            key={i}
+            className="flex justify-between w-11/12 py-2 border-t border-slate-500"
+          >
             <div className="flex items-center">
               <i className="bx bx-video text-xl text-slate-500 mr-2"></i>
               {video.title}
             </div>
-            <p>{video.duration}</p>
-          </div>
+            <p>{`${mins}m ${seconds}s`}</p>
+          </motion.div>
         );
       });
       chapter.exercises.forEach((exercise, i) => {
         content.push(
-          <div key={i} className="flex justify-between w-11/12">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            key={i}
+            className="flex justify-between w-11/12 py-2 border-t border-slate-500"
+          >
             <div className="flex items-center">
               <i className="bx bx-notepad text-xl text-slate-500 mr-2"></i>
               {`Exercise - ${i + 1}`}
             </div>
-          </div>
+          </motion.div>
         );
       });
       accordionData.push({
@@ -147,6 +161,7 @@ const CourseDetails = () => {
     });
   }
   const addtoCart = async () => {
+    const toastId = toast.loading("Adding to cart");
     try {
       if (!currentUser) navigate("/sign-in");
       const res = await fetch("/api/add-to-cart", {
@@ -158,15 +173,17 @@ const CourseDetails = () => {
           courseId: id,
         }),
       }).then((res) => res.json());
-      if (!res.success) return toast.error(res.message);
+      toast.dismiss(toastId);
+      if (!res.success) throw new Error(res.message);
       const newData = { inCart: true, inWishlist: data?.inWishlist };
       setData(newData);
-      toast.success(res.message);
     } catch (error) {
+      toast.dismiss(toastId);
       console.log(error);
     }
   };
   const removeFromCart = async () => {
+    const toastId = toast.loading("Removing from cart");
     try {
       if (!currentUser) navigate("/sign-in");
       const res = await fetch("/api/remove-from-cart", {
@@ -178,15 +195,16 @@ const CourseDetails = () => {
           courseId: id,
         }),
       }).then((res) => res.json());
-      if (!res.success) return toast.error(res.message);
+      toast.dismiss(toastId);
+      if (!res.success) throw new Error(res.message);
       const newData = { inCart: false, inWishlist: data?.inWishlist };
       setData(newData);
-      toast.success(res.message);
     } catch (error) {
       console.log(error);
     }
   };
   const addtoWishlist = async () => {
+    const toastId = toast.loading("Adding to wishlist");
     try {
       if (!currentUser) navigate("/sign-in");
       const res = await fetch("/api/add-to-wishlist", {
@@ -198,15 +216,16 @@ const CourseDetails = () => {
           courseId: id,
         }),
       }).then((res) => res.json());
-      if (!res.success) return toast.error(res.message);
+      toast.dismiss(toastId);
+      if (!res.success) throw new Error(res.message);
       const newData = { inCart: data?.inCart, inWishlist: true };
       setData(newData);
-      toast.success(res.message);
     } catch (error) {
       console.log(error);
     }
   };
   const removeFromWishlist = async () => {
+    const toastId = toast.loading("Removing from wishlist");
     try {
       if (!currentUser) navigate("/sign-in");
       const res = await fetch("/api/remove-from-wishlist", {
@@ -218,10 +237,10 @@ const CourseDetails = () => {
           courseId: id,
         }),
       }).then((res) => res.json());
+      toast.dismiss(toastId);
       if (!res.success) return toast.error(res.message);
       const newData = { inCart: data?.inCart, inWishlist: false };
       setData(newData);
-      toast.success(res.message);
     } catch (error) {
       console.log(error);
     }

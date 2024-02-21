@@ -3,7 +3,7 @@ import FiltersBar from "../../components/FiltersBar";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loading from "../../components/Loading";
-import CourseCard from "../../components/CourseCard";
+import CourseCard from "../../components/user/CourseCard";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 
 interface Course {
@@ -12,6 +12,7 @@ interface Course {
   description: string;
   thumbnail: string;
   price: number;
+  discount: number;
   rating: number;
   ratingCount: number;
   language: string;

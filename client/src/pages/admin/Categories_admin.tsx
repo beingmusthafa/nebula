@@ -26,7 +26,7 @@ const Categories_admin = () => {
     setLoading(false);
     console.log(res);
     if (!res.success) return toast.error(res.message);
-    setCategories(res.docs);
+    setCategories(res.categories);
   };
   console.log("helo");
   useEffect(() => {

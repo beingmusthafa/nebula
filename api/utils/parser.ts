@@ -1,7 +1,6 @@
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
-
 export const parser = multer();
 
 cloudinary.config({

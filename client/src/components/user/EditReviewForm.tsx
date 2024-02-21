@@ -44,8 +44,7 @@ const EditReviewForm: React.FC<Props> = ({ review, setShow, getReviews }) => {
       if (!res.success) throw new Error(res.message);
       toast.dismiss(toastId);
       toast.success("Review edited successfully");
-      getReviews();
-      setShow(false);
+      location.reload();
     } catch (error: any) {
       toast.dismiss(toastId);
       console.log(error);

@@ -85,6 +85,7 @@ export class ChaptersService {
       }
       const nameExists = await this.chaptersRepository.findOne({
         title: chapter.title,
+        course: chapter.course,
       });
       if (nameExists)
         return {
@@ -122,6 +123,17 @@ export class ChaptersService {
       } else {
         delete chapter.order;
       }
+      const doc = await this.chaptersRepository.findOne({ _id: id });
+      const nameExists = await this.chaptersRepository.findOne({
+        title: doc.title,
+        course: doc.course,
+      });
+      if (nameExists)
+        return {
+          success: false,
+          message: "Chapter already exists",
+          statusCode: 400,
+        };
       await this.chaptersRepository.updateOne({ _id: id }, { $set: chapter });
       return {
         success: true,

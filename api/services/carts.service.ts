@@ -9,6 +9,9 @@ import Stripe from "stripe";
 import purchasesRepositoryInstance, {
   PurchasesRepository,
 } from "../repositories/purchases.repository.js";
+import progressRepositoryInstance, {
+  ProgressRepository,
+} from "../repositories/progress.repository.js";
 const stripe = new Stripe(process.env.STRIPE_KEY);
 
 interface User {
@@ -40,12 +43,15 @@ interface Cart {
 export class CartsService {
   private cartsRepository: CartsRepository;
   private purchasesRepository: PurchasesRepository;
+  private progressRepository: ProgressRepository;
   constructor(
     cartsRepository: CartsRepository,
-    purchasesRepository: PurchasesRepository
+    purchasesRepository: PurchasesRepository,
+    progressRepository: ProgressRepository
   ) {
     this.cartsRepository = cartsRepository;
     this.purchasesRepository = purchasesRepository;
+    this.progressRepository = progressRepository;
   }
 
   async getCart(userId: string | mongoose.Types.ObjectId): ServiceResponse<{
@@ -204,7 +210,11 @@ export class CartsService {
             price: cart.course.price - cart.course.discount,
           };
         });
+        const progressList = carts.map((cart) => {
+          return { user: userId, course: cart.course };
+        });
         await this.purchasesRepository.createMany(purchases);
+        await this.progressRepository.createMany(progressList);
         await this.cartsRepository.deleteMany({ user: userId });
         console.log("payment succeeded");
         return;
@@ -217,5 +227,6 @@ export class CartsService {
 }
 export default new CartsService(
   cartsRepositoryInstance,
-  purchasesRepositoryInstance
+  purchasesRepositoryInstance,
+  progressRepositoryInstance
 );
