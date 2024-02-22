@@ -128,6 +128,7 @@ export class CartsService {
         bill: { totalPrice, totalDiscount, finalTotal },
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -151,6 +152,7 @@ export class CartsService {
       await this.cartsRepository.create({ user: userId, course: courseId });
       return { success: true, message: "Added to cart", statusCode: 200 };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -163,6 +165,7 @@ export class CartsService {
       await this.cartsRepository.deleteOne({ user: userId, course: courseId });
       return { success: true, message: "Removed from cart", statusCode: 200 };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -178,6 +181,7 @@ export class CartsService {
       });
       return { inCart: cartExists ? true : false };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -231,17 +235,14 @@ export class CartsService {
         sessionId: session.id,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
 
-  async confirmPurchase(
-    eventHeader: string | string[],
-    requestBody: string,
-    userId: string | mongoose.Types.ObjectId
-  ) {
+  async confirmPurchase(eventHeader: string | string[], requestBody: string) {
     try {
-      stripe.checkout.sessions.retrieve;
+      console.log(":::REACHED CONFIRM::");
       const event = stripe.webhooks.constructEvent(
         requestBody,
         eventHeader,
@@ -250,6 +251,7 @@ export class CartsService {
       let intent = null;
       if (event["type"] === "payment_intent.succeeded") {
         intent = event.data.object;
+        const userId = intent.metadata.userId;
         console.log("metadata:::::", intent.metadata);
         if (intent.metadata.userId !== userId.toString()) {
           throw new Error("Unauthorized");
@@ -275,9 +277,11 @@ export class CartsService {
         await this.wishlistsRepository.deleteMany({ user: userId });
         console.log("payment succeeded");
         return;
+      } else {
+        console.log("Payment failed");
       }
-      console.log("Payment failed");
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

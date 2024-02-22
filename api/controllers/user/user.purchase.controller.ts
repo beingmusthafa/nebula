@@ -124,10 +124,11 @@ class UserPurchaseController {
 
   async confirmPurchase(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log("reached controller confirm");
+      console.log("controller user:::", req.session.user);
       await this.cartsService.confirmPurchase(
         req.headers["stripe-signature"],
-        req.body,
-        req.session.user._id
+        req.body
       );
     } catch (error) {
       next(customError(500, error.message));
