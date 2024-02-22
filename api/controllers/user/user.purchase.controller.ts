@@ -23,7 +23,7 @@ class UserPurchaseController {
 
   async getCart(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = req.user._id;
+      const userId = req.session.user._id;
       const response = await this.cartsService.getCart(userId);
       return res.status(response.statusCode).json(response);
     } catch (error) {
@@ -34,7 +34,7 @@ class UserPurchaseController {
   async addToCart(req: Request, res: Response, next: NextFunction) {
     try {
       const { courseId } = req.body;
-      const userId = req.user._id;
+      const userId = req.session.user._id;
       const response = await this.cartsService.addtoCart(userId, courseId);
       return res.status(response.statusCode).json(response);
     } catch (error) {
@@ -45,7 +45,7 @@ class UserPurchaseController {
   async removeFromCart(req: Request, res: Response, next: NextFunction) {
     try {
       const { courseId } = req.body;
-      const userId = req.user._id;
+      const userId = req.session.user._id;
       const response = await this.cartsService.removeFromCart(userId, courseId);
       return res.status(response.statusCode).json(response);
     } catch (error) {
@@ -55,7 +55,7 @@ class UserPurchaseController {
 
   async getWishlist(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = req.user._id;
+      const userId = req.session.user._id;
       const response = await this.wishlistsService.getWishlist(userId);
       return res.status(response.statusCode).json(response);
     } catch (error) {
@@ -66,8 +66,8 @@ class UserPurchaseController {
   async addToWishlist(req: Request, res: Response, next: NextFunction) {
     try {
       const { courseId } = req.body;
-      console.log("this is user", req.user);
-      const userId = req.user._id;
+      console.log("this is user", req.session.user);
+      const userId = req.session.user._id;
       const response = await this.wishlistsService.addToWishlist(
         userId,
         courseId
@@ -81,7 +81,7 @@ class UserPurchaseController {
   async removeFromWishlist(req: Request, res: Response, next: NextFunction) {
     try {
       const { courseId } = req.body;
-      const userId = req.user._id;
+      const userId = req.session.user._id;
       const response = await this.wishlistsService.removeFromWishlist(
         userId,
         courseId
@@ -95,7 +95,7 @@ class UserPurchaseController {
   async checkCartAndWishlist(req: Request, res: Response, next: NextFunction) {
     try {
       const { courseId } = req.params;
-      const userId = req.user._id;
+      const userId = req.session.user._id;
       const { inCart } = await this.cartsService.checkCart(userId, courseId);
       const { inWishlist } = await this.wishlistsService.checkWishlist(
         userId,
@@ -114,7 +114,7 @@ class UserPurchaseController {
 
   async createCheckoutSession(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = req.user._id;
+      const userId = req.session.user._id;
       const response = await this.cartsService.createCheckoutSession(userId);
       return res.status(response.statusCode).json(response);
     } catch (error) {
@@ -127,7 +127,7 @@ class UserPurchaseController {
       await this.cartsService.confirmPurchase(
         req.headers["stripe-signature"],
         req.body,
-        req.user._id
+        req.session.user._id
       );
     } catch (error) {
       next(customError(500, error.message));

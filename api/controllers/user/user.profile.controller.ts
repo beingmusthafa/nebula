@@ -12,7 +12,7 @@ class UserProfileController {
 
   async getProfile(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = await this.usersService.findById(req.user._id);
+      const user = await this.usersService.findById(req.session.user._id);
       res.json(user);
     } catch (error) {
       next(customError(500, error.message));
@@ -23,7 +23,7 @@ class UserProfileController {
       const { interests } = req.body;
       console.log("interests::::", interests);
       const response = await this.usersService.addInterests(
-        req.user?._id,
+        req.session.user?._id,
         interests
       );
       res.status(response.statusCode).json(response);

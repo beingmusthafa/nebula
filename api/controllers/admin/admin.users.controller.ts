@@ -15,7 +15,7 @@ class AdminUsersController {
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const response = await this.usersService.findAll(
-        req.user.email,
+        req.session.user.email,
         Number(req.query.page) || 1
       );
       res.status(200).json(response);

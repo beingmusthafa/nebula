@@ -12,7 +12,9 @@ class UserProgressController {
 
   async getAllProgress(req: Request, res: Response, next: NextFunction) {
     try {
-      const response = await this.progressService.getAllProgress(req.user?._id);
+      const response = await this.progressService.getAllProgress(
+        req.session.user?._id
+      );
       res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));
@@ -22,7 +24,7 @@ class UserProgressController {
   async getCourseProgress(req: Request, res: Response, next: NextFunction) {
     try {
       const response = await this.progressService.getCourseProgress(
-        req.user?._id,
+        req.session.user?._id,
         req.params.courseId
       );
       res.status(response.statusCode).json(response);
@@ -34,7 +36,7 @@ class UserProgressController {
   async addVideoProgress(req: Request, res: Response, next: NextFunction) {
     try {
       const response = await this.progressService.addVideoProgress(
-        req.user?._id,
+        req.session.user?._id,
         req.body.courseId,
         req.body.videoId
       );
@@ -47,7 +49,7 @@ class UserProgressController {
   async addExerciseProgress(req: Request, res: Response, next: NextFunction) {
     try {
       const response = await this.progressService.addExerciseProgress(
-        req.user?._id,
+        req.session.user?._id,
         req.body.courseId,
         req.body.exerciseId
       );

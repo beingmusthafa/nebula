@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
-import { customError } from "../utils/error.js";
+import customError from "../utils/error.js";
 import { Request, Response, NextFunction } from "express";
 import usersRepositoryInstance, {
   UsersRepository,
 } from "../repositories/users.repository.js";
 import UsersInterface from "../interfaces/users.interface.js";
 import CurrentUserInterface from "../interfaces/currentUser.interface.js";
+import mongoose from "mongoose";
 
 declare global {
   namespace Express {
@@ -21,14 +22,34 @@ class AuthMiddleware {
     this.usersRepository = usersRepository;
   }
 
-  async userAuth(req: Request, res: Response, next: NextFunction) {
+  async userIdentify(req: Request, res: Response, next: NextFunction) {
     try {
       const token = req.cookies["access_token"];
-      if (!token) throw customError(401, "Unauthorized");
+      if (!token) return next();
       const { id } = jwt.verify(token, process.env.JWT_SECRET);
-      if (!id) throw customError(403, "Invalid token");
-      if (!req.user) {
-        req.user = await this.usersRepository.findById(id, {
+      if (!id) return next();
+      //TEST MODE/////////////////////////////////////////////////////////////////////////////
+      // req.session.user = {
+      //   _id: "65c38a47a80c66ffa1dd30ef",
+      //   name: "Muhammad Musthafa",
+      //   email: "musthafarebel48@gmail.com",
+      //   image:
+      //     "https://res.cloudinary.com/dfezowkdc/image/upload/v1706951267/gray-photo-placeholder-icon-design-ui-vector-35850819_vupnvf.jpg",
+      //   role: "admin",
+      //   isBlocked: false,
+      //   appointmentCost: 0,
+      //   interests: [
+      //     "65c9891ee5db19cf23ee8791",
+      //     "65c98936e5db19cf23ee8797",
+      //     "65c989e8e5db19cf23ee87a0",
+      //     "65c989a0e5db19cf23ee879d",
+      //   ],
+      //   education: [],
+      //   experience: [],
+      // };
+      // TEST MODE/////////////////////////////////////////////////////////////////////////////
+      if (!req.session.user) {
+        req.session.user = await this.usersRepository.findById(id, {
           _id: 1,
           name: 1,
           email: 1,
@@ -39,11 +60,59 @@ class AuthMiddleware {
           interests: 1,
         });
       }
-      if (req.user.isBlocked) {
-        req.user = null;
+      if (req.session.user.isBlocked) {
+        req.session.user = null;
         throw customError(403, "Your account is suspended");
       }
-      console.log("user auth passed", req.user);
+      next();
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async userAuth(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.cookies["access_token"];
+      console.log(req.cookies);
+      if (!token) throw customError(401, "Unauthorized");
+      const { id } = jwt.verify(token, process.env.JWT_SECRET);
+      if (!id) throw customError(403, "Invalid token");
+      //TEST MODE/////////////////////////////////////////////////////////////////////////////
+      // req.session.user = {
+      //   _id: "65c38a47a80c66ffa1dd30ef",
+      //   name: "Muhammad Musthafa",
+      //   email: "musthafarebel48@gmail.com",
+      //   image:
+      //     "https://res.cloudinary.com/dfezowkdc/image/upload/v1706951267/gray-photo-placeholder-icon-design-ui-vector-35850819_vupnvf.jpg",
+      //   role: "admin",
+      //   isBlocked: false,
+      //   appointmentCost: 0,
+      //   interests: [
+      //     "65c9891ee5db19cf23ee8791",
+      //     "65c98936e5db19cf23ee8797",
+      //     "65c989e8e5db19cf23ee87a0",
+      //     "65c989a0e5db19cf23ee879d",
+      //   ],
+      //   education: [],
+      //   experience: [],
+      // };
+      //TEST MODE/////////////////////////////////////////////////////////////////////////////
+      if (!req.session.user) {
+        req.session.user = await this.usersRepository.findById(id, {
+          _id: 1,
+          name: 1,
+          email: 1,
+          image: 1,
+          role: 1,
+          isBlocked: 1,
+          appointmentCost: 1,
+          interests: 1,
+        });
+      }
+      if (req.session.user.isBlocked) {
+        req.session.user = null;
+        throw customError(403, "Your account is suspended");
+      }
       next();
     } catch (error) {
       next(error);
@@ -56,8 +125,28 @@ class AuthMiddleware {
       if (!token) throw customError(401, "Unauthorized");
       const { id } = jwt.verify(token, process.env.JWT_SECRET);
       if (!id) throw customError(401, "Invalid token");
-      if (!req.user) {
-        req.user = await this.usersRepository.findById(id, {
+      //TEST MODE/////////////////////////////////////////////////////////////////////////////
+      // req.session.user = {
+      //   _id: "65c38a47a80c66ffa1dd30ef",
+      //   name: "Muhammad Musthafa",
+      //   email: "musthafarebel48@gmail.com",
+      //   image:
+      //     "https://res.cloudinary.com/dfezowkdc/image/upload/v1706951267/gray-photo-placeholder-icon-design-ui-vector-35850819_vupnvf.jpg",
+      //   role: "admin",
+      //   isBlocked: false,
+      //   appointmentCost: 0,
+      //   interests: [
+      //     "65c9891ee5db19cf23ee8791",
+      //     "65c98936e5db19cf23ee8797",
+      //     "65c989e8e5db19cf23ee87a0",
+      //     "65c989a0e5db19cf23ee879d",
+      //   ],
+      //   education: [],
+      //   experience: [],
+      // };
+      //TEST MODE/////////////////////////////////////////////////////////////////////////////
+      if (!req.session.user) {
+        req.session.user = await this.usersRepository.findById(id, {
           name: 1,
           email: 1,
           image: 1,
@@ -67,11 +156,10 @@ class AuthMiddleware {
           interests: 1,
         });
       }
-      if (req.user.role !== "admin" || req.user.isBlocked) {
-        req.user = null;
+      if (req.session.user.role !== "admin" || req.session.user.isBlocked) {
+        req.session.user = null;
         throw customError(403, "Forbidden");
       }
-      console.log("admin auth passed", req.user);
       next();
     } catch (error) {
       next(error);

@@ -25,7 +25,7 @@ class UsersReviewsController {
     try {
       const { course, rating, comment } = req.body;
       const response = await this.reviewsService.addReview({
-        user: req.user._id,
+        user: req.session.user._id,
         course,
         rating: Number(rating),
         comment,

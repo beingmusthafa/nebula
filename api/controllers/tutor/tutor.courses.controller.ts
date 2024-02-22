@@ -39,7 +39,9 @@ class TutorController {
 
   async getAllCourses(req: Request, res: Response, next: NextFunction) {
     try {
-      const response = await this.coursesService.find({ tutor: req.user._id });
+      const response = await this.coursesService.find({
+        tutor: req.session.user._id,
+      });
       res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));
@@ -59,7 +61,7 @@ class TutorController {
         benefits,
         language,
       } = req.body;
-      const tutor = req.user._id;
+      const tutor = req.session.user._id;
       const response = await this.coursesService.create(
         {
           title,
@@ -86,7 +88,7 @@ class TutorController {
         id,
         req.body,
         req.file?.buffer,
-        req.user._id
+        req.session.user._id
       );
       res.status(response.statusCode).json(response);
     } catch (error) {
@@ -118,7 +120,7 @@ class TutorController {
       const { courseId } = req.params;
       const response = await this.coursesService.deleteCourse(
         courseId,
-        req.user._id as string
+        req.session.user._id as string
       );
       res.status(response.statusCode).json(response);
     } catch (error) {

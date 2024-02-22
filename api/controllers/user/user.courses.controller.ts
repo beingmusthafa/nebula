@@ -33,7 +33,7 @@ class UserCoursesController {
   async getHomeData(req: Request, res: Response, next: NextFunction) {
     try {
       const { results } = await this.coursesService.findByMultipleCategories(
-        req.user
+        req.session.user
       );
       const response = await this.bannersService.getBanners();
       res
@@ -50,7 +50,7 @@ class UserCoursesController {
         req.query;
       const response = await this.coursesService.findPaginate(
         Number(page) || 1,
-        req.user?._id,
+        req.session.user?._id,
         {
           search: search as string,
           minPrice: Number(minPrice) || 0,
@@ -81,7 +81,7 @@ class UserCoursesController {
   async getPurchasedCourses(req: Request, res: Response, next: NextFunction) {
     try {
       const response = await this.coursesService.getPurchasedCourses(
-        req.user?._id
+        req.session.user?._id
       );
       res.status(response.statusCode).json(response);
     } catch (error) {
@@ -105,7 +105,7 @@ class UserCoursesController {
   ) {
     try {
       const response = await this.coursesService.getChapterRedirectInfo(
-        req.user?._id,
+        req.session.user?._id,
         req.params.courseId,
         req.params.chapterId
       );
@@ -119,7 +119,7 @@ class UserCoursesController {
     try {
       const { courseId, chapterId, videoOrder } = req.params;
       const response = await this.coursesService.getVideoDetails(
-        req.user?._id,
+        req.session.user?._id,
         courseId,
         chapterId,
         Number(videoOrder)
@@ -134,7 +134,7 @@ class UserCoursesController {
     try {
       const { courseId, chapterId, exerciseOrder } = req.params;
       const response = await this.coursesService.getExerciseDetails(
-        req.user?._id,
+        req.session.user?._id,
         courseId,
         chapterId,
         Number(exerciseOrder)
