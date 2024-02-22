@@ -12,6 +12,9 @@ import purchasesRepositoryInstance, {
 import progressRepositoryInstance, {
   ProgressRepository,
 } from "../repositories/progress.repository.js";
+import coursesRepositoryInstance, {
+  CoursesRepository,
+} from "../repositories/courses.repository.js";
 const stripe = new Stripe(process.env.STRIPE_KEY);
 
 interface User {
@@ -42,16 +45,45 @@ interface Cart {
 
 export class CartsService {
   private cartsRepository: CartsRepository;
+  private coursesRepository: CoursesRepository;
   private purchasesRepository: PurchasesRepository;
   private progressRepository: ProgressRepository;
+  private wishlistsRepository = new WishlistsRepository();
+
   constructor(
     cartsRepository: CartsRepository,
     purchasesRepository: PurchasesRepository,
+    coursesRepository: CoursesRepository,
     progressRepository: ProgressRepository
   ) {
     this.cartsRepository = cartsRepository;
     this.purchasesRepository = purchasesRepository;
+    this.coursesRepository = coursesRepository;
     this.progressRepository = progressRepository;
+  }
+
+  private async isActionValid(
+    userId: string | mongoose.Types.ObjectId,
+    courseId: string | mongoose.Types.ObjectId
+  ) {
+    try {
+      const isOwnCourse = this.coursesRepository.findOne({
+        tutor: userId,
+        _id: courseId,
+      });
+      const alreadyPurchased = this.purchasesRepository.findOne({
+        user: userId,
+        course: courseId,
+      });
+      const result = await Promise.all([isOwnCourse, alreadyPurchased]);
+      if (result[0] || result[1]) {
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   async getCart(userId: string | mongoose.Types.ObjectId): ServiceResponse<{
@@ -95,6 +127,10 @@ export class CartsService {
     courseId: string | mongoose.Types.ObjectId
   ): ServiceResponse {
     try {
+      const isActionValid = await this.isActionValid(userId, courseId);
+      if (!isActionValid) {
+        return { success: false, message: "Invalid action", statusCode: 400 };
+      }
       const cartExists = await this.cartsRepository.findOne({
         user: userId,
         course: courseId,
@@ -138,12 +174,21 @@ export class CartsService {
 
   async createCheckoutSession(
     userId: string | mongoose.Types.ObjectId
-  ): ServiceResponse<{ sessionId: string }> {
+  ): ServiceResponse<{ sessionId?: string }> {
     try {
-      const carts: Cart[] = await this.cartsRepository.find(
+      const carts = (await this.cartsRepository.find(
         { user: userId },
         { populate: { path: "course", select: "title image price discount" } }
-      );
+      )) as { course: any }[];
+      for (const cart of carts) {
+        const isActionValid = await this.isActionValid(userId, cart.course._id);
+        if (!isActionValid) {
+          throw new Error("Invalid action");
+        }
+      }
+      if (carts.length === 0) {
+        return { success: false, message: "Cart is empty", statusCode: 400 };
+      }
       const lineItems = carts.map((cart) => {
         return {
           price_data: {
@@ -216,6 +261,7 @@ export class CartsService {
         await this.purchasesRepository.createMany(purchases);
         await this.progressRepository.createMany(progressList);
         await this.cartsRepository.deleteMany({ user: userId });
+        await this.wishlistsRepository.deleteMany({ user: userId });
         console.log("payment succeeded");
         return;
       }
@@ -228,5 +274,6 @@ export class CartsService {
 export default new CartsService(
   cartsRepositoryInstance,
   purchasesRepositoryInstance,
+  coursesRepositoryInstance,
   progressRepositoryInstance
 );

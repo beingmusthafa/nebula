@@ -40,6 +40,8 @@ router.get(
 router.get(
   "/search-courses",
   (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userIdentify(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
     userCoursesController.searchCourses(req, res, next)
 );
 
@@ -53,6 +55,8 @@ router.get(
 
 router.get(
   "/get-course-details/:id",
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userIdentify(req, res, next),
   (req: Request, res: Response, next: NextFunction) =>
     userCoursesController.getCourseById(req, res, next)
 );
