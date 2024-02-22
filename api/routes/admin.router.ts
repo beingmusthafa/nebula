@@ -4,6 +4,7 @@ import adminUsersController from "../controllers/admin/admin.users.controller.js
 import adminCategoriesController from "../controllers/admin/admin.categories.controller.js";
 import { parser } from "../utils/parser.js";
 import adminBannersController from "../controllers/admin/admin.banners.controller.js";
+import adminCoursesController from "../controllers/admin/admin.courses.controller.js";
 
 const router = express.Router();
 router.use((req: Request, res: Response, next: NextFunction) =>
@@ -25,6 +26,30 @@ router.put(
   (req: Request, res: Response, next: NextFunction) => {
     adminUsersController.changeBlockStatus(req, res, next);
   }
+);
+
+router.get(
+  "/get-course/details/:courseId",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminCoursesController.getCourseDetails(req, res, next)
+);
+
+router.get(
+  "/get-pending-courses",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminCoursesController.getPending(req, res, next)
+);
+
+router.patch(
+  "/approve-course/:courseId",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminCoursesController.approveCourse(req, res, next)
+);
+
+router.get(
+  "/reject-courses/:courseId",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminCoursesController.rejectCourse(req, res, next)
 );
 
 router.get(

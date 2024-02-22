@@ -127,6 +127,43 @@ class TutorController {
       next(customError(500, error.message));
     }
   }
+
+  async getPending(req: Request, res: Response, next: NextFunction) {
+    try {
+      const response = await this.coursesService.getPending(
+        req.session.user._id
+      );
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async makeApprovalRequest(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { courseId } = req.params;
+      const response = await this.coursesService.makeApprovalRequest(
+        courseId,
+        req.session.user._id
+      );
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async cancelApprovalRequest(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { courseId } = req.params;
+      const response = await this.coursesService.cancelApprovalRequest(
+        courseId,
+        req.session.user._id
+      );
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
 }
 
 export default new TutorController(

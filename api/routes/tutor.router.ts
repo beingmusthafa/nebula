@@ -38,6 +38,24 @@ router.delete(
 );
 
 router.get(
+  "/get-pending-courses",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorCoursesController.getPending(req, res, next)
+);
+
+router.patch(
+  "/make-approval-request/:courseId",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorCoursesController.makeApprovalRequest(req, res, next)
+);
+
+router.patch(
+  "/cancel-approval-request/:courseId",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorCoursesController.cancelApprovalRequest(req, res, next)
+);
+
+router.get(
   "/get-categories",
   (req: Request, res: Response, next: NextFunction) =>
     tutorCoursesController.getCategories(req, res, next)

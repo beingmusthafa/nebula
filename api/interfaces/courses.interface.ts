@@ -12,5 +12,6 @@ export default interface ICourses {
   benefits: string[];
   language: string;
   discount?: number;
+  stage?: string;
   isBlocked?: boolean;
 }

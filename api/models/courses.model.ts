@@ -52,9 +52,10 @@ const coursesModel = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    isActive: {
-      type: Boolean,
-      default: false,
+    status: {
+      type: String,
+      default: "creation",
+      enum: ["creating", "pending", "published"],
     },
     language: {
       type: String,

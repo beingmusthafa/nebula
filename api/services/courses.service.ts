@@ -102,6 +102,7 @@ export class CoursesService {
         results,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -116,6 +117,7 @@ export class CoursesService {
         docs,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -211,6 +213,7 @@ export class CoursesService {
         },
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -236,6 +239,7 @@ export class CoursesService {
         doc,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -309,6 +313,7 @@ export class CoursesService {
         statusCode: 201,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -327,16 +332,24 @@ export class CoursesService {
       language: string;
     },
     image: Buffer | undefined,
-    currentUserId: string | mongoose.Types.ObjectId
+    userId: string | mongoose.Types.ObjectId
   ): ServiceResponse {
     try {
       const existingDoc = await this.coursesRepository.findById(id);
-      if (existingDoc.tutor.toString() !== currentUserId.toString())
+      if (existingDoc.tutor.toString() !== userId) {
         return {
           success: false,
-          message: "You are not authorized to edit this course",
+          message: "You are not authorized to delete this course",
           statusCode: 401,
         };
+      }
+      if (existingDoc.status !== "creating") {
+        return {
+          success: false,
+          message: "You can only delete a course that is being created",
+          statusCode: 400,
+        };
+      }
       if (data.title.length < 3)
         return {
           success: false,
@@ -400,6 +413,7 @@ export class CoursesService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -413,6 +427,13 @@ export class CoursesService {
           message: "You are not authorized to delete this course",
           statusCode: 401,
         };
+      if (existingDoc.status !== "creating") {
+        return {
+          success: false,
+          message: "You can only delete a course that is being created",
+          statusCode: 400,
+        };
+      }
       await this.coursesRepository.deleteOne({ _id: id });
       await cloudinary.uploader.destroy(existingDoc.imagePublicId);
       const videos = await this.videosRepository.find({ course: id });
@@ -429,6 +450,7 @@ export class CoursesService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -454,6 +476,7 @@ export class CoursesService {
         courses,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -513,6 +536,7 @@ export class CoursesService {
         statusCode: 404,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -602,6 +626,7 @@ export class CoursesService {
         nextData,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -674,6 +699,152 @@ export class CoursesService {
         nextData,
       };
     } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async getPending(
+    userId?: string | mongoose.Types.ObjectId
+  ): ServiceResponse<{ courses: object[] }> {
+    try {
+      let filter: any = {
+        status: "pending",
+      };
+      if (userId) filter = { ...filter, _id: userId };
+      const courses = await this.coursesRepository.find();
+      return {
+        success: true,
+        message: "Fetched pending courses successfully",
+        statusCode: 200,
+        courses,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async makeApprovalRequest(
+    courseId: string | mongoose.Types.ObjectId,
+    userId: string | mongoose.Types.ObjectId
+  ): ServiceResponse {
+    try {
+      const course = await this.coursesRepository.findById(courseId);
+      if (course.tutor.toString() !== userId) {
+        return {
+          success: false,
+          message: "You are not authorized to push this course for approval",
+          statusCode: 401,
+        };
+      }
+      if (course.status !== "creating") {
+        return {
+          success: false,
+          message: "Invalid action",
+          statusCode: 400,
+        };
+      }
+      await this.coursesRepository.updateOne(
+        { _id: courseId },
+        { $set: { status: "pending" } }
+      );
+      return {
+        success: true,
+        message: "Course pushed for approval successfully",
+        statusCode: 200,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async cancelApprovalRequest(
+    courseId: string | mongoose.Types.ObjectId,
+    userId: string | mongoose.Types.ObjectId
+  ): ServiceResponse {
+    try {
+      const course = await this.coursesRepository.findById(courseId);
+      if (course.tutor.toString() !== userId) {
+        return {
+          success: false,
+          message: "You are not authorized to cancel approval request",
+          statusCode: 401,
+        };
+      }
+      if (course.status !== "pending") {
+        return {
+          success: false,
+          message: "Invalid action",
+          statusCode: 400,
+        };
+      }
+      await this.coursesRepository.updateOne(
+        { _id: courseId },
+        { $set: { status: "creating" } }
+      );
+      return {
+        success: true,
+        message: "Course approval request cancelled",
+        statusCode: 200,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async approveCourse(
+    courseId: string | mongoose.Types.ObjectId
+  ): ServiceResponse {
+    try {
+      const course = await this.coursesRepository.findById(courseId);
+      if (course.status !== "pending") {
+        return {
+          success: false,
+          message: "Invalid action",
+          statusCode: 400,
+        };
+      }
+      await this.coursesRepository.updateOne(
+        { _id: courseId },
+        { $set: { status: "published" } }
+      );
+      return {
+        success: true,
+        message: "Course approved successfully",
+        statusCode: 200,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async rejectCourse(
+    courseId: string | mongoose.Types.ObjectId
+  ): ServiceResponse {
+    try {
+      const course = await this.coursesRepository.findById(courseId);
+      if (course.status !== "pending") {
+        return {
+          success: false,
+          message: "Invalid action",
+          statusCode: 400,
+        };
+      }
+      await this.coursesRepository.updateOne(
+        { _id: courseId },
+        { $set: { status: "creating" } }
+      );
+      return {
+        success: true,
+        message: "Course rejected successfully",
+        statusCode: 200,
+      };
+    } catch (error) {
+      console.log(error);
       throw error;
     }
   }
