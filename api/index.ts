@@ -14,6 +14,14 @@ import authMiddleware from "./middlewares/auth.middleware.js";
 const app = express();
 connectDb();
 
+app.use(cookieParser());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 app.post(
   "/stripe-webhook",
   express.raw({ type: "application/json" }),
@@ -24,14 +32,6 @@ app.post(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/tutor", tutorRouter);
