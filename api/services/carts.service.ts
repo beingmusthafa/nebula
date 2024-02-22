@@ -2,7 +2,9 @@ import mongoose from "mongoose";
 import cartsRepositoryInstance, {
   CartsRepository,
 } from "../repositories/carts.repository.js";
-import { WishlistsRepository } from "../repositories/wishlists.repository.js";
+import wishlistRepositoryInstance, {
+  WishlistsRepository,
+} from "../repositories/wishlists.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import ICourses from "../interfaces/courses.interface.js";
 import Stripe from "stripe";
@@ -15,6 +17,9 @@ import progressRepositoryInstance, {
 import coursesRepositoryInstance, {
   CoursesRepository,
 } from "../repositories/courses.repository.js";
+import progressServiceInstance, {
+  ProgressService,
+} from "./progress.service.js";
 const stripe = new Stripe(process.env.STRIPE_KEY);
 
 interface User {
@@ -48,18 +53,23 @@ export class CartsService {
   private coursesRepository: CoursesRepository;
   private purchasesRepository: PurchasesRepository;
   private progressRepository: ProgressRepository;
-  private wishlistsRepository = new WishlistsRepository();
+  private wishlistsRepository: WishlistsRepository;
+  private progressService: ProgressService;
 
   constructor(
     cartsRepository: CartsRepository,
+    wishlistsRepository: WishlistsRepository,
     purchasesRepository: PurchasesRepository,
     coursesRepository: CoursesRepository,
-    progressRepository: ProgressRepository
+    progressRepository: ProgressRepository,
+    progressService: ProgressService
   ) {
     this.cartsRepository = cartsRepository;
+    this.wishlistsRepository = wishlistsRepository;
     this.purchasesRepository = purchasesRepository;
     this.coursesRepository = coursesRepository;
     this.progressRepository = progressRepository;
+    this.progressService = progressService;
   }
 
   private async isActionValid(
@@ -255,11 +265,12 @@ export class CartsService {
             price: cart.course.price - cart.course.discount,
           };
         });
-        const progressList = carts.map((cart) => {
-          return { user: userId, course: cart.course };
-        });
+        const courseIds = carts.map((cart) => cart.course._id as string);
         await this.purchasesRepository.createMany(purchases);
-        await this.progressRepository.createMany(progressList);
+        await this.progressService.createMultipleCourseProgress(
+          userId,
+          courseIds
+        );
         await this.cartsRepository.deleteMany({ user: userId });
         await this.wishlistsRepository.deleteMany({ user: userId });
         console.log("payment succeeded");
@@ -273,7 +284,9 @@ export class CartsService {
 }
 export default new CartsService(
   cartsRepositoryInstance,
+  wishlistRepositoryInstance,
   purchasesRepositoryInstance,
   coursesRepositoryInstance,
-  progressRepositoryInstance
+  progressRepositoryInstance,
+  progressServiceInstance
 );

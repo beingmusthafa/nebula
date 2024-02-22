@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
-import { WishlistsRepository } from "../repositories/wishlists.repository.js";
+import wishlistsRepositoryInstance, {
+  WishlistsRepository,
+} from "../repositories/wishlists.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
-export default class WishlistsService {
+export class WishlistsService {
   private wishlistsRepository: WishlistsRepository;
-  constructor() {
-    this.wishlistsRepository = new WishlistsRepository();
+  constructor(wishlistsRepository: WishlistsRepository) {
+    this.wishlistsRepository = wishlistsRepository;
   }
 
   async getWishlist(
@@ -93,3 +95,5 @@ export default class WishlistsService {
     }
   }
 }
+
+export default new WishlistsService(wishlistsRepositoryInstance);

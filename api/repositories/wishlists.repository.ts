@@ -2,7 +2,7 @@ import mongoose, { QueryOptions, mongo } from "mongoose";
 import wishlistsModel from "../models/wishlists.model.js";
 export class WishlistsRepository {
   private model = wishlistsModel;
-  async delete(query: {
+  async deleteMany(query: {
     _id?: string | mongoose.Types.ObjectId;
     course?: string | mongoose.Types.ObjectId;
     user?: string | mongoose.Types.ObjectId;
