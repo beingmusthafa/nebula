@@ -2,7 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import cartsServiceInstance, {
   CartsService,
 } from "../../services/carts.service.js";
-import WishlistsService from "../../services/wishlists.service.js";
+import wishlistServiceInstance, {
+  WishlistsService,
+} from "../../services/wishlists.service.js";
 import customError from "../../utils/error.js";
 declare global {
   namespace Express {
@@ -14,9 +16,9 @@ declare global {
 class UserPurchaseController {
   private cartsService: CartsService;
   private wishlistsService: WishlistsService;
-  constructor(cartsService: CartsService) {
+  constructor(cartsService: CartsService, wishlistsService: WishlistsService) {
     this.cartsService = cartsService;
-    this.wishlistsService = new WishlistsService();
+    this.wishlistsService = wishlistsService;
   }
 
   async getCart(req: Request, res: Response, next: NextFunction) {
@@ -133,4 +135,7 @@ class UserPurchaseController {
   }
 }
 
-export default new UserPurchaseController(cartsServiceInstance);
+export default new UserPurchaseController(
+  cartsServiceInstance,
+  wishlistServiceInstance
+);
