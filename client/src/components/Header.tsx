@@ -89,16 +89,16 @@ const Header = () => {
                 Logout
               </button>
               <Link to={"/my-courses"}>
-                <i className="bx bxs-videos text-2xl cursor-pointer"></i>
+                <i className="bx hover:bg-slate-200 _transition-0-5 rounded-full py-1 px-2 bxs-videos text-2xl cursor-pointer"></i>
               </Link>
               <Link to={"/wishlist"}>
-                <i className="bx bx-heart text-2xl cursor-pointer"></i>
+                <i className="bx hover:bg-slate-200 _transition-0-5 rounded-full py-1 px-2 bx-heart text-2xl cursor-pointer"></i>
               </Link>
               <Link to={"/cart"}>
-                <i className="bx bx-cart-alt text-2xl cursor-pointer"></i>
+                <i className="bx hover:bg-slate-200 _transition-0-5 rounded-full py-1 px-2 bx-cart-alt text-2xl cursor-pointer"></i>
               </Link>
               <Link to={"/tutor"}>
-                <i className="bx bxs-graduation text-2xl cursor-pointer"></i>
+                <i className="bx hover:bg-slate-200 _transition-0-5 rounded-full py-1 px-2 bxs-graduation text-2xl cursor-pointer"></i>
               </Link>
               <img
                 src={currentUser.image}
