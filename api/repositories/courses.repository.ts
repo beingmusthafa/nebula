@@ -45,26 +45,27 @@ export class CoursesRepository {
   async findById(id: string | mongoose.Types.ObjectId, options?: QueryOptions) {
     try {
       let query = this.model.findById(id);
-      if (options?.select) {
-        query = query.select(options.select);
+      if (options?.projection) {
+        query = query.select(options.projection);
       }
-
-      if (options?.sort) {
-        query = query.sort(options.sort);
-      }
-
       if (options?.populate) {
         query = query.populate(options.populate as string | string[]);
       }
+      return await query.lean().exec();
+    } catch (error) {
+      throw error;
+    }
+  }
 
-      if (options?.limit) {
-        query = query.limit(options.limit);
+  async findOne(filter: object, options?: QueryOptions) {
+    try {
+      let query = this.model.findOne(filter);
+      if (options?.projection) {
+        query = query.select(options.projection);
       }
-
-      if (options?.skip) {
-        query = query.skip(options.skip);
+      if (options?.populate) {
+        query = query.populate(options.populate as string | string[]);
       }
-
       return await query.lean().exec();
     } catch (error) {
       throw error;

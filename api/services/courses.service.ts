@@ -23,6 +23,7 @@ import purchasesRepositoryInstance, {
   PurchasesRepository,
 } from "../repositories/purchases.repository.js";
 import { v2 as cloudinary } from "cloudinary";
+import ICurrentUser from "../interfaces/currentUser.interface.js";
 
 export class CoursesService {
   private coursesRepository: CoursesRepository;
@@ -48,21 +49,42 @@ export class CoursesService {
   }
 
   async findByMultipleCategories(
-    interests?: string[] | mongoose.Types.ObjectId[]
+    userData?: ICurrentUser
   ): ServiceResponse<{ results: object[] }> {
     try {
-      const filter = interests
-        ? {
-            _id: { $in: interests },
-          }
-        : {};
-      const categories = await this.categoriesRepository.find(filter, {
+      let categoryFilter: any = {};
+      let coursesFilter: any = {};
+      if (userData) {
+        categoryFilter = {
+          _id: { $in: userData.interests },
+        };
+        const purchasedCourses = await this.purchasesRepository.find(
+          { user: userData._id },
+          { projection: "course" }
+        );
+        const createdCourses = await this.coursesRepository.find(
+          { tutor: userData._id },
+          { projection: "_id" }
+        );
+        const createdCoursesIds = createdCourses.map((course) => course._id);
+        const purchasedCoursesIds = purchasedCourses.map(
+          (purchase) => purchase.course
+        );
+        coursesFilter = {
+          _id: {
+            $nin: [...purchasedCoursesIds, ...createdCoursesIds],
+          },
+        };
+      }
+      const categories = await this.categoriesRepository.find(categoryFilter, {
         projection: "_id name",
         limit: 5,
       });
+
       let queries = categories.map(async (category) => {
         const courses = await this.coursesRepository.find(
           {
+            ...coursesFilter,
             category: category._id,
           },
           { populate: { path: "tutor", select: "name image" } }
@@ -100,7 +122,7 @@ export class CoursesService {
 
   async findPaginate(
     page: number,
-    userId: string | mongoose.Types.ObjectId = null,
+    userId: string | mongoose.Types.ObjectId,
     filter?: {
       search?: string;
       minPrice: number;
@@ -118,17 +140,23 @@ export class CoursesService {
           { user: userId },
           { projection: "course" }
         );
+        const createdCourses = await this.coursesRepository.find(
+          { tutor: userId },
+          { projection: "_id" }
+        );
+        const createdCoursesIds = createdCourses.map((course) => course._id);
         const purchasedCoursesIds = purchasedCourses.map(
           (purchase) => purchase.course
         );
         query = {
           _id: {
-            $nin: purchasedCoursesIds,
+            $nin: [...purchasedCoursesIds, ...createdCoursesIds],
           },
         };
       }
       if (filter?.search) {
         query = {
+          ...query,
           title: { $regex: new RegExp(filter?.search), $options: "i" },
         };
       }

@@ -33,7 +33,7 @@ class UserCoursesController {
   async getHomeData(req: Request, res: Response, next: NextFunction) {
     try {
       const { results } = await this.coursesService.findByMultipleCategories(
-        req.user?.interests
+        req.user
       );
       const response = await this.bannersService.getBanners();
       res
@@ -48,15 +48,6 @@ class UserCoursesController {
     try {
       const { page, search, minPrice, maxPrice, category, language, sort } =
         req.query;
-      console.log({
-        search,
-        page,
-        minPrice,
-        maxPrice,
-        category,
-        language,
-        sort,
-      });
       const response = await this.coursesService.findPaginate(
         Number(page) || 1,
         req.user?._id,
