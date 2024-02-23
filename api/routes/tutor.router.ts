@@ -31,6 +31,12 @@ router.put(
     tutorCoursesController.editCourse(req, res, next)
 );
 
+router.patch(
+  "/change-course-pricing",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorCoursesController.changePricing(req, res, next)
+);
+
 router.delete(
   "/delete-course/:courseId",
   (req: Request, res: Response, next: NextFunction) =>
@@ -38,21 +44,32 @@ router.delete(
 );
 
 router.get(
+  "/get-creating-courses",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorCoursesController.getCreating(req, res, next)
+);
+
+router.get(
   "/get-pending-courses",
   (req: Request, res: Response, next: NextFunction) =>
     tutorCoursesController.getPending(req, res, next)
 );
-
-router.patch(
-  "/make-approval-request/:courseId",
+router.get(
+  "/get-published-courses",
   (req: Request, res: Response, next: NextFunction) =>
-    tutorCoursesController.makeApprovalRequest(req, res, next)
+    tutorCoursesController.getPublished(req, res, next)
 );
 
 router.patch(
-  "/cancel-approval-request/:courseId",
+  "/make-publish-request/:courseId",
   (req: Request, res: Response, next: NextFunction) =>
-    tutorCoursesController.cancelApprovalRequest(req, res, next)
+    tutorCoursesController.makePublishRequest(req, res, next)
+);
+
+router.patch(
+  "/cancel-publish-request/:courseId",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorCoursesController.cancelPublishRequest(req, res, next)
 );
 
 router.get(

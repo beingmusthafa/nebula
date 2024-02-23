@@ -128,6 +128,17 @@ class TutorController {
     }
   }
 
+  async getCreating(req: Request, res: Response, next: NextFunction) {
+    try {
+      const response = await this.coursesService.getCreating(
+        req.session.user._id
+      );
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
   async getPending(req: Request, res: Response, next: NextFunction) {
     try {
       const response = await this.coursesService.getPending(
@@ -139,10 +150,21 @@ class TutorController {
     }
   }
 
-  async makeApprovalRequest(req: Request, res: Response, next: NextFunction) {
+  async getPublished(req: Request, res: Response, next: NextFunction) {
+    try {
+      const response = await this.coursesService.getPublished(
+        req.session.user._id
+      );
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async makePublishRequest(req: Request, res: Response, next: NextFunction) {
     try {
       const { courseId } = req.params;
-      const response = await this.coursesService.makeApprovalRequest(
+      const response = await this.coursesService.makePublishRequest(
         courseId,
         req.session.user._id
       );
@@ -152,12 +174,27 @@ class TutorController {
     }
   }
 
-  async cancelApprovalRequest(req: Request, res: Response, next: NextFunction) {
+  async cancelPublishRequest(req: Request, res: Response, next: NextFunction) {
     try {
       const { courseId } = req.params;
-      const response = await this.coursesService.cancelApprovalRequest(
+      const response = await this.coursesService.cancelPublishRequest(
         courseId,
         req.session.user._id
+      );
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async changePricing(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { courseId } = req.params;
+      const { price, discount } = req.body;
+      const response = await this.coursesService.changePricing(
+        courseId,
+        req.session.user._id,
+        { price, discount }
       );
       res.status(response.statusCode).json(response);
     } catch (error) {

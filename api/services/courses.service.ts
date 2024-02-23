@@ -704,6 +704,27 @@ export class CoursesService {
     }
   }
 
+  async getCreating(
+    userId?: string | mongoose.Types.ObjectId
+  ): ServiceResponse<{ courses: object[] }> {
+    try {
+      let filter: any = {
+        status: "creating",
+      };
+      if (userId) filter = { ...filter, tutor: userId.toString() };
+      const courses = await this.coursesRepository.find(filter);
+      return {
+        success: true,
+        message: "Fetched creating courses successfully",
+        statusCode: 200,
+        courses,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   async getPending(
     userId?: string | mongoose.Types.ObjectId
   ): ServiceResponse<{ courses: object[] }> {
@@ -711,8 +732,8 @@ export class CoursesService {
       let filter: any = {
         status: "pending",
       };
-      if (userId) filter = { ...filter, _id: userId };
-      const courses = await this.coursesRepository.find();
+      if (userId) filter = { ...filter, tutor: userId.toString() };
+      const courses = await this.coursesRepository.find(filter);
       return {
         success: true,
         message: "Fetched pending courses successfully",
@@ -725,13 +746,34 @@ export class CoursesService {
     }
   }
 
-  async makeApprovalRequest(
+  async getPublished(
+    userId?: string | mongoose.Types.ObjectId
+  ): ServiceResponse<{ courses: object[] }> {
+    try {
+      let filter: any = {
+        status: "published",
+      };
+      if (userId) filter = { ...filter, tutor: userId.toString() };
+      const courses = await this.coursesRepository.find(filter);
+      return {
+        success: true,
+        message: "Fetched pending courses successfully",
+        statusCode: 200,
+        courses,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async makePublishRequest(
     courseId: string | mongoose.Types.ObjectId,
     userId: string | mongoose.Types.ObjectId
   ): ServiceResponse {
     try {
       const course = await this.coursesRepository.findById(courseId);
-      if (course.tutor.toString() !== userId) {
+      if (course.tutor.toString() !== userId.toString()) {
         return {
           success: false,
           message: "You are not authorized to push this course for approval",
@@ -747,7 +789,7 @@ export class CoursesService {
       }
       await this.coursesRepository.updateOne(
         { _id: courseId },
-        { $set: { status: "pending" } }
+        { status: "pending" }
       );
       return {
         success: true,
@@ -760,13 +802,13 @@ export class CoursesService {
     }
   }
 
-  async cancelApprovalRequest(
+  async cancelPublishRequest(
     courseId: string | mongoose.Types.ObjectId,
     userId: string | mongoose.Types.ObjectId
   ): ServiceResponse {
     try {
       const course = await this.coursesRepository.findById(courseId);
-      if (course.tutor.toString() !== userId) {
+      if (course.tutor.toString() !== userId.toString()) {
         return {
           success: false,
           message: "You are not authorized to cancel approval request",
@@ -782,7 +824,7 @@ export class CoursesService {
       }
       await this.coursesRepository.updateOne(
         { _id: courseId },
-        { $set: { status: "creating" } }
+        { status: "creating" }
       );
       return {
         success: true,
@@ -809,7 +851,7 @@ export class CoursesService {
       }
       await this.coursesRepository.updateOne(
         { _id: courseId },
-        { $set: { status: "published" } }
+        { status: "published" }
       );
       return {
         success: true,
@@ -836,11 +878,37 @@ export class CoursesService {
       }
       await this.coursesRepository.updateOne(
         { _id: courseId },
-        { $set: { status: "creating" } }
+        { status: "creating" }
       );
       return {
         success: true,
         message: "Course rejected successfully",
+        statusCode: 200,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async changePricing(
+    courseId: string | mongoose.Types.ObjectId,
+    userId: string | mongoose.Types.ObjectId,
+    data: { price: number; discount: number }
+  ): ServiceResponse {
+    try {
+      const course = await this.coursesRepository.findById(courseId);
+      if (course.tutor.toString() !== userId) {
+        return {
+          success: false,
+          message: "You are not authorized to change pricing",
+          statusCode: 401,
+        };
+      }
+      await this.coursesRepository.updateOne({ _id: courseId }, data);
+      return {
+        success: true,
+        message: "Pricing changed successfully",
         statusCode: 200,
       };
     } catch (error) {
