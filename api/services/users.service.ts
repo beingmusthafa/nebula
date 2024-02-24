@@ -11,6 +11,9 @@ import mongoose from "mongoose";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import PaginationResult from "../types/PaginationResult.js";
 import mailer, { Mailer } from "../utils/mailer.js";
+import { v2 as cloudinary } from "cloudinary";
+import { uploadtoCloudinary } from "../utils/parser.js";
+import { resizeImage } from "../utils/cropper.js";
 
 export class UsersService {
   private usersRepository: UsersRepository;
@@ -57,6 +60,7 @@ export class UsersService {
         },
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -95,6 +99,7 @@ export class UsersService {
         : "user unblocked successfully";
       return { success: true, message, statusCode: 201 };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -116,6 +121,7 @@ export class UsersService {
         user: rest,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -146,6 +152,7 @@ export class UsersService {
         statusCode: 201,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -181,6 +188,41 @@ export class UsersService {
         statusCode: 201,
       };
     } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async changeProfileImage(
+    userId: string | mongoose.Types.ObjectId,
+    image: Buffer
+  ): ServiceResponse {
+    let newImagePublicId: string;
+    try {
+      const user = await this.usersRepository.findById(userId);
+      const croppedImage = await resizeImage(image, 400, 400);
+      const { url, public_id } = (await uploadtoCloudinary(croppedImage)) as {
+        url: string;
+        public_id: string;
+      };
+      newImagePublicId = public_id;
+      if (user.imagePublicId) {
+        await cloudinary.uploader.destroy(user.imagePublicId);
+      }
+      await this.usersRepository.updateOne(
+        { _id: userId },
+        { $set: { image: url, imagePublicId: public_id } }
+      );
+      return {
+        success: true,
+        message: "Profile image changed successfully",
+        statusCode: 201,
+      };
+    } catch (error) {
+      await cloudinary.uploader
+        .destroy(newImagePublicId)
+        .catch((error) => console.log(error));
+      console.log(error);
       throw error;
     }
   }

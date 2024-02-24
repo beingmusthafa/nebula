@@ -65,6 +65,18 @@ class UserProfileController {
       next(customError(500, error.message));
     }
   }
+
+  async changeProfileImage(req: Request, res: Response, next: NextFunction) {
+    try {
+      const response = await this.usersService.changeProfileImage(
+        req.session.user?._id,
+        req.file.buffer
+      );
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
 }
 
 export default new UserProfileController(usersServiceInstance);

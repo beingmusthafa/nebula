@@ -5,6 +5,7 @@ import userCoursesController from "../controllers/user/user.courses.controller.j
 import userPurchaseController from "../controllers/user/user.purchase.controller.js";
 import userReviewsController from "../controllers/user/user.reviews.controller.js";
 import userProgressController from "../controllers/user/user.progress.controller.js";
+import { parser } from "../utils/parser.js";
 
 const router = express.Router();
 
@@ -30,6 +31,15 @@ router.put(
     authMiddleware.userAuth(req, res, next),
   (req: Request, res: Response, next: NextFunction) =>
     userProfileController.editProfile(req, res, next)
+);
+
+router.put(
+  "/change-profile-image",
+  parser.single("image"),
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userProfileController.changeProfileImage(req, res, next)
 );
 
 router.put(
