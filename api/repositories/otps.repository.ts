@@ -3,7 +3,7 @@ import otpsModel from "../models/otps.model.js";
 export class OtpsRepository {
   private model = otpsModel;
   private async delete(email: string) {
-    await this.model.deleteOne({ email });
+    await this.model.deleteMany({ email });
   }
 
   async findOne(query: { email: string; code?: number }) {

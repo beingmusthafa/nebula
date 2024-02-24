@@ -9,10 +9,27 @@ import userProgressController from "../controllers/user/user.progress.controller
 const router = express.Router();
 
 router.get(
-  "/profile",
-  //   authMiddleware.userAuth,
+  "/get-profile",
   (req: Request, res: Response, next: NextFunction) =>
-    userProfileController.getProfile
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userProfileController.getProfile(req, res, next)
+);
+
+router.post(
+  "/send-email-change-verification",
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userProfileController.sendChangeEmailVerification(req, res, next)
+);
+
+router.put(
+  "/edit-profile",
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userProfileController.editProfile(req, res, next)
 );
 
 router.put(

@@ -51,7 +51,7 @@ export class UsersRepository {
       if (select) {
         query = query.select(select);
       }
-      return query.exec();
+      return query.lean().exec();
     } catch (error) {
       throw error;
     }

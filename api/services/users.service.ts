@@ -4,15 +4,27 @@ import UsersInterface from "../interfaces/users.interface.js";
 import usersRepositoryInstance, {
   UsersRepository,
 } from "../repositories/users.repository.js";
+import otpsRepositoryInstance, {
+  OtpsRepository,
+} from "../repositories/otps.repository.js";
 import mongoose from "mongoose";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import PaginationResult from "../types/PaginationResult.js";
+import mailer, { Mailer } from "../utils/mailer.js";
 
 export class UsersService {
   private usersRepository: UsersRepository;
+  private otpsRepository: OtpsRepository;
+  private mailer: Mailer;
 
-  constructor(usersRepository: UsersRepository) {
+  constructor(
+    usersRepository: UsersRepository,
+    otpsRepository: OtpsRepository,
+    mailer: Mailer
+  ) {
     this.usersRepository = usersRepository;
+    this.otpsRepository = otpsRepository;
+    this.mailer = mailer;
   }
 
   async findAll(
@@ -51,7 +63,7 @@ export class UsersService {
 
   async findById(
     id: string | mongoose.Types.ObjectId
-  ): ServiceResponse<{ doc?: object }> {
+  ): ServiceResponse<{ user?: object }> {
     const doc = await this.usersRepository.findById(id, { password: 0 });
     if (!doc) {
       return {
@@ -60,11 +72,12 @@ export class UsersService {
         statusCode: 404,
       };
     }
+    const { password: _password, ...rest } = doc;
     return {
       success: true,
       message: "fetched doc successfully",
       statusCode: 200,
-      doc,
+      user: rest,
     };
   }
 
@@ -106,6 +119,75 @@ export class UsersService {
       throw error;
     }
   }
+
+  async sendChangeEmailVerification(email: string) {
+    try {
+      if (!email) {
+        return {
+          success: false,
+          message: "Email is required",
+          statusCode: 400,
+        };
+      }
+      const emailExists = await this.usersRepository.findByEmail(email);
+      if (emailExists) {
+        return {
+          success: false,
+          message: "Email already exists",
+          statusCode: 400,
+        };
+      }
+      const code = Math.floor(100000 + Math.random() * 900000);
+      await this.otpsRepository.create(email, code);
+      await this.mailer.sendVerificationMail(email, code);
+      return {
+        success: true,
+        message: "email change verification sent successfully",
+        statusCode: 201,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async editProfile(
+    userId: string | mongoose.Types.ObjectId,
+    data: { email: string; code?: number; name: string; bio: string }
+  ): ServiceResponse {
+    try {
+      const { email, code, name, bio } = data;
+      console.log({ email, code });
+      const user = await this.usersRepository.findById(userId);
+      if (user.email !== email) {
+        const verificationCode = await this.otpsRepository.findOne({
+          email,
+          code,
+        });
+        if (!verificationCode) {
+          return {
+            success: false,
+            message: "invalid verification code",
+            statusCode: 400,
+          };
+        }
+      }
+      await this.usersRepository.updateOne(
+        { _id: userId },
+        { $set: { name, bio, email } }
+      );
+      return {
+        success: true,
+        message: "profile updated successfully",
+        statusCode: 201,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
-export default new UsersService(usersRepositoryInstance);
+export default new UsersService(
+  usersRepositoryInstance,
+  otpsRepositoryInstance,
+  mailer
+);
