@@ -19,9 +19,9 @@ import videosRepositoryInstance, {
 import exercisesRepositoryInstance, {
   ExercisesRepository,
 } from "../repositories/exercises.repository.js";
-import purchasesRepositoryInstance, {
-  PurchasesRepository,
-} from "../repositories/purchases.repository.js";
+import enrollmentsRepositoryInstance, {
+  EnrollmentsRepository,
+} from "../repositories/enrollments.repository.js";
 import { v2 as cloudinary } from "cloudinary";
 import ICurrentUser from "../interfaces/currentUser.interface.js";
 
@@ -31,21 +31,21 @@ export class CoursesService {
   private chaptersRepository: ChaptersRepository;
   private videosRepository: VideosRepository;
   private exercisesRepository: ExercisesRepository;
-  private purchasesRepository: PurchasesRepository;
+  private enrollmentsRepository: EnrollmentsRepository;
   constructor(
     coursesRepository: CoursesRepository,
     categoriesRepository: CategoriesRepository,
     chaptersRepository: ChaptersRepository,
     videosRepository: VideosRepository,
     exercisesRepository: ExercisesRepository,
-    purchasesRepository: PurchasesRepository
+    enrollmentsRepository: EnrollmentsRepository
   ) {
     this.coursesRepository = coursesRepository;
     this.categoriesRepository = categoriesRepository;
     this.chaptersRepository = chaptersRepository;
     this.videosRepository = videosRepository;
     this.exercisesRepository = exercisesRepository;
-    this.purchasesRepository = purchasesRepository;
+    this.enrollmentsRepository = enrollmentsRepository;
   }
 
   async findByMultipleCategories(
@@ -58,7 +58,7 @@ export class CoursesService {
         categoryFilter = {
           _id: { $in: userData.interests },
         };
-        const purchasedCourses = await this.purchasesRepository.find(
+        const purchasedCourses = await this.enrollmentsRepository.find(
           { user: userData._id },
           { projection: "course" }
         );
@@ -138,7 +138,7 @@ export class CoursesService {
       let options = {};
       let query = {};
       if (userId) {
-        const purchasedCourses = await this.purchasesRepository.find(
+        const purchasedCourses = await this.enrollmentsRepository.find(
           { user: userId },
           { projection: "course" }
         );
@@ -459,7 +459,7 @@ export class CoursesService {
     userId: string | mongoose.Types.ObjectId
   ): ServiceResponse<{ courses: object[] }> {
     try {
-      const purchasedCourses = await this.purchasesRepository.find(
+      const purchasedCourses = await this.enrollmentsRepository.find(
         { user: userId },
         { projection: "course" }
       );
@@ -487,7 +487,7 @@ export class CoursesService {
     chapterId: string | mongoose.Types.ObjectId
   ): ServiceResponse<{ nextResource?: string }> {
     try {
-      const enrolled = await this.purchasesRepository.findOne({
+      const enrolled = await this.enrollmentsRepository.findOne({
         user: userId,
         course: courseId,
       });
@@ -961,5 +961,5 @@ export default new CoursesService(
   chaptersRepositoryInstance,
   videosRepositoryInstance,
   exercisesRepositoryInstance,
-  purchasesRepositoryInstance
+  enrollmentsRepositoryInstance
 );

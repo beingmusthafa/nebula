@@ -8,9 +8,9 @@ import wishlistRepositoryInstance, {
 import ServiceResponse from "../types/serviceresponse.type.js";
 import ICourses from "../interfaces/courses.interface.js";
 import Stripe from "stripe";
-import purchasesRepositoryInstance, {
-  PurchasesRepository,
-} from "../repositories/purchases.repository.js";
+import enrollmentsRepositoryInstance, {
+  EnrollmentsRepository,
+} from "../repositories/enrollments.repository.js";
 import progressRepositoryInstance, {
   ProgressRepository,
 } from "../repositories/progress.repository.js";
@@ -51,7 +51,7 @@ interface Cart {
 export class CartsService {
   private cartsRepository: CartsRepository;
   private coursesRepository: CoursesRepository;
-  private purchasesRepository: PurchasesRepository;
+  private enrollmentsRepository: EnrollmentsRepository;
   private progressRepository: ProgressRepository;
   private wishlistsRepository: WishlistsRepository;
   private progressService: ProgressService;
@@ -59,14 +59,14 @@ export class CartsService {
   constructor(
     cartsRepository: CartsRepository,
     wishlistsRepository: WishlistsRepository,
-    purchasesRepository: PurchasesRepository,
+    enrollmentsRepository: EnrollmentsRepository,
     coursesRepository: CoursesRepository,
     progressRepository: ProgressRepository,
     progressService: ProgressService
   ) {
     this.cartsRepository = cartsRepository;
     this.wishlistsRepository = wishlistsRepository;
-    this.purchasesRepository = purchasesRepository;
+    this.enrollmentsRepository = enrollmentsRepository;
     this.coursesRepository = coursesRepository;
     this.progressRepository = progressRepository;
     this.progressService = progressService;
@@ -81,7 +81,7 @@ export class CartsService {
         tutor: userId,
         _id: courseId,
       });
-      const alreadyPurchased = this.purchasesRepository.findOne({
+      const alreadyPurchased = this.enrollmentsRepository.findOne({
         user: userId,
         course: courseId,
       });
@@ -268,7 +268,7 @@ export class CartsService {
           };
         });
         const courseIds = carts.map((cart) => cart.course._id as string);
-        await this.purchasesRepository.createMany(purchases);
+        await this.enrollmentsRepository.createMany(purchases);
         await this.progressService.createMultipleCourseProgress(
           userId,
           courseIds
@@ -289,7 +289,7 @@ export class CartsService {
 export default new CartsService(
   cartsRepositoryInstance,
   wishlistRepositoryInstance,
-  purchasesRepositoryInstance,
+  enrollmentsRepositoryInstance,
   coursesRepositoryInstance,
   progressRepositoryInstance,
   progressServiceInstance
