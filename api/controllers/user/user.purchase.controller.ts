@@ -5,6 +5,9 @@ import cartsServiceInstance, {
 import wishlistServiceInstance, {
   WishlistsService,
 } from "../../services/wishlists.service.js";
+import enrollmentsServiceInstance, {
+  EnrollmentsService,
+} from "../../services/enrollments.service.js";
 import customError from "../../utils/error.js";
 declare global {
   namespace Express {
@@ -16,9 +19,15 @@ declare global {
 class UserPurchaseController {
   private cartsService: CartsService;
   private wishlistsService: WishlistsService;
-  constructor(cartsService: CartsService, wishlistsService: WishlistsService) {
+  private enrollmentsService: EnrollmentsService;
+  constructor(
+    cartsService: CartsService,
+    wishlistsService: WishlistsService,
+    enrollmentsService: EnrollmentsService
+  ) {
     this.cartsService = cartsService;
     this.wishlistsService = wishlistsService;
+    this.enrollmentsService = enrollmentsService;
   }
 
   async getCart(req: Request, res: Response, next: NextFunction) {
@@ -115,7 +124,9 @@ class UserPurchaseController {
   async createCheckoutSession(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.session.user._id;
-      const response = await this.cartsService.createCheckoutSession(userId);
+      const response = await this.enrollmentsService.createCheckoutSession(
+        userId
+      );
       return res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));
@@ -126,7 +137,7 @@ class UserPurchaseController {
     try {
       console.log("reached controller confirm");
       console.log("controller user:::", req.session.user);
-      await this.cartsService.confirmPurchase(
+      await this.enrollmentsService.confirmPurchase(
         req.headers["stripe-signature"],
         req.body
       );
@@ -138,5 +149,6 @@ class UserPurchaseController {
 
 export default new UserPurchaseController(
   cartsServiceInstance,
-  wishlistServiceInstance
+  wishlistServiceInstance,
+  enrollmentsServiceInstance
 );
