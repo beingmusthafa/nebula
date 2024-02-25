@@ -891,6 +891,44 @@ export class CoursesService {
     }
   }
 
+  async blockCourse(
+    courseId: string | mongoose.Types.ObjectId
+  ): ServiceResponse {
+    try {
+      await this.coursesRepository.updateOne(
+        { _id: courseId },
+        { isBlocked: true }
+      );
+      return {
+        success: true,
+        message: "Course blocked successfully",
+        statusCode: 200,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async unblockCourse(
+    courseId: string | mongoose.Types.ObjectId
+  ): ServiceResponse {
+    try {
+      await this.coursesRepository.updateOne(
+        { _id: courseId },
+        { isBlocked: false }
+      );
+      return {
+        success: true,
+        message: "Course blocked successfully",
+        statusCode: 200,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   async changePricing(
     courseId: string | mongoose.Types.ObjectId,
     userId: string | mongoose.Types.ObjectId,

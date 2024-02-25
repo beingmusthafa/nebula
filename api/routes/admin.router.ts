@@ -40,16 +40,34 @@ router.get(
     adminCoursesController.getPending(req, res, next)
 );
 
+router.get(
+  "/get-published-courses",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminCoursesController.getPublished(req, res, next)
+);
+
 router.patch(
   "/approve-course/:courseId",
   (req: Request, res: Response, next: NextFunction) =>
     adminCoursesController.approveCourse(req, res, next)
 );
 
-router.get(
-  "/reject-courses/:courseId",
+router.patch(
+  "/reject-course/:courseId",
   (req: Request, res: Response, next: NextFunction) =>
     adminCoursesController.rejectCourse(req, res, next)
+);
+
+router.patch(
+  "/block-course/:courseId",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminCoursesController.blockCourse(req, res, next)
+);
+
+router.patch(
+  "/unblock-course/:courseId",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminCoursesController.unblockCourse(req, res, next)
 );
 
 router.get(

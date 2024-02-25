@@ -41,7 +41,14 @@ const ChapterInitialRedirect = lazy(
 );
 const CourseVideo = lazy(() => import("./pages/user/CourseVideo.tsx"));
 const CourseExercise = lazy(() => import("./pages/user/CourseExercise.tsx"));
+const Profile = lazy(() => import("./pages/user/Profile.tsx"));
 import InterestsGate from "./components/InterestsGate.tsx";
+const PendingCourseDetails_admin = lazy(
+  () => import("./pages/admin/PendingCourseDetails_admin.tsx")
+);
+const PublishedCourseDetails_admin = lazy(
+  () => import("./pages/admin/PublishedCourseDetails_admin.tsx")
+);
 const App = () => {
   return (
     <BrowserRouter>
@@ -133,6 +140,15 @@ const App = () => {
               </Suspense>
             }
           />
+          <Route
+            path="/profile"
+            element={
+              <Suspense>
+                <Profile />
+              </Suspense>
+            }
+          />
+
           <Route element={<UserAuth />}>
             <Route
               path="/my-courses"
@@ -150,7 +166,6 @@ const App = () => {
                 </Suspense>
               }
             />
-
             <Route
               path="/my-courses/learn/:courseId/:chapterId"
               element={
@@ -175,7 +190,6 @@ const App = () => {
                 </Suspense>
               }
             />
-
             <Route
               path="/cart"
               element={
@@ -216,7 +230,6 @@ const App = () => {
                 </Suspense>
               }
             />
-
             <Route
               path="/tutor/manage-course-content/:id"
               element={
@@ -225,7 +238,6 @@ const App = () => {
                 </Suspense>
               }
             />
-
             <Route
               path="/tutor/course/:id"
               element={
@@ -234,6 +246,7 @@ const App = () => {
                 </Suspense>
               }
             />
+            R
           </Route>
         </Route>
         {/* Admin routes */}
@@ -259,6 +272,22 @@ const App = () => {
             element={
               <Suspense fallback={<Loading />}>
                 <Courses_admin />
+              </Suspense>
+            }
+          />
+          <Route
+            path="courses/pending/:courseId"
+            element={
+              <Suspense fallback={<Loading />}>
+                <PendingCourseDetails_admin />
+              </Suspense>
+            }
+          />
+          <Route
+            path="courses/published/:courseId"
+            element={
+              <Suspense fallback={<Loading />}>
+                <PublishedCourseDetails_admin />
               </Suspense>
             }
           />
