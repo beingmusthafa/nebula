@@ -4,7 +4,13 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import ChangeEmailVerification from "../../components/user/ChangeEmailVerification";
 import { updateDetails } from "../../redux/user/userSlice";
+import EnrollmentCard from "../../components/user/EnrollmentCard";
 
+interface Enrollment {
+  _id: string;
+  course: { title: string; thumbnail: string; price: number };
+  createdAt: Date;
+}
 const Profile = () => {
   const { currentUser } = useSelector((state: any) => state.user);
   console.log(currentUser);
@@ -17,11 +23,25 @@ const Profile = () => {
   let [editing, setEditing] = useState(false);
   let [verificationComplete, setVerificationComplete] = useState(false);
   let [image, setImage] = useState<File | null>(null);
+  let [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   let nameRef = useRef<HTMLInputElement>(null);
   let emailRef = useRef<HTMLInputElement>(null);
   let bioRef = useRef<HTMLTextAreaElement>(null);
   let verificationRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
+  const getEnrollments = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/get-enrollments").then((res) => res.json());
+      setLoading(false);
+      if (!res.success) throw new Error(res.message);
+      setEnrollments(res.enrollments);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.message || error);
+    }
+  };
+
   const handleEdit = async () => {
     const toastId = toast.loading("Saving details");
     setError("");
@@ -65,6 +85,7 @@ const Profile = () => {
       toast.error(error.message || error);
     }
   };
+
   const startVerification = async () => {
     const toastId = toast.loading("Sending verification code");
     try {
@@ -86,6 +107,7 @@ const Profile = () => {
       console.log(error);
     }
   };
+
   const changeImage = async () => {
     const toastId = toast.loading("Changing profile image");
     try {
@@ -113,11 +135,15 @@ const Profile = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    getEnrollments();
+  }, []);
   useEffect(() => {
     if (!image) return;
     changeImage();
   }, [image]);
-  console.log(image);
+
   return (
     <>
       {loading ? (
@@ -257,6 +283,21 @@ const Profile = () => {
               </label>
             </div>
           </div>
+          {enrollments?.length > 0 && (
+            <>
+              <h2 className="_section-title2 text-center my-6">
+                Enrollment history
+              </h2>
+              {enrollments.map((enrollment) => {
+                return (
+                  <EnrollmentCard
+                    key={enrollment._id}
+                    enrollment={enrollment}
+                  />
+                );
+              })}
+            </>
+          )}
         </>
       )}
     </>

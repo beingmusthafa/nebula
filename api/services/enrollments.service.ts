@@ -123,7 +123,6 @@ export class EnrollmentsService {
 
   async confirmPurchase(eventHeader: string | string[], requestBody: string) {
     try {
-      console.log(":::REACHED CONFIRM::");
       const event = stripe.webhooks.constructEvent(
         requestBody,
         eventHeader,
@@ -161,6 +160,34 @@ export class EnrollmentsService {
       } else {
         console.log("Payment failed");
       }
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async getEnrollments(
+    userId: string | mongoose.Types.ObjectId
+  ): ServiceResponse<{ enrollments: object[] }> {
+    try {
+      const enrollments = await this.enrollmentsRepository.find(
+        {
+          user: userId,
+        },
+        {
+          sort: { createdAt: 1 },
+          populate: {
+            path: "course",
+            select: "title thumbnail price discount",
+          },
+        }
+      );
+      return {
+        success: true,
+        message: "Enrollments fetched",
+        statusCode: 200,
+        enrollments,
+      };
     } catch (error) {
       console.log(error);
       throw error;

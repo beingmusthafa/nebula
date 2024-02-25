@@ -42,6 +42,14 @@ router.put(
     userProfileController.changeProfileImage(req, res, next)
 );
 
+router.get(
+  "/get-enrollments",
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userPurchaseController.getEnrollments(req, res, next)
+);
+
 router.put(
   "/add-interests",
   (req: Request, res: Response, next: NextFunction) =>

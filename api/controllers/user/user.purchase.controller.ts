@@ -135,12 +135,20 @@ class UserPurchaseController {
 
   async confirmPurchase(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log("reached controller confirm");
-      console.log("controller user:::", req.session.user);
       await this.enrollmentsService.confirmPurchase(
         req.headers["stripe-signature"],
         req.body
       );
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async getEnrollments(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.session.user._id;
+      const response = await this.enrollmentsService.getEnrollments(userId);
+      return res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));
     }
