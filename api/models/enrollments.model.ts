@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const purchasesModel = new mongoose.Schema(
+const enrollmentsModel = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -20,4 +20,4 @@ const purchasesModel = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Purchases", purchasesModel);
+export default mongoose.model("Enrollments", enrollmentsModel);

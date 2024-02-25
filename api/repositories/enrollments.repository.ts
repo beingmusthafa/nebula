@@ -1,7 +1,7 @@
 import mongoose, { QueryOptions, mongo } from "mongoose";
-import purchasesModel from "../models/purchases.model.js";
-export class PurchasesRepository {
-  private model = purchasesModel;
+import enrollmentsModel from "../models/enrollments.model.js";
+export class EnrollmentsRepository {
+  private model = enrollmentsModel;
 
   async find(filter: object, options?: QueryOptions) {
     try {
@@ -75,4 +75,4 @@ export class PurchasesRepository {
   }
 }
 
-export default new PurchasesRepository();
+export default new EnrollmentsRepository();
