@@ -193,6 +193,117 @@ export class EnrollmentsService {
       throw error;
     }
   }
+
+  async getGraphData(
+    tutorId?: string | mongoose.Types.ObjectId
+  ): ServiceResponse<{ courseEnrollmentData: object[] }> {
+    try {
+      const enrollmentsAggregate = await this.enrollmentsRepository.aggregate([
+        {
+          $lookup: {
+            from: "courses",
+            localField: "course",
+            foreignField: "_id",
+            as: "course",
+          },
+        },
+        {
+          $unwind: "$course",
+        },
+        {
+          $match: tutorId
+            ? { "course.tutor": new mongoose.Types.ObjectId(tutorId) }
+            : {},
+        },
+        {
+          $group: {
+            _id: { $month: "$createdAt" },
+            count: { $sum: 1 },
+            revenue: { $sum: "$price" },
+          },
+        },
+        {
+          $sort: { _id: 1 },
+        },
+      ]);
+      const courseEnrollmentData = enrollmentsAggregate.map((enrollment) => {
+        return {
+          month: enrollment._id,
+          count: enrollment.count,
+          revenue: enrollment.revenue,
+        };
+      });
+      return {
+        success: true,
+        message: "Graph data fetched",
+        statusCode: 200,
+        courseEnrollmentData,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  // async getMonthlyStats(
+  //   tutorId?: string | mongoose.Types.ObjectId
+  // ): ServiceResponse {
+  //   try {
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw error;
+  //   }
+  // }
+
+  async getTopCourses(
+    tutorId?: string | mongoose.Types.ObjectId
+  ): ServiceResponse<{ courses: object[] }> {
+    try {
+      const enrollmentsAggregate = await this.enrollmentsRepository.aggregate([
+        {
+          $lookup: {
+            from: "courses",
+            localField: "course",
+            foreignField: "_id",
+            as: "course",
+          },
+        },
+        {
+          $unwind: "$course",
+        },
+        {
+          $match: tutorId
+            ? { "course.tutor": new mongoose.Types.ObjectId(tutorId) }
+            : {},
+        },
+        {
+          $group: {
+            _id: "$course._id",
+            course: { $first: "$course" },
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { count: -1 } },
+        { $limit: 10 },
+      ]);
+      const topCourses = enrollmentsAggregate.map((enrollment) => {
+        return {
+          data: enrollment.course,
+          count: enrollment.count,
+        };
+      });
+      console.log(topCourses);
+      return {
+        success: true,
+        message: "Top courses fetched",
+        statusCode: 200,
+        courses: topCourses,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }
 
 export default new EnrollmentsService(

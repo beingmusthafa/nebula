@@ -1,4 +1,4 @@
-import mongoose, { QueryOptions, mongo } from "mongoose";
+import mongoose, { AggregateOptions, QueryOptions, mongo } from "mongoose";
 import enrollmentsModel from "../models/enrollments.model.js";
 export class EnrollmentsRepository {
   private model = enrollmentsModel;
@@ -69,6 +69,22 @@ export class EnrollmentsRepository {
   ) {
     try {
       await this.model.insertMany(data);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async count(filter: object) {
+    try {
+      return await this.model.countDocuments(filter);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async aggregate(pipeline: mongoose.PipelineStage[]) {
+    try {
+      return await this.model.aggregate(pipeline);
     } catch (error) {
       throw error;
     }
