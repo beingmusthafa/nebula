@@ -12,22 +12,28 @@ import chaptersServiceInstance, {
 import bannersServiceInstance, {
   BannersService,
 } from "../../services/banners.service.js";
+import messagesServiceInstance, {
+  MessagesService,
+} from "../../services/messages.service.js";
 
 class UserCoursesController {
   private coursesService: CoursesService;
   private categoriesService: CategoriesService;
   private chaptersService: ChaptersService;
   private bannersService: BannersService;
+  private messagesService: MessagesService;
   constructor(
     coursesService: CoursesService,
     categoriesService: CategoriesService,
     chaptersService: ChaptersService,
-    bannersService: BannersService
+    bannersService: BannersService,
+    messagesService: MessagesService
   ) {
     this.coursesService = coursesService;
     this.categoriesService = categoriesService;
     this.chaptersService = chaptersService;
     this.bannersService = bannersService;
+    this.messagesService = messagesService;
   }
 
   async getHomeData(req: Request, res: Response, next: NextFunction) {
@@ -71,7 +77,6 @@ class UserCoursesController {
       const { id } = req.params;
       const response = await this.coursesService.findById(id);
       const { chapters } = await this.chaptersService.getByCourse(id);
-      console.log({ chapters });
       res.status(response.statusCode).json({ ...response, chapters });
     } catch (error) {
       next(customError(500, error.message));
@@ -144,11 +149,25 @@ class UserCoursesController {
       next(customError(500, error.message));
     }
   }
+
+  async getRoomMessages(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { courseId } = req.params;
+      const response = await this.messagesService.findAll(
+        req.session.user?._id,
+        courseId
+      );
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
 }
 
 export default new UserCoursesController(
   coursesServiceInstance,
   categoriesServiceInstance,
   chaptersServiceInstance,
-  bannersServiceInstance
+  bannersServiceInstance,
+  messagesServiceInstance
 );

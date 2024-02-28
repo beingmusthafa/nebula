@@ -247,4 +247,12 @@ router.get(
     userCoursesController.getExerciseDetails(req, res, next)
 );
 
+router.get(
+  "/get-room-messages/:courseId",
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userCoursesController.getRoomMessages(req, res, next)
+);
+
 export default router;
