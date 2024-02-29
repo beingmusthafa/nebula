@@ -7,12 +7,14 @@ import userRouter from "./routes/user.router.js";
 import tutorRouter from "./routes/tutor.router.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-import coursesModel from "./models/courses.model.js";
-import chaptersModel from "./models/chapters.model.js";
 import userPurchaseController from "./controllers/user/user.purchase.controller.js";
-import authMiddleware from "./middlewares/auth.middleware.js";
+import scheduleReportGeneration from "./utils/reportGenerator.js";
+import { Server } from "socket.io";
+import messagesRepository from "./repositories/messages.repository.js";
+
 const app = express();
 connectDb();
+scheduleReportGeneration();
 
 app.use(cookieParser());
 app.use(
@@ -25,8 +27,6 @@ app.use(
 app.post(
   "/stripe-webhook",
   express.raw({ type: "application/json" }),
-  (req: Request, res: Response, next: NextFunction) =>
-    authMiddleware.userAuth(req, res, next),
   (req: Request, res: Response, next: NextFunction) =>
     userPurchaseController.confirmPurchase(req, res, next)
 );
@@ -41,6 +41,38 @@ app.use(errorHandler);
 app.use("*", (req: Request, res: Response) => {
   res.status(404).json({ message: "Page not found" });
 });
-app.listen(3000, () => {
+const server = app.listen(3000, () => {
   console.log("Server started");
 });
+
+const io = new Server(server, { cors: { origin: "http://localhost:5173" } });
+
+io.on("connection", (socket) => {
+  console.log("new socket connection : ", socket.id);
+  socket.on(
+    "send-message",
+    async (data: {
+      message: string;
+      user: {
+        _id: string;
+        name: string;
+        image: string;
+      };
+      course: string;
+      createdAt: Date;
+    }) => {
+      io.to(data.course).emit("receive-message", data);
+      await messagesRepository.create({
+        user: data.user._id,
+        message: data.message,
+        course: data.course,
+      });
+    }
+  );
+
+  socket.on("join-course-room", (room) => {
+    socket.join(room);
+  });
+});
+
+export default server;
