@@ -21,8 +21,8 @@ const AddCourse = () => {
   let [category, setCategory] = useState<string>("");
   let [language, setLanguage] = useState<string>("English");
   let [price, setPrice] = useState<number>(0);
-  let [requirements, setRequirements] = useState<string[]>([]);
-  let [benefits, setBenefits] = useState<string[]>([]);
+  let [requirements, setRequirements] = useState<Set<string>>(new Set());
+  let [benefits, setBenefits] = useState<Set<string>>(new Set());
   let reqInputRef = useRef<HTMLInputElement | null>(null);
   let benInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
@@ -43,28 +43,31 @@ const AddCourse = () => {
   function addBenefit(ben: string | undefined) {
     console.log(ben);
     if (!ben || !ben.trim()) return;
-    const newArr = [...benefits, ben];
-    setBenefits(newArr);
+    let newSet = new Set(benefits);
+    newSet.add(ben.trim());
+    setBenefits(newSet);
     if (benInputRef.current) benInputRef.current.value = "";
     benInputRef.current?.focus();
   }
-  function removebenefit(index: number) {
-    const newArr = [...benefits];
-    newArr.splice(index, 1);
-    setBenefits(newArr);
+  function removebenefit(ben: string) {
+    let newSet = new Set(benefits);
+    newSet.delete(ben);
+    setBenefits(newSet);
   }
   function addRequirement(req: string | undefined) {
     console.log(req);
     if (!req || !req.trim()) return;
-    const newArr = [...requirements, req];
-    setRequirements(newArr);
+    let newSet = new Set(requirements);
+    newSet.add(req.trim());
+    console.log({ newSet });
+    setRequirements(newSet);
     if (reqInputRef.current) reqInputRef.current.value = "";
     reqInputRef.current?.focus();
   }
-  function removeRequirement(index: number) {
-    const newArr = [...requirements];
-    newArr.splice(index, 1);
-    setRequirements(newArr);
+  function removeRequirement(req: string) {
+    let newSet = new Set(requirements);
+    newSet.delete(req);
+    setRequirements(newSet);
   }
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -92,10 +95,10 @@ const AddCourse = () => {
     formData.append("category", category);
     formData.append("language", language);
     formData.append("price", price.toString());
-    requirements.forEach((req, i) => {
+    Array.from(requirements).forEach((req, i) => {
       formData.append(`requirements[${i}]`, req);
     });
-    benefits.forEach((ben, i) => {
+    Array.from(benefits).forEach((ben, i) => {
       formData.append(`benefits[${i}]`, ben);
     });
     console.log(formData);
@@ -220,17 +223,17 @@ const AddCourse = () => {
           <label htmlFor="" className="font-bold my-2">
             Benefits : what do learners achieve? (optional)
           </label>
-          {benefits.length > 0 ? (
-            benefits.map((req, i) => (
+          {benefits.size > 0 ? (
+            Array.from(benefits).map((ben, i) => (
               <div key={i} className="flex items-center">
                 <button
-                  onClick={() => removebenefit(i)}
+                  onClick={() => removebenefit(ben)}
                   type="button"
                   className="text-red-600 text-2xl mr-2 font-bold"
                 >
                   -
                 </button>
-                <p className="font-semibold text-slate-600">{req}</p>
+                <p className="font-semibold text-slate-600">{ben}</p>
               </div>
             ))
           ) : (
@@ -254,11 +257,11 @@ const AddCourse = () => {
           <label htmlFor="" className="font-bold my-2">
             Requirements (optional)
           </label>
-          {requirements.length > 0 ? (
-            requirements.map((req, i) => (
+          {requirements.size > 0 ? (
+            Array.from(requirements).map((req, i) => (
               <div key={i} className="flex items-center">
                 <button
-                  onClick={() => removeRequirement(i)}
+                  onClick={() => removeRequirement(req)}
                   type="button"
                   className="text-red-600 text-2xl mr-2 font-bold"
                 >
