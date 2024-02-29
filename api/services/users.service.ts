@@ -108,10 +108,11 @@ export class UsersService {
     interests: string[]
   ): ServiceResponse<{ user: object }> {
     try {
-      const newData = await this.usersRepository.updateOne(
+      await this.usersRepository.updateOne(
         { _id },
         { $addToSet: { interests: { $each: interests } } }
       );
+      const newData = await this.usersRepository.findById(_id);
       const { password: _password, ...rest } = newData;
       return {
         success: true,

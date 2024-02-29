@@ -26,6 +26,7 @@ class UserProfileController {
         req.session.user?._id,
         interests
       );
+      req.session.user = response.user;
       res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));
