@@ -45,7 +45,6 @@ export class ReviewsService {
     comment?: string;
   }): ServiceResponse {
     try {
-      console.log("reachedd service");
       review.comment = review.comment.trim();
       if (!review.comment) delete review.comment;
       else if (review.comment.length > 500) {

@@ -55,7 +55,6 @@ export class ChaptersService {
         })
       );
 
-      console.log(result);
       return {
         success: true,
         message: "Chapters fetched successfully",

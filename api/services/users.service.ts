@@ -35,7 +35,6 @@ export class UsersService {
     page: number
   ): ServiceResponse<PaginationResult> {
     try {
-      console.log("reached service");
       const docs = await this.usersRepository.find(
         { email: { $ne: currentUserEmail } },
         { limit: 3, skip: 3 * (page - 1) }
@@ -163,7 +162,6 @@ export class UsersService {
   ): ServiceResponse {
     try {
       const { email, code, name, bio } = data;
-      console.log({ email, code });
       const user = await this.usersRepository.findById(userId);
       if (user.email !== email) {
         const verificationCode = await this.otpsRepository.findOne({

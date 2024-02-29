@@ -555,7 +555,11 @@ export class CoursesService {
     };
   }> {
     try {
-      let nextData = {
+      let nextData: {
+        nextVideo?: boolean;
+        nextExercise?: Boolean;
+        nextChapter?: boolean | string | mongoose.Types.ObjectId;
+      } = {
         nextVideo: false,
         nextExercise: false,
         nextChapter: false,
@@ -609,7 +613,7 @@ export class CoursesService {
         order: currentChapter.order + 1,
       });
       if (nextChapter) {
-        nextData.nextChapter = true;
+        nextData.nextChapter = nextChapter._id;
         return {
           success: true,
           message: "Fetched video details successfully",

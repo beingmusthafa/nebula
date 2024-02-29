@@ -12,7 +12,6 @@ class UsersReviewsController {
 
   async getReviews(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log("reached:::");
       const { courseId } = req.params;
       const response = await this.reviewsService.getReviews(courseId);
       res.status(response.statusCode).json(response);
@@ -38,7 +37,6 @@ class UsersReviewsController {
 
   async editReview(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log(req.originalUrl);
       const { reviewId } = req.params;
       const { rating, comment } = req.body;
       const response = await this.reviewsService.editReview(reviewId, {
