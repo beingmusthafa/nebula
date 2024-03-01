@@ -45,6 +45,11 @@ const server = app.listen(3000, () => {
   console.log("Server started");
 });
 
+// const report = await adminReportsRepository.findOne({
+//   _id: "65e0bb00c515f040dda732a5",
+// });
+// // generateAdminReportPdf(report);
+
 const io = new Server(server, { cors: { origin: "http://localhost:5173" } });
 
 io.on("connection", (socket) => {

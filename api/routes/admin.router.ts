@@ -5,6 +5,7 @@ import adminCategoriesController from "../controllers/admin/admin.categories.con
 import { parser } from "../utils/parser.js";
 import adminBannersController from "../controllers/admin/admin.banners.controller.js";
 import adminCoursesController from "../controllers/admin/admin.courses.controller.js";
+import adminStatsController from "../controllers/admin/admin.stats.controller.js";
 
 const router = express.Router();
 router.use((req: Request, res: Response, next: NextFunction) =>
@@ -129,6 +130,46 @@ router.delete(
   "/delete-banner/:bannerId",
   (req: Request, res: Response, next: NextFunction) =>
     adminBannersController.deleteBanner(req, res, next)
+);
+
+router.get(
+  "/get-graph-data",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminStatsController.getGraphData(req, res, next)
+);
+
+router.get(
+  "/get-top-courses",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminStatsController.getTopCourses(req, res, next)
+);
+
+router.get(
+  "/get-report/:reportId",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminStatsController.getReport(req, res, next)
+);
+
+router.get(
+  "/get-weekly-reports",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminStatsController.getWeeklyReports(req, res, next)
+);
+router.get(
+  "/get-monthly-reports",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminStatsController.getMonthlyReports(req, res, next)
+);
+router.get(
+  "/get-yearly-reports",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminStatsController.getYearlyReports(req, res, next)
+);
+
+router.get(
+  "/download-report-pdf/:reportId",
+  (req: Request, res: Response, next: NextFunction) =>
+    adminStatsController.getReportPdfBuffer(req, res, next)
 );
 
 export default router;

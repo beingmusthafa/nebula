@@ -16,8 +16,13 @@ const AdminSignIn = lazy(() => import("./pages/AdminSignIn"));
 const Cart = lazy(() => import("./pages/user/Cart.tsx"));
 const Wishlist = lazy(() => import("./pages/user/Wishlist.tsx"));
 const Users_admin = lazy(() => import("./pages/admin/Users_admin.tsx"));
+const Stats_admin = lazy(() => import("./pages/admin/Stats_admin.tsx"));
 const Courses_admin = lazy(() => import("./pages/admin/Courses_admin.tsx"));
 const Banners_admin = lazy(() => import("./pages/admin/Banners_admin.tsx"));
+const Reports_admin = lazy(() => import("./pages/admin/Reports_admin.tsx"));
+const ViewReport_admin = lazy(
+  () => import("./pages/admin/ViewReport_admin.tsx")
+);
 const UserDetails_admin = lazy(
   () => import("./pages/admin/UserDetails_admin.tsx")
 );
@@ -28,6 +33,10 @@ const Categories_admin = lazy(
 );
 const EditCourse = lazy(() => import("./pages/tutor/EditCourse.tsx"));
 const Course_tutor = lazy(() => import("./pages/tutor/Course_tutor.tsx"));
+const Reports_tutor = lazy(() => import("./pages/tutor/Reports_tutor.tsx"));
+const ViewReport_tutor = lazy(
+  () => import("./pages/tutor/ViewReport_tutor.tsx")
+);
 const ManageContent = lazy(() => import("./pages/tutor/ManageContent.tsx"));
 const PaymentSuccess = lazy(() => import("./pages/user/PaymentSuccess.tsx"));
 const PaymentFailure = lazy(() => import("./pages/user/PaymentFailure.tsx"));
@@ -43,6 +52,7 @@ const CourseVideo = lazy(() => import("./pages/user/CourseVideo.tsx"));
 const CourseExercise = lazy(() => import("./pages/user/CourseExercise.tsx"));
 const Profile = lazy(() => import("./pages/user/Profile.tsx"));
 import InterestsGate from "./components/InterestsGate.tsx";
+import Footer from "./components/Footer.tsx";
 const PendingCourseDetails_admin = lazy(
   () => import("./pages/admin/PendingCourseDetails_admin.tsx")
 );
@@ -104,6 +114,7 @@ const App = () => {
             element={
               <Suspense fallback={<Loading />}>
                 <Home />
+                <Footer />
               </Suspense>
             }
           />
@@ -129,6 +140,7 @@ const App = () => {
             element={
               <Suspense fallback={<Loading />}>
                 <Courses />
+                <Footer />
               </Suspense>
             }
           />
@@ -137,6 +149,7 @@ const App = () => {
             element={
               <Suspense fallback={<Loading />}>
                 <CourseDetails />
+                <Footer />
               </Suspense>
             }
           />
@@ -145,6 +158,7 @@ const App = () => {
             element={
               <Suspense>
                 <Profile />
+                <Footer />
               </Suspense>
             }
           />
@@ -155,6 +169,7 @@ const App = () => {
               element={
                 <Suspense fallback={<Loading />}>
                   <MyCourses />
+                  <Footer />
                 </Suspense>
               }
             />
@@ -163,6 +178,7 @@ const App = () => {
               element={
                 <Suspense fallback={<Loading />}>
                   <LearnCourse />
+                  <Footer />
                 </Suspense>
               }
             />
@@ -211,6 +227,7 @@ const App = () => {
               element={
                 <Suspense fallback={<Loading />}>
                   <TutorDashboard />
+                  <Footer />
                 </Suspense>
               }
             />
@@ -235,6 +252,7 @@ const App = () => {
               element={
                 <Suspense fallback={<Loading />}>
                   <ManageContent />
+                  <Footer />
                 </Suspense>
               }
             />
@@ -246,7 +264,22 @@ const App = () => {
                 </Suspense>
               }
             />
-            R
+            <Route
+              path="/tutor/reports"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Reports_tutor />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/tutor/reports/view-report/:reportId"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <ViewReport_tutor />
+                </Suspense>
+              }
+            />
           </Route>
         </Route>
         {/* Admin routes */}
@@ -256,6 +289,30 @@ const App = () => {
             element={
               <Suspense fallback={<Loading />}>
                 <Users_admin />
+              </Suspense>
+            }
+          />
+          <Route
+            path="stats"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Stats_admin />
+              </Suspense>
+            }
+          />
+          <Route
+            path="stats/reports"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Reports_admin />
+              </Suspense>
+            }
+          />
+          <Route
+            path="stats/reports/view-report/:reportId"
+            element={
+              <Suspense fallback={<Loading />}>
+                <ViewReport_admin />
               </Suspense>
             }
           />
