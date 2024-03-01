@@ -109,7 +109,8 @@ export class CoursesService {
 
   async find(query: object): ServiceResponse<{ docs?: object[] }> {
     try {
-      const docs = await this.coursesRepository.find(query);
+      const filter = { ...query, status: "published" };
+      const docs = await this.coursesRepository.find(filter);
       return {
         success: true,
         message: "fetched docs successfully",
@@ -189,6 +190,10 @@ export class CoursesService {
             : { price: -1 };
         options = { sort };
       }
+      query = {
+        ...query,
+        status: "published",
+      };
       const docs = await this.coursesRepository.find(query, {
         ...options,
         populate: { path: "tutor", select: "name image" },
