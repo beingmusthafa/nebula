@@ -121,8 +121,8 @@ export class ReportsService {
   }
 
   async getTutorReports(
-    tutorId: string | mongoose.Types.ObjectId,
-    type: "weekly" | "monthly" | "yearly"
+    type: "weekly" | "monthly" | "yearly",
+    tutorId: string | mongoose.Types.ObjectId
   ): ServiceResponse<{ reports: object[] }> {
     try {
       const reports = await this.tutorReportsRepository.find({

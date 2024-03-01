@@ -5,6 +5,7 @@ import tutorCoursesController from "../controllers/tutor/tutor.courses.controlle
 import tutorChaptersController from "../controllers/tutor/tutor.chapters.controller.js";
 import tutorExercisesController from "../controllers/tutor/tutor.exercises.controller.js";
 import tutorVideosController from "../controllers/tutor/tutor.videos.controller.js";
+import tutorStatsController from "../controllers/tutor/tutor.stats.controller.js";
 const router = express.Router();
 
 router.use((req: Request, res: Response, next: NextFunction) =>
@@ -160,6 +161,46 @@ router.get(
   "/get-videos-count/:chapterId",
   (req: Request, res: Response, next: NextFunction) =>
     tutorVideosController.getCount(req, res, next)
+);
+
+router.get(
+  "/get-graph-data",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorStatsController.getGraphData(req, res, next)
+);
+
+router.get(
+  "/get-top-courses",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorStatsController.getTopCourses(req, res, next)
+);
+
+router.get(
+  "/get-report/:reportId",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorStatsController.getReport(req, res, next)
+);
+
+router.get(
+  "/get-weekly-reports",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorStatsController.getWeeklyReports(req, res, next)
+);
+router.get(
+  "/get-monthly-reports",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorStatsController.getMonthlyReports(req, res, next)
+);
+router.get(
+  "/get-yearly-reports",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorStatsController.getYearlyReports(req, res, next)
+);
+
+router.get(
+  "/download-report-pdf/:reportId",
+  (req: Request, res: Response, next: NextFunction) =>
+    tutorStatsController.getReportPdfBuffer(req, res, next)
 );
 
 export default router;

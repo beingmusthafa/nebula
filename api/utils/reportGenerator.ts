@@ -337,7 +337,7 @@ const scheduleReportGeneration = () => {
 
 export const testGeneration = async () => {
   try {
-    generateAdminReport("monthly");
+    // generateAdminReport("monthly");
     const tutors = await coursesRepository.aggregate([
       {
         $group: {
@@ -346,8 +346,9 @@ export const testGeneration = async () => {
       },
     ]);
     tutors.forEach(async (tutor) => {
-      generateTutorReport("weekly", tutor._id);
+      generateTutorReport("monthly", tutor._id);
     });
+    console.log("tutor test generation started");
   } catch (error) {
     console.log(error);
   }
