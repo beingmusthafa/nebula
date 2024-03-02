@@ -11,6 +11,9 @@ import userPurchaseController from "./controllers/user/user.purchase.controller.
 import scheduleReportGeneration from "./utils/reportGenerator.js";
 import { Server } from "socket.io";
 import messagesRepository from "./repositories/messages.repository.js";
+import MongoStore from "connect-mongo";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 connectDb();
@@ -22,6 +25,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    store: new MongoStore({ mongoUrl: process.env.MONGO_URL }),
   })
 );
 app.post(
@@ -44,11 +48,6 @@ app.use("*", (req: Request, res: Response) => {
 const server = app.listen(3000, () => {
   console.log("Server started");
 });
-
-// const report = await adminReportsRepository.findOne({
-//   _id: "65e0bb00c515f040dda732a5",
-// });
-// // generateAdminReportPdf(report);
 
 const io = new Server(server, { cors: { origin: "http://localhost:5173" } });
 
