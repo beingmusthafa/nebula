@@ -48,11 +48,11 @@ const Home = () => {
   return (
     <>
       {images.length > 0 ? (
-        <Link to={images[currentIndex].link}>
+        <Link to={images[currentIndex]?.link}>
           <img
             className="w-full object-cover"
             src={
-              images[currentIndex].image ||
+              images[currentIndex]?.image ||
               "https://htmlcolorcodes.com/assets/images/colors/white-color-solid-background-1920x1080.png"
             }
             alt="Banner"
@@ -72,7 +72,9 @@ const Home = () => {
           (list, i) =>
             list.courses.length > 0 && (
               <>
-                <div className="_section-title">{list.category} courses</div>
+                <div key={i} className="_section-title">
+                  {list.category} courses
+                </div>
                 <div className="flex gap-4 whitespace-nowrap overflow-x-auto px-6 _no-scrollbar bg-white">
                   {list?.courses?.map((course) => (
                     <CourseCard key={course._id} course={course} />
