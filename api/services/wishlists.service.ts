@@ -9,6 +9,23 @@ export class WishlistsService {
     this.wishlistsRepository = wishlistsRepository;
   }
 
+  async getCount(
+    userId: string | mongoose.Types.ObjectId
+  ): ServiceResponse<{ count: number }> {
+    try {
+      const count = await this.wishlistsRepository.count({ user: userId });
+      return {
+        success: true,
+        message: "fetched count successfully",
+        statusCode: 200,
+        count,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   async getWishlist(
     userId: string | mongoose.Types.ObjectId
   ): ServiceResponse<{ docs?: object[] }> {
