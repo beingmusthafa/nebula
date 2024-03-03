@@ -54,11 +54,15 @@ class TutorController {
   async edit(req: Request, res: Response, next: NextFunction) {
     try {
       const { videoId } = req.params;
-      const response = await this.videosService.edit(videoId, {
-        title: req.body.title,
-        order: req.body.order,
-        video: req.file?.buffer,
-      });
+      const response = await this.videosService.edit(
+        videoId,
+        req.session.user._id,
+        {
+          title: req.body.title,
+          order: req.body.order,
+          video: req.file?.buffer,
+        }
+      );
       res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));
@@ -68,7 +72,10 @@ class TutorController {
   async deleteVideo(req: Request, res: Response, next: NextFunction) {
     try {
       const { videoId } = req.params;
-      const response = await this.videosService.deleteVideo(videoId);
+      const response = await this.videosService.deleteVideo(
+        videoId,
+        req.session.user._id
+      );
       res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));

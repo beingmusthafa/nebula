@@ -7,6 +7,9 @@ import chaptersRepositoryInstance, {
 import videosRepositoryInstance, {
   VideosRepository,
 } from "../repositories/videos.repository.js";
+import coursesRepositoryInstance, {
+  CoursesRepository,
+} from "../repositories/courses.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import { uploadVideoToCloudinary } from "../utils/parser.js";
 import { v2 as cloudinary } from "cloudinary";
@@ -14,12 +17,15 @@ import { v2 as cloudinary } from "cloudinary";
 export class VideosService {
   private videosRepository: VideosRepository;
   private chaptersRepository: ChaptersRepository;
+  private coursesRepository: CoursesRepository;
   constructor(
     videosRepository: VideosRepository,
-    chaptersRepository: ChaptersRepository
+    chaptersRepository: ChaptersRepository,
+    coursesRepository: CoursesRepository
   ) {
     this.videosRepository = videosRepository;
     this.chaptersRepository = chaptersRepository;
+    this.coursesRepository = coursesRepository;
   }
 
   async create(
@@ -53,7 +59,6 @@ export class VideosService {
         duration: number;
         public_id: string;
       };
-      console.log({ result });
       const chapter = await this.chaptersRepository.findOne({
         _id: data.chapter,
       });
@@ -96,9 +101,9 @@ export class VideosService {
 
   async edit(
     id: string,
+    userId: string | mongoose.Types.ObjectId,
     data: { video: Buffer; title: string; order: number }
   ) {
-    console.log(id, data);
     try {
       let updation: {
         title?: string;
@@ -108,6 +113,16 @@ export class VideosService {
         order?: number;
       } = { title: data.title };
       const oldDoc = await this.videosRepository.findOne({ _id: id });
+      const course = await this.coursesRepository.findById(
+        oldDoc.course as string
+      );
+      if (course.tutor.toString() !== userId) {
+        return {
+          success: false,
+          message: "You are not authorised to delete this course",
+          statusCode: 401,
+        };
+      }
       if (data.video) {
         const result = (await uploadVideoToCloudinary(data.video)) as {
           url: string;
@@ -139,10 +154,26 @@ export class VideosService {
     }
   }
 
-  async deleteVideo(id: string): ServiceResponse {
+  async deleteVideo(
+    videoId: string,
+    userId: string | mongoose.Types.ObjectId
+  ): ServiceResponse {
     try {
-      const doc = await this.videosRepository.deleteOne({ _id: id });
-      if (doc) {
+      const doc = await this.videosRepository.findOne({ _id: videoId });
+      const course = await this.coursesRepository.findById(
+        doc.course as string
+      );
+      if (course.tutor.toString() !== userId) {
+        return {
+          success: false,
+          message: "You are not authorised to delete this course",
+          statusCode: 401,
+        };
+      }
+      const deletedDoc = await this.coursesRepository.deleteOne({
+        _id: videoId,
+      });
+      if (deletedDoc) {
         await this.videosRepository.updateMany(
           { order: { $gt: doc.order } },
           { $inc: { order: -1 } }
@@ -164,5 +195,6 @@ export class VideosService {
 
 export default new VideosService(
   videosRepositoryInstance,
-  chaptersRepositoryInstance
+  chaptersRepositoryInstance,
+  coursesRepositoryInstance
 );
