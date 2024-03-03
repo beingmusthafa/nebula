@@ -18,6 +18,7 @@ interface Course {
   description: string;
   thumbnail: string;
   price: number;
+  discount: number;
   rating: number;
   language: string;
   tutor: {
@@ -303,9 +304,22 @@ const CourseDetails = () => {
                 <p className="_font-tilt-warp text-lg mr-4">{course.rating}</p>
                 <RatingStars rating={course.rating} starSize={1} />
               </div>
-              <p className="font-bold text-bold text-2xl">
-                &#8377; {course.price}
-              </p>
+              <div className="flex items-baseline gap-2">
+                {course.discount > 0 ? (
+                  <>
+                    <p className="font-semibold text-bold text-xl line-through text-slate-300">
+                      &#8377; {course.price}
+                    </p>
+                    <p className="font-bold text-bold text-2xl text-green-400">
+                      &#8377; {course.price - course.discount}
+                    </p>
+                  </>
+                ) : (
+                  <p className="font-bold text-bold text-2xl ">
+                    &#8377; {course.price}
+                  </p>
+                )}
+              </div>
               <div className="flex items-center text-base gap-2">
                 <i className="bx bx-user-voice text-xl"></i>
                 {course.language}
@@ -389,7 +403,13 @@ const CourseDetails = () => {
         <CourseDetailsSkeleton />
       )}
       {chapters ? (
-        <Accordions data={accordionData} />
+        chapters.length > 0 ? (
+          <Accordions data={accordionData} />
+        ) : (
+          <p className="_font-dm-display my-32 text-xl text-center text-slate-500">
+            No content added
+          </p>
+        )
       ) : (
         <ChaptersAccordionSkeletion />
       )}

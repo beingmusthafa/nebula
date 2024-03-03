@@ -289,7 +289,13 @@ const LearnCourseEntry = () => {
         <CourseDetailsSkeleton showFull={false} />
       )}
       {chapters ? (
-        <Accordions data={accordionData} />
+        chapters.length > 0 ? (
+          <Accordions data={accordionData} />
+        ) : (
+          <p className="_font-dm-display my-32 text-xl text-center text-slate-500">
+            No content added
+          </p>
+        )
       ) : (
         <ChaptersAccordionSkeletion />
       )}

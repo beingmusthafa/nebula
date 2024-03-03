@@ -63,16 +63,19 @@ const CourseCard: React.FC<Props> = ({
       </div>
       {extraElements ? (
         <div className="flex justify-between items-center w-full pr-4 h-fit">
-          {showPrice && (
-            <>
-              <p className="font-semibold text-sm line-through text-slate-500">
-                &#8377; {course.price}
-              </p>
-              <p className="font-bold text-lg text-green-600">
-                &#8377; {course.price - course.discount}
-              </p>
-            </>
-          )}
+          {showPrice &&
+            (course.discount > 0 ? (
+              <>
+                <p className="font-semibold text-sm line-through text-slate-500">
+                  &#8377; {course.price}
+                </p>
+                <p className="font-bold text-lg text-green-600">
+                  &#8377; {course.price - course.discount}
+                </p>
+              </>
+            ) : (
+              <p className="font-bold text-lg">&#8377; {course.price}</p>
+            ))}
 
           <div onClick={(e) => e.stopPropagation()} className="relative">
             <i

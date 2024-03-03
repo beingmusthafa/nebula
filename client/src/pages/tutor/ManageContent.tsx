@@ -20,6 +20,7 @@ interface Course {
   rating: number;
   ratingCount: number;
   price: number;
+  discount: number;
   thumbnail: string;
   description: string;
   language: string;
@@ -297,6 +298,22 @@ const ManageContent = () => {
           <div className="flex">
             <p className="_font-tilt-warp text-lg mr-4">{course.rating}</p>
             <RatingStars rating={course.rating} starSize={1} />
+          </div>
+          <div className="flex items-baseline gap-2">
+            {course.discount > 0 ? (
+              <>
+                <p className="font-semibold text-bold text-xl line-through text-slate-300">
+                  &#8377; {course.price}
+                </p>
+                <p className="font-bold text-bold text-2xl text-green-400">
+                  &#8377; {course.price - course.discount}
+                </p>
+              </>
+            ) : (
+              <p className="font-bold text-bold text-2xl ">
+                &#8377; {course.price}
+              </p>
+            )}
           </div>
           <div className="flex gap-10">
             <div className="flex items-center text-base gap-2">

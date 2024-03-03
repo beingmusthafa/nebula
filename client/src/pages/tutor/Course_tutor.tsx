@@ -10,6 +10,7 @@ interface Course {
   description: string;
   thumbnail: string;
   price: number;
+  discount: number;
   rating: number;
   language: string;
   tutor: {
@@ -22,7 +23,7 @@ interface Course {
 }
 interface Chapter {
   title: string;
-  videos: { title: string; duration: string }[];
+  videos: { title: string; duration: number }[];
   exercises: { title: string; duration: string }[];
 }
 const Course_tutor = () => {
@@ -41,6 +42,7 @@ const Course_tutor = () => {
         console.log(res);
         if (!res.success) return toast.error(res.message);
         setCourse(res.doc);
+        setChapters(res.chapters);
         setLoading(false);
       }
       getCourse();
@@ -53,19 +55,27 @@ const Course_tutor = () => {
     chapters.forEach((chapter, i) => {
       let content: JSX.Element[] = [];
       chapter.videos.forEach((video, i) => {
+        const mins = Math.floor(video.duration / 60);
+        const seconds = Math.floor(video.duration % 60);
         content.push(
-          <div key={i} className="flex justify-between w-11/12">
+          <div
+            key={i}
+            className="flex justify-between w-11/12 py-2 border-t border-slate-500"
+          >
             <div className="flex items-center">
               <i className="bx bx-video text-xl text-slate-500 mr-2"></i>
               {video.title}
             </div>
-            <p>{video.duration}</p>
+            <p>{`${mins}m ${seconds}s`}</p>
           </div>
         );
       });
       chapter.exercises.forEach((exercise, i) => {
         content.push(
-          <div key={i} className="flex justify-between w-11/12">
+          <div
+            key={i}
+            className="flex justify-between w-11/12 py-2 border-t border-slate-500"
+          >
             <div className="flex items-center">
               <i className="bx bx-notepad text-xl text-slate-500 mr-2"></i>
               {`Exercise - ${i + 1}`}
@@ -89,6 +99,22 @@ const Course_tutor = () => {
               <p className="text-wrap w-80 text-ellipsis overflow-hidden">
                 {course.description}
               </p>
+              <div className="flex gap-2 items-baseline">
+                {course.discount > 0 ? (
+                  <>
+                    <p className="font-semibold text-bold text-xl line-through text-slate-300">
+                      &#8377; {course.price}
+                    </p>
+                    <p className="font-bold text-bold text-2xl text-green-400">
+                      &#8377; {course.price - course.discount}
+                    </p>
+                  </>
+                ) : (
+                  <p className="font-bold text-bold text-2xl ">
+                    &#8377; {course.price}
+                  </p>
+                )}
+              </div>
               <div className="flex">
                 <p className="_font-tilt-warp text-lg mr-4">{course.rating}</p>
                 <RatingStars rating={course.rating} starSize={1} />
@@ -110,12 +136,6 @@ const Course_tutor = () => {
                 src={course.thumbnail}
                 alt=""
               />
-              <Link
-                to={"/tutor/edit-course/" + id}
-                className="_fill-btn-blue text-center"
-              >
-                Edit course
-              </Link>
             </div>
           </div>
           {course.benefits.length > 0 && (
@@ -156,14 +176,19 @@ const Course_tutor = () => {
             <div className="_font-dm-display text-xl w-fit">
               Course contents
             </div>
-            <button className="_fill-btn-blue w-fit">Add chapter</button>
           </div>
         </>
       ) : (
         <CourseDetailsSkeleton />
       )}
       {chapters ? (
-        <Accordions data={accordionData} />
+        chapters.length > 0 ? (
+          <Accordions data={accordionData} />
+        ) : (
+          <p className="_font-dm-display my-32 text-xl text-center text-slate-500">
+            No content added
+          </p>
+        )
       ) : (
         <ChaptersAccordionSkeletion />
       )}
