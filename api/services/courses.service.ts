@@ -449,7 +449,6 @@ export class CoursesService {
     data: { price: number; discount: number }
   ): ServiceResponse {
     try {
-      console.log(data);
       const existingDoc = await this.coursesRepository.findById(courseId);
       if (existingDoc.tutor.toString() !== userId) {
         return {
