@@ -81,20 +81,20 @@ const ChatRoom: React.FC<Props> = ({ courseId, setShow }) => {
     });
     socket.emit("join-course-room", courseId);
     socket.on("receive-message", (data: Message) => {
-      let newMessages = messages.slice();
-      newMessages.push(data);
-      setMessages(newMessages);
-      if (chatContainerRef.current) {
-        chatContainerRef.current.scrollTop =
-          chatContainerRef.current.scrollHeight;
-      }
+      setMessages((prevMessages) => [...prevMessages, data]);
     });
     return () => {
       socket.disconnect();
     };
   }, []);
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  });
   return (
-    <div className="w-full h-full fixed flex items-center justify-center">
+    <div className="w-full h-full fixed flex items-center justify-center z-20">
       <div className="flex flex-col border-2 border-black rounded-3xl h-[80vh] mb-10 w-[95vw] md:w-2/3 bg-sky-100 relative scroll-smooth">
         {loading ? (
           <p className="text-lg _font-dm-display mt-40 mx-auto text-slate-400">
@@ -102,7 +102,7 @@ const ChatRoom: React.FC<Props> = ({ courseId, setShow }) => {
           </p>
         ) : messages.length > 0 ? (
           <div
-            className="h-full w-full absolute overflow-y-auto _no-scrollbar pb-20"
+            className="h-full w-full flex flex-col absolute overflow-y-auto _no-scrollbar pb-20"
             ref={chatContainerRef}
           >
             {messages.map((message, index) => (
