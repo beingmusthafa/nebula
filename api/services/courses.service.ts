@@ -76,6 +76,7 @@ export class CoursesService {
           },
         };
       }
+      coursesFilter = { ...coursesFilter, status: "published" };
       const categories = await this.categoriesRepository.find(categoryFilter, {
         projection: "_id name",
         limit: 5,

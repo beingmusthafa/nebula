@@ -83,11 +83,36 @@ export class CartsService {
         user: userId,
         course: courseId,
       });
-      const result = await Promise.all([isOwnCourse, alreadyPurchased]);
-      if (result[0] || result[1]) {
+      const courseisPublished = this.coursesRepository.findOne({
+        _id: courseId,
+        status: "published",
+      });
+      const result = await Promise.all([
+        isOwnCourse,
+        alreadyPurchased,
+        courseisPublished,
+      ]);
+      if (result[0] || result[1] || !result[2]) {
         return false;
       }
       return true;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async getCount(
+    userId: string | mongoose.Types.ObjectId
+  ): ServiceResponse<{ count: number }> {
+    try {
+      const count = await this.cartsRepository.count({ user: userId });
+      return {
+        success: true,
+        message: "fetched count successfully",
+        statusCode: 200,
+        count,
+      };
     } catch (error) {
       console.log(error);
       throw error;
