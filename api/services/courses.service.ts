@@ -24,6 +24,7 @@ import enrollmentsRepositoryInstance, {
 } from "../repositories/enrollments.repository.js";
 import { v2 as cloudinary } from "cloudinary";
 import ICurrentUser from "../interfaces/currentUser.interface.js";
+import { error } from "console";
 
 export class CoursesService {
   private coursesRepository: CoursesRepository;
@@ -255,6 +256,7 @@ export class CoursesService {
       title: string;
       description: string;
       price: number;
+      discount: number;
       category: mongoose.Types.ObjectId | string;
       tutor: mongoose.Types.ObjectId | string;
       requirements: string[];
@@ -290,12 +292,20 @@ export class CoursesService {
           message: "Description must be at most 1000 characters",
           statusCode: 400,
         };
-      if (data.price < 0)
+      if (data.price < 0 && data.discount < 0) {
         return {
           success: false,
-          message: "Price must be at least 0",
+          message: "Invalid discount and price",
           statusCode: 400,
         };
+      }
+      if (data.price - data.discount < 399) {
+        return {
+          success: false,
+          message: "Price including discount must be at least 399",
+          statusCode: 400,
+        };
+      }
       if (data.price > 99999) {
         return {
           success: false,
@@ -330,6 +340,7 @@ export class CoursesService {
       title: string;
       description: string;
       price: number;
+      discount: number;
       thumbnail: string;
       category: mongoose.Types.ObjectId | string;
       tutor: mongoose.Types.ObjectId | string;
@@ -352,7 +363,7 @@ export class CoursesService {
       if (existingDoc.status !== "creating") {
         return {
           success: false,
-          message: "You can only delete a course that is being created",
+          message: "You can only edit a course that is being created",
           statusCode: 400,
         };
       }
@@ -380,12 +391,20 @@ export class CoursesService {
           message: "Description must be at most 1000 characters",
           statusCode: 400,
         };
-      if (data.price < 0)
+      if (data.price < 0 && data.discount < 0) {
         return {
           success: false,
-          message: "Price must be at least 0",
+          message: "Invalid discount and price",
           statusCode: 400,
         };
+      }
+      if (data.price - data.discount < 399) {
+        return {
+          success: false,
+          message: "Price including discount must be at least 399",
+          statusCode: 400,
+        };
+      }
       if (data.price > 99999) {
         return {
           success: false,
@@ -416,6 +435,57 @@ export class CoursesService {
       return {
         success: true,
         message: "Edited doc successfully",
+        statusCode: 200,
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async editPriceDiscount(
+    userId: string | mongoose.Types.ObjectId,
+    courseId: string,
+    data: { price: number; discount: number }
+  ): ServiceResponse {
+    try {
+      console.log(data);
+      const existingDoc = await this.coursesRepository.findById(courseId);
+      if (existingDoc.tutor.toString() !== userId) {
+        return {
+          success: false,
+          message: "You are not authorized to delete this course",
+          statusCode: 401,
+        };
+      }
+      if (data.price < 0 && data.discount < 0) {
+        return {
+          success: false,
+          message: "Invalid discount and price",
+          statusCode: 400,
+        };
+      }
+      if (data.price - data.discount < 399) {
+        return {
+          success: false,
+          message: "Price including discount must be at least 399",
+          statusCode: 400,
+        };
+      }
+      if (data.price > 99999) {
+        return {
+          success: false,
+          message: "Price must be at most 99999",
+          statusCode: 400,
+        };
+      }
+      await this.coursesRepository.findOneAndUpdate(
+        { _id: courseId },
+        { price: data.price, discount: data.discount }
+      );
+      return {
+        success: true,
+        message: "Edited price and discount successfully",
         statusCode: 200,
       };
     } catch (error) {
@@ -931,32 +1001,6 @@ export class CoursesService {
       return {
         success: true,
         message: "Course blocked successfully",
-        statusCode: 200,
-      };
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  }
-
-  async changePricing(
-    courseId: string | mongoose.Types.ObjectId,
-    userId: string | mongoose.Types.ObjectId,
-    data: { price: number; discount: number }
-  ): ServiceResponse {
-    try {
-      const course = await this.coursesRepository.findById(courseId);
-      if (course.tutor.toString() !== userId) {
-        return {
-          success: false,
-          message: "You are not authorized to change pricing",
-          statusCode: 401,
-        };
-      }
-      await this.coursesRepository.updateOne({ _id: courseId }, data);
-      return {
-        success: true,
-        message: "Pricing changed successfully",
         statusCode: 200,
       };
     } catch (error) {

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ConfirmationPopup from "../../components/ConfirmationPopup";
 import LineChartComponent from "../../components/tutor/LineChart";
+import EditPriceDiscount from "../../components/tutor/EditPriceDiscount";
 
 interface Course {
   _id: string;
@@ -41,6 +42,7 @@ const TutorDashboard = () => {
   let [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   let [showMakePublishConfirm, setShowMakePublishConfirm] = useState(false);
   let [showCancelPublishConfirm, setShowCancelPublishConfirm] = useState(false);
+  let [showEditPricingForm, setShowEditPricingForm] = useState(false);
   let [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   let [creatingCourses, setCreatingCourses] = useState<Course[]>([]);
   let [pendingCourses, setPendingCourses] = useState<Course[]>([]);
@@ -237,6 +239,14 @@ const TutorDashboard = () => {
           onConfirm={cancelPublishRequest}
         />
       )}
+      {showEditPricingForm && (
+        <EditPriceDiscount
+          course={selectedCourse!}
+          setShow={setShowEditPricingForm}
+          fetchData={fetchPublishedCourses}
+        />
+      )}
+      {}
       <div className="flex items-center gap-2 p-4">
         <Link to="/tutor/reports" className="_fill-btn-black">
           Reports
@@ -293,7 +303,7 @@ const TutorDashboard = () => {
           <div className="flex flex-col md:flex-row items-center md:items-start gap-4 px-6 justify-start flex-wrap bg-white">
             {topCourses?.map((course) => (
               <CourseCard
-                redirectTo={"/tutor/manage-course-content/" + course.data?._id}
+                redirectTo={"/tutor/course/" + course.data?._id}
                 key={course.data?._id}
                 course={course.data}
                 showTutor={false}
@@ -373,7 +383,7 @@ const TutorDashboard = () => {
           <div className="flex flex-col md:flex-row items-center md:items-start gap-4 px-6 justify-start flex-wrap bg-white">
             {pendingCourses?.map((course) => (
               <CourseCard
-                redirectTo={"/tutor/manage-course-content/" + course._id}
+                redirectTo={"/tutor/course/" + course._id}
                 key={course._id}
                 course={course}
                 showTutor={false}
@@ -411,16 +421,17 @@ const TutorDashboard = () => {
           <div className="flex flex-col md:flex-row items-center md:items-start gap-4 px-6 justify-start flex-wrap bg-white">
             {publishedCourses?.map((course) => (
               <CourseCard
-                redirectTo={"/tutor/manage-course-content/" + course._id}
+                redirectTo={"/tutor/course/" + course._id}
                 key={course._id}
                 course={course}
                 showTutor={false}
                 extraElements={
                   <div className="flex flex-col gap-2">
                     <button
-                      onClick={() =>
-                        navigate("/tutor/edit-course/" + course._id)
-                      }
+                      onClick={() => {
+                        setSelectedCourse(course);
+                        setShowEditPricingForm(true);
+                      }}
                       className="_fill-btn-blue"
                     >
                       <i className="bx bx-edit text-base"></i>

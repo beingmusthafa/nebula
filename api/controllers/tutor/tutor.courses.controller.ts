@@ -1,40 +1,27 @@
-import { Request, Response, NextFunction, response } from "express";
+import { Request, Response, NextFunction } from "express";
 import coursesServiceInstance, {
   CoursesService,
 } from "../../services/courses.service.js";
 import customError from "../../utils/error.js";
-import { uploadtoCloudinary } from "../../utils/parser.js";
 import categoriesServiceInstance, {
   CategoriesService,
 } from "../../services/categories.service.js";
-import { resizeImage } from "../../utils/cropper.js";
 import chaptersServiceInstance, {
   ChaptersService,
 } from "../../services/chapters.service.js";
-import exercisesServiceInstance, {
-  ExercisesService,
-} from "../../services/exercises.service.js";
-import videosServiceInstance, {
-  VideosService,
-} from "../../services/videos.service.js";
+
 class TutorController {
   private coursesService: CoursesService;
   private categoriesService: CategoriesService;
   private chaptersService: ChaptersService;
-  private exercisesService: ExercisesService;
-  private videosService: VideosService;
   constructor(
     coursesService: CoursesService,
     categoriesService: CategoriesService,
-    chaptersService: ChaptersService,
-    exercisesService: ExercisesService,
-    videosService: VideosService
+    chaptersService: ChaptersService
   ) {
     this.coursesService = coursesService;
     this.categoriesService = categoriesService;
     this.chaptersService = chaptersService;
-    this.exercisesService = exercisesService;
-    this.videosService = videosService;
   }
 
   async getAllCourses(req: Request, res: Response, next: NextFunction) {
@@ -56,6 +43,7 @@ class TutorController {
         title,
         description,
         price,
+        discount,
         category,
         requirements,
         benefits,
@@ -66,7 +54,8 @@ class TutorController {
         {
           title,
           description,
-          price,
+          price: Number(price),
+          discount: Number(discount),
           requirements,
           category,
           benefits,
@@ -109,7 +98,8 @@ class TutorController {
     try {
       const { id } = req.params;
       const response = await this.coursesService.findById(id);
-      res.status(response.statusCode).json(response);
+      const { chapters } = await this.chaptersService.getByCourse(id);
+      res.status(response.statusCode).json({ ...response, chapters });
     } catch (error) {
       next(customError(500, error.message));
     }
@@ -187,14 +177,14 @@ class TutorController {
     }
   }
 
-  async changePricing(req: Request, res: Response, next: NextFunction) {
+  async editPriceDiscount(req: Request, res: Response, next: NextFunction) {
     try {
       const { courseId } = req.params;
       const { price, discount } = req.body;
-      const response = await this.coursesService.changePricing(
-        courseId,
+      const response = await this.coursesService.editPriceDiscount(
         req.session.user._id,
-        { price, discount }
+        courseId,
+        { price: Number(price), discount: Number(discount) }
       );
       res.status(response.statusCode).json(response);
     } catch (error) {
@@ -206,7 +196,5 @@ class TutorController {
 export default new TutorController(
   coursesServiceInstance,
   categoriesServiceInstance,
-  chaptersServiceInstance,
-  exercisesServiceInstance,
-  videosServiceInstance
+  chaptersServiceInstance
 );

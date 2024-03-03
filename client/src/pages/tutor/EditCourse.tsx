@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import uploadImage from "../../assets/image_upload.jpg";
-import CropDemo from "../../components/Crop";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../components/Loading";
 import languages from "../../data/languages";
@@ -16,6 +15,7 @@ const EditCourse = () => {
   let [titleError, setTitleError] = useState("");
   let [descriptionError, setDescriptionError] = useState("");
   let [priceError, setPriceError] = useState("");
+  let [discountError, setDiscountError] = useState("");
   let [languageError, setLanguageError] = useState("");
   let [categoryError, setCategoryError] = useState("");
   let [image, setImage] = useState<File | null>(null);
@@ -25,6 +25,7 @@ const EditCourse = () => {
   let [category, setCategory] = useState<string>("");
   let [language, setLanguage] = useState<string>("");
   let [price, setPrice] = useState<number>(0);
+  let [discount, setDiscount] = useState<number>(0);
   let [requirements, setRequirements] = useState<Set<string>>(new Set());
   let [benefits, setBenefits] = useState<Set<string>>(new Set());
   let reqInputRef = useRef<HTMLInputElement | null>(null);
@@ -33,13 +34,14 @@ const EditCourse = () => {
   const getCategoryDetails = async () => {
     if (!loading) setLoading(true);
     try {
-      const res = await fetch("/api/tutor/get-category-details/" + id).then(
+      const res = await fetch("/api/tutor/get-course-details/" + id).then(
         (res) => res.json()
       );
       if (!res.success) return toast.error(res.message);
       setCategory(res.doc.category);
       setLanguage(res.doc.language);
       setPrice(res.doc.price);
+      setDiscount(res.doc.discount);
       setRequirements(new Set(res.doc.requirements));
       setBenefits(new Set(res.doc.benefits));
       setTitle(res.doc.title);
@@ -105,6 +107,8 @@ const EditCourse = () => {
     else setDescriptionError("");
     if (!price) setPriceError("Enter a price");
     else setPriceError("");
+    if (!discount) setDiscountError("Enter discount");
+    else setDiscountError("");
     if (!language.trim()) setLanguageError("Enter a language");
     else setLanguageError("");
     if (!category) setCategoryError("Choose a category");
@@ -121,6 +125,7 @@ const EditCourse = () => {
     formData.append("category", category);
     formData.append("language", language);
     formData.append("price", price.toString());
+    formData.append("discount", discount.toString());
     Array.from(requirements).forEach((req, i) => {
       formData.append(`requirements[${i}]`, req);
     });
@@ -234,6 +239,18 @@ const EditCourse = () => {
                 onChange={(e) => setPrice(Number(e.target.value))}
                 type="number"
                 placeholder="Enrollment price"
+                className="w-52 border-2 border-black  p-2 m-2"
+              />
+              {discountError && (
+                <p className="font-semibold text-red-500 text-base">
+                  {discountError}
+                </p>
+              )}
+              <input
+                defaultValue={discount}
+                onChange={(e) => setDiscount(Number(e.target.value))}
+                type="number"
+                placeholder="Price discount"
                 className="w-52 border-2 border-black  p-2 m-2"
               />
               {languageError && (

@@ -33,9 +33,9 @@ router.put(
 );
 
 router.patch(
-  "/change-course-pricing",
+  "/edit-price-discount/:courseId",
   (req: Request, res: Response, next: NextFunction) =>
-    tutorCoursesController.changePricing(req, res, next)
+    tutorCoursesController.editPriceDiscount(req, res, next)
 );
 
 router.delete(
@@ -80,7 +80,7 @@ router.get(
 );
 
 router.get(
-  "/get-category-details/:id",
+  "/get-course-details/:id",
   (req: Request, res: Response, next: NextFunction) =>
     tutorCoursesController.getDetails(req, res, next)
 );

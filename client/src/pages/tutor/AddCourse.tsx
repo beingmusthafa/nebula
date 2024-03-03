@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Slide, ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import uploadImage from "../../assets/image_upload.jpg";
-import CropDemo from "../../components/Crop";
 import { useNavigate } from "react-router-dom";
 import languages from "../../data/languages";
 
@@ -13,6 +12,7 @@ const AddCourse = () => {
   let [titleError, setTitleError] = useState("");
   let [descriptionError, setDescriptionError] = useState("");
   let [priceError, setPriceError] = useState("");
+  let [discountError, setDiscountError] = useState("");
   let [languageError, setLanguageError] = useState("");
   let [categoryError, setCategoryError] = useState("");
   let [image, setImage] = useState<File | null>(null);
@@ -21,6 +21,7 @@ const AddCourse = () => {
   let [category, setCategory] = useState<string>("");
   let [language, setLanguage] = useState<string>("English");
   let [price, setPrice] = useState<number>(0);
+  let [discount, setDiscount] = useState<number>(0);
   let [requirements, setRequirements] = useState<Set<string>>(new Set());
   let [benefits, setBenefits] = useState<Set<string>>(new Set());
   let reqInputRef = useRef<HTMLInputElement | null>(null);
@@ -79,6 +80,8 @@ const AddCourse = () => {
     else setDescriptionError("");
     if (!price) setPriceError("Enter a price");
     else setPriceError("");
+    if (!discount) setDiscountError("Enter discount");
+    else setDiscountError("");
     if (!language.trim()) setLanguageError("Enter a language");
     else setLanguageError("");
     console.log({ language });
@@ -95,6 +98,7 @@ const AddCourse = () => {
     formData.append("category", category);
     formData.append("language", language);
     formData.append("price", price.toString());
+    formData.append("discount", discount.toString());
     Array.from(requirements).forEach((req, i) => {
       formData.append(`requirements[${i}]`, req);
     });
@@ -194,6 +198,17 @@ const AddCourse = () => {
             onChange={(e) => setPrice(Number(e.target.value))}
             type="number"
             placeholder="Enrollment price"
+            className="w-52 border-2 border-black  p-2 m-2"
+          />
+          {discountError && (
+            <p className="font-semibold text-red-500 text-base">
+              {discountError}
+            </p>
+          )}
+          <input
+            onChange={(e) => setDiscount(Number(e.target.value))}
+            type="number"
+            placeholder="Price discount"
             className="w-52 border-2 border-black  p-2 m-2"
           />
           {languageError && (
