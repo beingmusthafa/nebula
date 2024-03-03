@@ -97,6 +97,22 @@ router.get(
 );
 
 router.get(
+  "/get-cart-count",
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userPurchaseController.getCartCount(req, res, next)
+);
+
+router.get(
+  "/get-wishlist-count",
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userPurchaseController.getWishlistCount(req, res, next)
+);
+
+router.get(
   "/check-cart-and-wishlist/:courseId",
   (req: Request, res: Response, next: NextFunction) =>
     authMiddleware.userAuth(req, res, next),
