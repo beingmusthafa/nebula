@@ -91,6 +91,18 @@ class AuthController {
     }
   }
 
+  async resendCode(req: Request, res: Response, next: NextFunction) {
+    try {
+      const response = await this.authService.resendCode(req.body.email, true);
+      if (!response.success) {
+        return next(customError(response.statusCode, response.message));
+      }
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
   async verifyCodeAndChangePassword(
     req: Request,
     res: Response,

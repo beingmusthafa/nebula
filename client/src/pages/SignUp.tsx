@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signIn } from "../redux/user/userSlice";
 import GoogleAuth from "../components/auth/GoogleAuth";
+import Timer from "../components/Timer";
 
 const SignUp = () => {
   let [error, setError] = useState<string | null>(null);
@@ -21,6 +22,7 @@ const SignUp = () => {
   let [password, setPassword] = useState<string>("");
   let [confirmPassword, setConfirmPassword] = useState<string>("");
   let [name, setName] = useState<string>("");
+  let [timerComplete, setTimerComplete] = useState(false);
   let [processing, setProcessing] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -73,29 +75,57 @@ const SignUp = () => {
     if (!verificationCode) {
       return setError("Enter verification code");
     }
-    setProcessing(true);
-    const res = await fetch("/api/auth/finish-sign-up", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userDetails: {
-          name,
-          email,
-          password,
+    try {
+      setError("");
+      setProcessing(true);
+      const res = await fetch("/api/auth/finish-sign-up", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        code: verificationCode,
-      }),
-    }).then((res) => res.json());
-    setProcessing(false);
-    if (!res.success) return setError(res.message);
-    console.log(res.user);
-    dispatch(signIn(res.user));
-    setError(null);
-    setVerificationStarted(false);
-    navigate("/");
+        body: JSON.stringify({
+          userDetails: {
+            name,
+            email,
+            password,
+          },
+          code: verificationCode,
+        }),
+      }).then((res) => res.json());
+      setProcessing(false);
+      if (!res.success) return setError(res.message);
+      console.log(res.user);
+      dispatch(signIn(res.user));
+      setError(null);
+      setVerificationStarted(false);
+      navigate("/");
+    } catch (error) {
+      setError("Something went wrong");
+      console.log(error);
+    }
   }
+  const resendOtp = async () => {
+    try {
+      setProcessing(true);
+      setError("");
+      const res = await fetch("/api/auth/resend-code", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+        }),
+      }).then((res) => res.json());
+      if (!res.success) throw new Error(res.message);
+      setTimerComplete(false);
+    } catch (error) {
+      setError("Something went wrong");
+      console.log(error);
+    } finally {
+      setProcessing(false);
+    }
+  };
   return (
     <div className="flex _bg-light h-fit w-full items-center">
       <div className="hidden md:flex flex-col items-center w-1/2 pl-10">
@@ -147,6 +177,23 @@ const SignUp = () => {
             <p className="text-3xl _font-tilt-warp _tex t-blue-black-gradient mb-6 w-fit mx-auto">
               Sign up
             </p>
+            {timerComplete ? (
+              <button
+                type="button"
+                onClick={resendOtp}
+                disabled={processing}
+                className="text-base text-sky-600 font-semibold"
+              >
+                Resend OTP
+              </button>
+            ) : (
+              <Timer
+                time={30}
+                onComplete={() => {
+                  setTimerComplete(true);
+                }}
+              />
+            )}
             {error && (
               <p className="font-semibold text-base text-red-500 w-72">
                 {error}

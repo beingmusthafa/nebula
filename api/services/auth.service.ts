@@ -122,6 +122,36 @@ export class AuthService {
     }
   }
 
+  async resendCode(email: string, newAccount: boolean): ServiceResponse {
+    try {
+      const userExists = await this.usersRepository.findByEmail(email);
+      if (userExists && newAccount) {
+        return {
+          success: false,
+          message: "Email already exists",
+          statusCode: 400,
+        };
+      }
+      if (!userExists && !newAccount) {
+        return {
+          success: false,
+          message: "No user found",
+          statusCode: 404,
+        };
+      }
+      const code = Math.floor(100000 + Math.random() * 900000);
+      await this.otpsRepository.create(email, code);
+      await this.mailer.sendVerificationMail(email, code);
+      return {
+        success: true,
+        message: "Verification code resent",
+        statusCode: 200,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async signIn(credentials: {
     email: string;
     password: string;
