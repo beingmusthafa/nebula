@@ -15,6 +15,7 @@ export class ProgressRepository {
       const review = await this.model.insertMany(data);
       return review;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -30,6 +31,7 @@ export class ProgressRepository {
       });
       return doc.modifiedCount;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -45,6 +47,7 @@ export class ProgressRepository {
       });
       return doc.modifiedCount;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -74,6 +77,7 @@ export class ProgressRepository {
 
       return query.exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -91,6 +95,7 @@ export class ProgressRepository {
 
       return query.exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -100,6 +105,7 @@ export class ProgressRepository {
       const doc = await this.model.deleteOne(filter);
       return doc.deletedCount;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -109,6 +115,7 @@ export class ProgressRepository {
       const doc = await this.model.deleteMany(filter);
       return doc.deletedCount;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

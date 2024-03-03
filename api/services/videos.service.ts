@@ -79,6 +79,7 @@ export class VideosService {
         statusCode: 201,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -95,6 +96,7 @@ export class VideosService {
         count,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -150,6 +152,7 @@ export class VideosService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -188,6 +191,7 @@ export class VideosService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

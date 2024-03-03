@@ -30,6 +30,7 @@ export class CoursesRepository {
 
       return query.exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -38,6 +39,7 @@ export class CoursesRepository {
     try {
       return this.model.countDocuments(query).exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -53,6 +55,7 @@ export class CoursesRepository {
       }
       return await query.lean().exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -68,6 +71,7 @@ export class CoursesRepository {
       }
       return await query.lean().exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -82,6 +86,7 @@ export class CoursesRepository {
       if (doc) return doc.toObject();
       return null;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -91,6 +96,7 @@ export class CoursesRepository {
       const doc = await this.model.updateMany(query, { $set: updation });
       return doc.modifiedCount;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -100,6 +106,7 @@ export class CoursesRepository {
       const doc = await this.model.updateOne(query, { $set: updation });
       return doc.modifiedCount;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -109,6 +116,7 @@ export class CoursesRepository {
       const doc = await this.model.create(course);
       return doc.toObject();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -118,6 +126,7 @@ export class CoursesRepository {
       const doc = await this.model.deleteOne(query);
       return doc.deletedCount;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -127,6 +136,7 @@ export class CoursesRepository {
       const doc = await this.model.deleteMany(query);
       return doc.deletedCount;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -135,6 +145,7 @@ export class CoursesRepository {
     try {
       return await this.model.aggregate(pipeline);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

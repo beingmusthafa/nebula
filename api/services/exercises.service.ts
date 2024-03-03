@@ -47,6 +47,7 @@ export class ExercisesService {
         statusCode: 201,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -82,6 +83,7 @@ export class ExercisesService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -98,6 +100,7 @@ export class ExercisesService {
         count,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -111,6 +114,7 @@ export class ExercisesService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

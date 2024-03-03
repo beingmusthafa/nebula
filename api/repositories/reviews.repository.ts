@@ -15,6 +15,7 @@ export class ReviewsRepository {
       const review = await this.model.create(data);
       return review;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -24,6 +25,7 @@ export class ReviewsRepository {
       const doc = await this.model.updateOne(filter, data);
       return doc.modifiedCount;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -53,6 +55,7 @@ export class ReviewsRepository {
 
       return query.exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -70,6 +73,7 @@ export class ReviewsRepository {
 
       return query.exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -79,6 +83,7 @@ export class ReviewsRepository {
       const doc = await this.model.deleteOne(filter);
       return doc.deletedCount;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -88,6 +93,7 @@ export class ReviewsRepository {
       const doc = await this.model.deleteMany(filter);
       return doc.deletedCount;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -96,6 +102,7 @@ export class ReviewsRepository {
     try {
       return await this.model.aggregate(pipeline);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

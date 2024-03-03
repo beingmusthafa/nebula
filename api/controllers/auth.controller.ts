@@ -132,9 +132,9 @@ class AuthController {
 
   async signOut(req: Request, res: Response, next: NextFunction) {
     try {
-      res.cookie("access_token", "", { httpOnly: true, expires: new Date(0) });
-      req.session.user = null;
-      console.log("current user:::", req.session.user);
+      req.session.destroy();
+      res.clearCookie("access_token");
+      res.clearCookie("connect.sid");
       res.status(200).json({
         success: true,
         message: "user successfully logged out",

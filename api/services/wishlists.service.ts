@@ -48,6 +48,7 @@ export class WishlistsService {
         docs,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -74,6 +75,7 @@ export class WishlistsService {
       });
       return { success: true, message: "Added to wishlist", statusCode: 200 };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -93,6 +95,7 @@ export class WishlistsService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -108,6 +111,7 @@ export class WishlistsService {
       });
       return { inWishlist: wishlistExists ? true : false };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

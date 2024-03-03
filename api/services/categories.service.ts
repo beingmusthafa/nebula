@@ -30,6 +30,7 @@ export class CategoriesService {
         categories: docs,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -53,6 +54,7 @@ export class CategoriesService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -91,6 +93,7 @@ export class CategoriesService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -114,6 +117,7 @@ export class CategoriesService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

@@ -45,6 +45,7 @@ export class WishlistsRepository {
 
       return await query.exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -56,6 +57,7 @@ export class WishlistsRepository {
     try {
       return await this.model.findOne(query);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -69,6 +71,7 @@ export class WishlistsRepository {
       if (cartExists) return;
       await this.model.create(data);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

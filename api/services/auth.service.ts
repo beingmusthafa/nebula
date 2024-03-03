@@ -83,6 +83,7 @@ export class AuthService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -118,6 +119,7 @@ export class AuthService {
         doc: rest,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -148,6 +150,7 @@ export class AuthService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -187,6 +190,7 @@ export class AuthService {
         doc: rest,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -228,6 +232,7 @@ export class AuthService {
         doc: rest,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -251,6 +256,7 @@ export class AuthService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -294,6 +300,7 @@ export class AuthService {
         doc,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

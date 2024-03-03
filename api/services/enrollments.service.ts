@@ -132,7 +132,6 @@ export class EnrollmentsService {
       if (event["type"] === "payment_intent.succeeded") {
         intent = event.data.object;
         const userId = intent.metadata.userId;
-        console.log("metadata:::::", intent.metadata);
         if (intent.metadata.userId !== userId.toString()) {
           throw new Error("Unauthorized");
         }
@@ -292,7 +291,6 @@ export class EnrollmentsService {
           count: enrollment.count,
         };
       });
-      console.log(topCourses);
       return {
         success: true,
         message: "Top courses fetched",

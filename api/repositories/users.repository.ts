@@ -30,6 +30,7 @@ export class UsersRepository {
 
       return query.exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -38,6 +39,7 @@ export class UsersRepository {
     try {
       return this.model.countDocuments(query).exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -53,6 +55,7 @@ export class UsersRepository {
       }
       return query.lean().exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -62,6 +65,7 @@ export class UsersRepository {
       if (doc) return doc.toObject();
       return null;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -72,6 +76,7 @@ export class UsersRepository {
       if (doc) return doc.toObject();
       return null;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -81,6 +86,7 @@ export class UsersRepository {
       const doc = await this.model.create(user);
       return doc.toObject();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

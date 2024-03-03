@@ -46,6 +46,7 @@ export class CartsRepository {
 
       return await query.exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -57,6 +58,7 @@ export class CartsRepository {
     try {
       return await this.model.findOne(query);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -70,6 +72,7 @@ export class CartsRepository {
       if (cartExists) return;
       await this.model.create(data);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

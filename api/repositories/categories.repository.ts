@@ -25,6 +25,7 @@ export class CategoriesRepository {
 
       return query.exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -33,6 +34,7 @@ export class CategoriesRepository {
     try {
       return this.model.countDocuments(query).exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -43,6 +45,7 @@ export class CategoriesRepository {
       if (doc) return doc.toObject();
       return null;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -57,6 +60,7 @@ export class CategoriesRepository {
       if (doc) return doc.toObject();
       return null;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -66,6 +70,7 @@ export class CategoriesRepository {
       const doc = await this.model.deleteOne(query);
       return doc.deletedCount;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -75,6 +80,7 @@ export class CategoriesRepository {
       const doc = await this.model.create(category);
       return doc.toObject();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

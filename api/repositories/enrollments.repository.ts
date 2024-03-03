@@ -28,6 +28,7 @@ export class EnrollmentsRepository {
 
       return await query.exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -39,6 +40,7 @@ export class EnrollmentsRepository {
     try {
       return await this.model.findOne(query);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -56,6 +58,7 @@ export class EnrollmentsRepository {
       if (docExists) throw new Error("Purchase already made!");
       await this.model.create(data);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -70,6 +73,7 @@ export class EnrollmentsRepository {
     try {
       await this.model.insertMany(data);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -78,6 +82,7 @@ export class EnrollmentsRepository {
     try {
       return await this.model.countDocuments(filter);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -86,6 +91,7 @@ export class EnrollmentsRepository {
     try {
       return await this.model.aggregate(pipeline);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

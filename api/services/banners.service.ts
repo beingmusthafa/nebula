@@ -25,6 +25,7 @@ export class BannersService {
         banners,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -61,6 +62,7 @@ export class BannersService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -93,6 +95,7 @@ export class BannersService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -108,6 +111,7 @@ export class BannersService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -123,6 +127,7 @@ export class BannersService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

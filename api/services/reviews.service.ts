@@ -34,6 +34,7 @@ export class ReviewsService {
         { rating: avgRating }
       );
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -80,6 +81,7 @@ export class ReviewsService {
         statusCode: 201,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -114,6 +116,7 @@ export class ReviewsService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -132,6 +135,7 @@ export class ReviewsService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -149,6 +153,7 @@ export class ReviewsService {
         reviews,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

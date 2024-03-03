@@ -62,6 +62,7 @@ export class ChaptersService {
         chapters: result,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -101,6 +102,7 @@ export class ChaptersService {
         statusCode: 201,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -140,6 +142,7 @@ export class ChaptersService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -165,6 +168,7 @@ export class ChaptersService {
         statusCode: 200,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -181,6 +185,7 @@ export class ChaptersService {
         count,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

@@ -19,6 +19,7 @@ export class VideosRepository {
     try {
       return await this.model.findOneAndDelete(query).lean();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -54,6 +55,7 @@ export class VideosRepository {
 
       return await query.exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -62,6 +64,7 @@ export class VideosRepository {
     try {
       return await this.model.findOne(query);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -71,6 +74,7 @@ export class VideosRepository {
       const doc = await this.model.create(data);
       if (doc) return doc.toObject();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -79,6 +83,7 @@ export class VideosRepository {
     try {
       return await this.model.countDocuments(query);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -87,6 +92,7 @@ export class VideosRepository {
     try {
       return await this.model.updateMany(filter, updation);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -95,6 +101,7 @@ export class VideosRepository {
     try {
       return await this.model.updateOne(filter, updation);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

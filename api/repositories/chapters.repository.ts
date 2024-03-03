@@ -15,6 +15,7 @@ export class ChaptersRepository {
     try {
       return await this.model.findOneAndDelete({ _id: id });
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -47,6 +48,7 @@ export class ChaptersRepository {
 
       return await query.lean().exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -55,6 +57,7 @@ export class ChaptersRepository {
     try {
       return await this.model.findOne(filter);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -63,6 +66,7 @@ export class ChaptersRepository {
     try {
       await this.model.create(data);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -71,6 +75,7 @@ export class ChaptersRepository {
     try {
       return await this.model.countDocuments(query);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -79,6 +84,7 @@ export class ChaptersRepository {
     try {
       return await this.model.updateMany(filter, updation);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -86,6 +92,7 @@ export class ChaptersRepository {
     try {
       return await this.model.updateOne(filter, updation);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

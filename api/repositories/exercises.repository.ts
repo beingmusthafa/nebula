@@ -20,6 +20,7 @@ export class ExercisesRepository {
       const doc = await this.model.findOneAndDelete(query);
       return doc;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -55,6 +56,7 @@ export class ExercisesRepository {
 
       return await query.exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -63,6 +65,7 @@ export class ExercisesRepository {
     try {
       return await this.model.findOne(query);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -74,6 +77,7 @@ export class ExercisesRepository {
       });
       return doc;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -85,6 +89,7 @@ export class ExercisesRepository {
         return doc.toObject();
       }
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -96,6 +101,7 @@ export class ExercisesRepository {
     try {
       return await this.model.countDocuments(filter);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

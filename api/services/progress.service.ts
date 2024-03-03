@@ -38,6 +38,7 @@ export class ProgressService {
         progressList,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -128,6 +129,7 @@ export class ProgressService {
         progress,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -160,6 +162,7 @@ export class ProgressService {
         progress,
       };
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

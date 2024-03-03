@@ -28,6 +28,7 @@ export class BannersRepository {
 
       return await query.exec();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -36,6 +37,7 @@ export class BannersRepository {
     try {
       return await this.model.findOne({ _id });
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -44,6 +46,7 @@ export class BannersRepository {
     try {
       await this.model.create(data);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -58,6 +61,7 @@ export class BannersRepository {
     try {
       await this.model.insertMany(data);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -69,6 +73,7 @@ export class BannersRepository {
     try {
       await this.model.updateOne({ _id }, data);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -77,6 +82,7 @@ export class BannersRepository {
     try {
       await this.model.deleteOne({ _id });
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
