@@ -31,6 +31,13 @@ body {
   font-family: "DM Sans", sans-serif;
   /* background-color: var(--light); */
 }
+th,
+td,
+table {
+  border: 1px solid black;
+  text-align: center;
+  padding: 1rem;
+}
 ._font-tilt-warp {
   font-family: "Tilt Warp", sans-serif;
 }
@@ -166,7 +173,7 @@ body {
   color: white;
 }
 ._section-title {
-  padding: 1.5rem 1rem 0.5rem 1rem;
+  padding: 1.5rem 1rem 1.5rem 1rem;
   display: block;
   width: 100%;
   font-family: "DM Serif Display", serif;
@@ -224,6 +231,9 @@ body {
 }
 ._transition-0-3 {
   transition: 0.3s;
+}
+._transition-0-5 {
+  transition: 0.5s;
 }
 @media (max-width: 600px) {
   ._admin-sidebar {

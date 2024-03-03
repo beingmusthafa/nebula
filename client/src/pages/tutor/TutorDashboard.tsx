@@ -237,9 +237,14 @@ const TutorDashboard = () => {
           onConfirm={cancelPublishRequest}
         />
       )}
-      <Link to="/tutor/add-course" className="_fill-btn-blue">
-        Add course
-      </Link>
+      <div className="flex items-center gap-2 p-4">
+        <Link to="/tutor/reports" className="_fill-btn-black">
+          Reports
+        </Link>
+        <Link to="/tutor/add-course" className="_fill-btn-blue">
+          Add course
+        </Link>
+      </div>
       <div className="flex flex-col md:flex-row justify-center h-80 my-10">
         <div className="h-80 w-full md:w-[50vw]">
           <LineChartComponent

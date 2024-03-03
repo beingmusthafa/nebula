@@ -32,7 +32,7 @@ const Users_admin = () => {
   }, [page]);
   return (
     <>
-      <form
+      {/* <form
         action=""
         className="md:flex w-fit mx-auto justify-center border border-black py-1 px-4 mb-10 rounded-full sticky  bg-white hidden"
       >
@@ -44,7 +44,7 @@ const Users_admin = () => {
         <button className="ml-2">
           <i className="bx bx-search-alt-2 text-lg"></i>
         </button>
-      </form>
+      </form> */}
       {loading ? (
         <AdminLoading />
       ) : (

@@ -47,12 +47,9 @@ const Profile = () => {
     setError("");
     console.log("editng");
     try {
-      if (
-        !email.trim() ||
-        !nameRef.current?.value.trim() ||
-        !bioRef.current?.value.trim()
-      ) {
+      if (!email.trim() || !nameRef.current?.value.trim()) {
         setError("All fields are required");
+        toast.dismiss(toastId);
         return;
       }
       let body: any = {

@@ -18,8 +18,8 @@ const MessageBox: React.FC<Props> = ({
     <div className="ml-auto rounded-br-none rounded-3xl  p-4 w-fit gap-2 max-w-72 md:max-w-96  flex items-start bg-lime-100 m-4 text-wrap break-words">
       <img src={image} className="h-8 w-8 rounded-full order-2" alt="" />
       <div className="flex flex-col items-start w-full order-1">
-        <p className="font-semibold text-slate-500 ml-auto">{name}</p>
-        <p className="text-sm text-right my-1">{message}</p>
+        <p className="font-semibold text-green-500 ml-auto">You</p>
+        <p className="text-sm text-right my-1 ml-auto">{message}</p>
         <p className="text-xs text-slate-500 ml-auto">{date}</p>
       </div>
     </div>

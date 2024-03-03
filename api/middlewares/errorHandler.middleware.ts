@@ -7,7 +7,6 @@ const errorHandler = (
   res: Response,
   next: NextFunction
 ): void => {
-  console.log(error);
   const statusCode = error.statusCode || 500;
   const message = error.message || "Internal Server Error";
   res.status(statusCode).json({ success: false, message });

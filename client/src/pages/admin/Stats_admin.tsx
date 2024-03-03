@@ -3,7 +3,7 @@ import LineChartComponent from "../../components/tutor/LineChart";
 import AdminLoading from "../../components/admin/AdminLoading";
 import CourseCard from "../../components/CourseCard";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 let monthNames = [
   "",
   "January",
@@ -96,6 +96,9 @@ const Stats = () => {
     <AdminLoading />
   ) : (
     <>
+      <Link to={"/admin/stats/reports"} className="_fill-btn-black">
+        Reports
+      </Link>
       <div className="flex flex-col md:flex-row justify-center h-80 my-10">
         <div className="h-80 w-full md:w-[50vw]">
           <LineChartComponent

@@ -61,7 +61,7 @@ const Courses_admin = () => {
 
   return (
     <>
-      <form
+      {/* <form
         action=""
         className="md:flex w-fit mx-auto justify-center border border-black py-1 px-4 mb-10 rounded-full sticky top-10 bg-white hidden"
       >
@@ -73,7 +73,7 @@ const Courses_admin = () => {
         <button className="ml-2">
           <i className="bx bx-search-alt-2 text-lg"></i>
         </button>
-      </form>
+      </form> */}
       <Link to="/admin/courses/categories" className="flex items-center w-full">
         <button className="_fill-btn-black">Categories</button>
       </Link>

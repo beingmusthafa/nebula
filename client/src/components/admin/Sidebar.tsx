@@ -55,13 +55,6 @@ const Sidebar = () => {
               Courses
             </Link>
             <Link
-              to="/admin/offers"
-              className={active === "offers" ? "bg-white text-black px-4" : ""}
-              onClick={() => setActive("offers")}
-            >
-              Offers
-            </Link>
-            <Link
               to="/admin/banners"
               className={active === "banners" ? "bg-white text-black px-4" : ""}
               onClick={() => setActive("banners")}
