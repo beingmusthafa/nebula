@@ -91,6 +91,7 @@ const SignIn = () => {
           )}
           <input
             onChange={(e) => setEmail(e.target.value)}
+            name="email"
             type="email"
             placeholder="Email"
             className="p-2 text-base border border-black pl-4 w-80"
@@ -103,6 +104,7 @@ const SignIn = () => {
           </Link>
           <input
             onChange={(e) => setPassword(e.target.value)}
+            name="password"
             type="password"
             placeholder="Password"
             className="p-2 text-base border border-black pl-4 w-80"

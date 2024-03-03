@@ -16,9 +16,9 @@ const ConfirmationPopup_Admin: React.FC<Props> = ({
   return (
     <div className="flex fixed w-full justify-center _admin-center">
       <motion.div
-        initial={{ y: 150, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.3 }}
+        initial={{ opacity: 0, scale: 0.3 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3, type: "spring" }}
         style={{ zIndex: 15 }}
         className="_screen-center flex flex-col p-6 border-4 _border-blue-black-gradient2 bg-white max-w-96"
       >
