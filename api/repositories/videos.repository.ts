@@ -17,7 +17,7 @@ export class VideosRepository {
     chapter?: string | mongoose.Types.ObjectId;
   }) {
     try {
-      return await this.model.findOneAndDelete(query);
+      return await this.model.findOneAndDelete(query).lean();
     } catch (error) {
       throw error;
     }

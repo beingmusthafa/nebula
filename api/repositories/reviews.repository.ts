@@ -91,6 +91,14 @@ export class ReviewsRepository {
       throw error;
     }
   }
+
+  async aggregate(pipeline: mongoose.PipelineStage[]) {
+    try {
+      return await this.model.aggregate(pipeline);
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new ReviewsRepository();

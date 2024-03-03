@@ -73,6 +73,15 @@ export class CartsRepository {
       throw error;
     }
   }
+
+  async count(filter: object) {
+    try {
+      return await this.model.countDocuments(filter);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }
 
 export default new CartsRepository();
