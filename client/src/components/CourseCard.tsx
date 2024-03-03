@@ -37,13 +37,19 @@ const CourseCard: React.FC<Props> = ({
       onClick={() => navigate(redirectTo || `/course-details/${course._id}`)}
       className="flex flex-col items-start w-fit cursor-pointer"
     >
-      <img src={course.thumbnail} className="object-cover w-64 h-36" alt="" />
+      <img
+        loading="lazy"
+        src={course.thumbnail}
+        className="object-cover w-64 h-36"
+        alt=""
+      />
       <div className="font-bold text-lg text-wrap" style={{ width: 270 }}>
         {course.title}
       </div>
       {showTutor && (
         <div className="flex gap-2 items-center">
           <img
+            loading="lazy"
             src={course.tutor.image}
             alt=""
             className="w-6 h-6 rounded-full"
