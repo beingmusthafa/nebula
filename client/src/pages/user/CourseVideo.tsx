@@ -35,6 +35,7 @@ const CourseVideo = () => {
       console.log(error);
     }
   };
+  console.log(nextData);
   useEffect(() => {
     getData();
   }, []);
@@ -46,7 +47,7 @@ const CourseVideo = () => {
     } else if (nextData?.nextExercise) {
       location.href = `/my-courses/learn/${courseId}/${chapterId}/exercise/1`;
     } else if (nextData?.nextChapter) {
-      location.href = `/my-courses/learn/${courseId}/${nextData.nextChapter}/1`;
+      location.href = `/my-courses/learn/${courseId}/${nextData.nextChapter}`;
     } else {
       location.href = "/my-courses/learn/" + courseId;
     }
