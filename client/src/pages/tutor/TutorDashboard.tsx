@@ -245,35 +245,42 @@ const TutorDashboard = () => {
           Add course
         </Link>
       </div>
-      <div className="flex flex-col md:flex-row justify-center h-80 my-10">
-        <div className="h-80 w-full md:w-[50vw]">
-          <LineChartComponent
-            data1={enrollments}
-            data2={revenue}
-            xLabels={months}
-          />
+      {loading ? (
+        <p className="_font-dm-display my-40 text-xl text-center text-slate-500">
+          Loading graph data...
+        </p>
+      ) : (
+        <div className="flex flex-col md:flex-row justify-center h-80 my-10">
+          <div className="h-80 w-full md:w-[50vw]">
+            <LineChartComponent
+              data1={enrollments}
+              data2={revenue}
+              xLabels={months}
+            />
+          </div>
+          <div className="flex flex-row md:flex-col justify-evenly">
+            <div className="h-fit flex flex-col items-center p-2 border-4 w-32 rounded-2xl border-cyan-300">
+              <p className="text-slate-500">Enrollments</p>
+              <p className="font-bold text-2xl text-slate-700">
+                {currentEnrollments}
+              </p>
+            </div>
+            <div className="h-fit flex flex-col items-center p-2 border-4 w-32 rounded-2xl border-cyan-300">
+              <p className="text-slate-500">Revenue</p>
+              <p className="font-bold text-2xl text-slate-700">
+                &#8377; {currentRevenue}
+              </p>
+            </div>
+            <div className="h-fit flex flex-col items-center p-2 border-4 w-32 rounded-2xl border-cyan-300">
+              <p className="text-slate-500">Earnings</p>
+              <p className="font-bold text-2xl text-slate-700">
+                &#8377; {Math.round((currentRevenue / 100) * 20)}
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-row md:flex-col justify-evenly">
-          <div className="h-fit flex flex-col items-center p-2 border-4 w-32 rounded-2xl border-cyan-300">
-            <p className="text-slate-500">Enrollments</p>
-            <p className="font-bold text-2xl text-slate-700">
-              {currentEnrollments}
-            </p>
-          </div>
-          <div className="h-fit flex flex-col items-center p-2 border-4 w-32 rounded-2xl border-cyan-300">
-            <p className="text-slate-500">Revenue</p>
-            <p className="font-bold text-2xl text-slate-700">
-              &#8377; {currentRevenue}
-            </p>
-          </div>
-          <div className="h-fit flex flex-col items-center p-2 border-4 w-32 rounded-2xl border-cyan-300">
-            <p className="text-slate-500">Earnings</p>
-            <p className="font-bold text-2xl text-slate-700">
-              &#8377; {Math.round((currentRevenue / 100) * 20)}
-            </p>
-          </div>
-        </div>
-      </div>
+      )}
+
       <div className="_section-title">Bestselling courses</div>
       {topLoading ? (
         <div className="flex gap-4 px-6 justify-start flex-wrap bg-white">
