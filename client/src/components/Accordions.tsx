@@ -31,7 +31,7 @@ const Accordions: React.FC<Props> = ({ data }) => {
   console.log(data);
   return (
     <>
-      <div className="flex flex-col px-10 w-full mx-auto items-center text-base">
+      <div className="flex flex-col px-10 w-full mx-auto items-center text-base mb-24">
         {data.map((item, i) => (
           <Accordion title={item.title} content={item.content} key={i} />
         ))}
