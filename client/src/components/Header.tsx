@@ -8,13 +8,15 @@ import {
 } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { signIn, signOut } from "../redux/user/userSlice";
+import { setWishlistCount, signIn, signOut } from "../redux/user/userSlice";
 import { motion } from "framer-motion";
 import ConfirmationPopup from "./ConfirmationPopup";
 import { toast } from "react-toastify";
 
 const Header = () => {
-  const { currentUser } = useSelector((state: any) => state.user);
+  let { currentUser, cartCount, wishlistCount } = useSelector(
+    (state: any) => state.user
+  );
   const searchText = location.pathname.startsWith("/courses")
     ? new URLSearchParams(useLocation().search).get("search")
     : "";
@@ -48,6 +50,24 @@ const Header = () => {
     if (!searchInputRef.current?.value) return searchInputRef.current?.focus();
     navigate(`/courses?search=${searchInputRef.current?.value}`);
   };
+  const getCartAndWishlistCount = async () => {
+    try {
+      if (!currentUser) return;
+      const fetch1 = fetch("/api/get-cart-count").then((res) => res.json());
+      const fetch2 = fetch("/api/get-wishlist-count").then((res) => res.json());
+      const [res1, res2] = await Promise.all([fetch1, fetch2]);
+      if (!res1.success || !res2.success) {
+        throw new Error(res1.success ? res2.message : res1.message);
+      }
+      dispatch(setWishlistCount(res1.count));
+      dispatch(setWishlistCount(res2.count));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getCartAndWishlistCount();
+  }, []);
   return (
     !location.pathname.startsWith("/admin") && (
       <div className="flex justify-between items-center h-14 sticky top-0 left-0 w-full px-4 border-b-4 _border-blue-black-gradient2 bg-white z-10">
@@ -92,18 +112,32 @@ const Header = () => {
                 <i className="bx hover:bg-slate-200 _transition-0-5 rounded-full py-1 px-2 bxs-videos text-2xl cursor-pointer"></i>
               </Link>
               <Link to={"/wishlist"}>
-                <i className="bx hover:bg-slate-200 _transition-0-5 rounded-full py-1 px-2 bx-heart text-2xl cursor-pointer"></i>
+                <i className="bx hover:bg-slate-200 _transition-0-5 rounded-full py-1 px-2 bx-heart text-2xl cursor-pointer relative">
+                  {wishlistCount > 0 && (
+                    <span className="absolute font-sans top-0 -right-1 px-2 bg-sky-500 rounded-full text-white font-bold text-sm">
+                      {wishlistCount}
+                    </span>
+                  )}
+                </i>
               </Link>
               <Link to={"/cart"}>
-                <i className="bx hover:bg-slate-200 _transition-0-5 rounded-full py-1 px-2 bx-cart-alt text-2xl cursor-pointer"></i>
+                <i className="bx hover:bg-slate-200 _transition-0-5 rounded-full py-1 px-2 bx-cart-alt text-2xl cursor-pointer relative">
+                  {cartCount > 0 && (
+                    <span className="absolute font-sans top-0 -right-1 px-2 bg-sky-500 rounded-full text-white font-bold text-sm">
+                      {cartCount}
+                    </span>
+                  )}
+                </i>
               </Link>
               <Link to={"/tutor"}>
                 <i className="bx hover:bg-slate-200 _transition-0-5 rounded-full py-1 px-2 bxs-graduation text-2xl cursor-pointer"></i>
               </Link>
-              <img
-                src={currentUser.image}
-                className="max-h-fit h-8 w-8 rounded-full cursor-pointer"
-              />
+              <Link to={"/profile"}>
+                <img
+                  src={currentUser.image}
+                  className="max-h-fit h-8 w-8 rounded-full cursor-pointer"
+                />
+              </Link>
             </>
           ) : (
             <>

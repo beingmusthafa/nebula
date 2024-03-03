@@ -101,6 +101,26 @@ class UserPurchaseController {
     }
   }
 
+  async getCartCount(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.session.user._id;
+      const response = await this.cartsService.getCount(userId);
+      return res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
+  async getWishlistCount(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.session.user._id;
+      const response = await this.wishlistsService.getCount(userId);
+      return res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
   async checkCartAndWishlist(req: Request, res: Response, next: NextFunction) {
     try {
       const { courseId } = req.params;
