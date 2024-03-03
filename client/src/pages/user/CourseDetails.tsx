@@ -7,10 +7,11 @@ import { motion } from "framer-motion";
 import TutorDetailsSkeletion from "../../components/skeletons/TutorDetailsSkeletion";
 import ChaptersAccordionSkeletion from "../../components/skeletons/ChaptersAccordionSkeletion";
 import CourseDetailsSkeleton from "../../components/skeletons/CourseDetailsSkeleton";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ReviewCard from "../../components/user/ReviewCard";
 import EditReviewForm from "../../components/user/EditReviewForm";
 import ConfirmationPopup from "../../components/ConfirmationPopup";
+import { setCartCount, setWishlistCount } from "../../redux/user/userSlice";
 
 interface Course {
   title: string;
@@ -56,7 +57,9 @@ interface Review {
 }
 const CourseDetails = () => {
   const { id } = useParams();
-  const { currentUser } = useSelector((state: any) => state.user);
+  const { currentUser, cartCount, wishlistCount } = useSelector(
+    (state: any) => state.user
+  );
   let [course, setCourse] = useState<Course | null>(null);
   let [reviews, setReviews] = useState<Review[]>([]);
   let [selectedReview, setSelectedReview] = useState<Review | null>(null);
@@ -70,6 +73,7 @@ const CourseDetails = () => {
   let [tutor, setTutor] = useState<Tutor | null>(null);
   let [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   console.log(course);
   useEffect(() => {
     try {
@@ -175,6 +179,7 @@ const CourseDetails = () => {
       }).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
+      setCartCount(cartCount + 1);
       const newData = { inCart: true, inWishlist: data?.inWishlist };
       setData(newData);
     } catch (error) {
@@ -197,6 +202,7 @@ const CourseDetails = () => {
       }).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
+      setCartCount(cartCount - 1);
       const newData = { inCart: false, inWishlist: data?.inWishlist };
       setData(newData);
     } catch (error) {
@@ -218,6 +224,7 @@ const CourseDetails = () => {
       }).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
+      setWishlistCount(wishlistCount + 1);
       const newData = { inCart: data?.inCart, inWishlist: true };
       setData(newData);
     } catch (error) {
@@ -239,6 +246,7 @@ const CourseDetails = () => {
       }).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) return toast.error(res.message);
+      setWishlistCount(wishlistCount - 1);
       const newData = { inCart: data?.inCart, inWishlist: false };
       setData(newData);
     } catch (error) {
@@ -285,7 +293,7 @@ const CourseDetails = () => {
       )}
       {course ? (
         <>
-          <div className="bg-gray-800 h-fit w-full flex  md:flex-row flex-col justify-center gap-20 p-10">
+          <div className="bg-gray-800 h-fit w-full flex  md:flex-row flex-col items-center justify-center gap-20 p-10">
             <div className="flex flex-col text-white gap-2 order-2 md:order-1">
               <h1 className="_font-dm-display text-2xl">{course.title}</h1>
               <p className="text-wrap w-80 text-ellipsis overflow-hidden">
@@ -304,7 +312,7 @@ const CourseDetails = () => {
               </div>
             </div>
 
-            <div className="flex flex-col order-1 md:order-2 md:sticky md:top-40">
+            <div className="flex flex-col items-center order-1 md:order-2 md:top-40">
               <img
                 className="w-80 h-36 object-cover"
                 src={course.thumbnail}
