@@ -252,7 +252,7 @@ const LearnCourseEntry = () => {
       )}
       {course ? (
         <>
-          <div className="bg-gray-800 h-fit w-full flex  md:flex-row flex-col justify-center gap-20 p-10">
+          <div className="bg-gray-800 h-fit w-full flex  md:flex-row flex-col items-center justify-center gap-20 p-10">
             <div className="flex flex-col text-white gap-2 order-2 md:order-1">
               <h1 className="_font-dm-display text-2xl">{course.title}</h1>
               <p className="text-wrap w-80 text-ellipsis overflow-hidden">
@@ -293,63 +293,57 @@ const LearnCourseEntry = () => {
       ) : (
         <ChaptersAccordionSkeletion />
       )}
+      {!reviewed && (
+        <div className="flex flex-col items-center gap-4 p-4 border-2 w-fit mx-auto _bg-light mt-20">
+          <p className="font-semibold text-slate-500 uppercase ">Add review</p>
+          {error && <p className="text-red-500 font-semibold my-4">{error}</p>}
+          <div className="flex gap-2 ">
+            <i
+              onClick={() => setRating(1)}
+              className="bx bxs-star text-yellow-400 text-3xl"
+            ></i>
+            <i
+              onClick={() => setRating(2)}
+              className={`bx text-3xl ${
+                rating >= 2 ? "bxs-star text-yellow-400" : "bx-star"
+              }`}
+            ></i>
+            <i
+              onClick={() => setRating(3)}
+              className={`bx text-3xl ${
+                rating >= 3 ? "bxs-star text-yellow-400" : "bx-star"
+              }`}
+            ></i>
+            <i
+              onClick={() => setRating(4)}
+              className={`bx text-3xl ${
+                rating >= 4 ? "bxs-star text-yellow-400" : "bx-star"
+              }`}
+            ></i>
+            <i
+              onClick={() => setRating(5)}
+              className={`bx text-3xl ${
+                rating === 5 ? "bxs-star text-yellow-400" : "bx-star"
+              }`}
+            ></i>
+          </div>
+          <textarea
+            ref={commentRef}
+            name=""
+            id=""
+            rows={5}
+            className="border w-72  border-black p-2"
+            placeholder="Write your comment here (optional)"
+          ></textarea>
+          <button onClick={handleAddReview} className="_fill-btn-blue w-72 ">
+            Submit
+          </button>
+        </div>
+      )}
       {reviews.length > 0 && (
         <>
           <h1 className="_section-title2 text-center">Reviews</h1>
-          {!reviewed && (
-            <div className="flex flex-col items-center gap-4 p-4 border-2 w-fit mx-auto _bg-light">
-              <p className="font-semibold text-slate-500 uppercase ">
-                Add review
-              </p>
-              {error && (
-                <p className="text-red-500 font-semibold my-4">{error}</p>
-              )}
-              <div className="flex gap-2 ">
-                <i
-                  onClick={() => setRating(1)}
-                  className="bx bxs-star text-yellow-400 text-3xl"
-                ></i>
-                <i
-                  onClick={() => setRating(2)}
-                  className={`bx text-3xl ${
-                    rating >= 2 ? "bxs-star text-yellow-400" : "bx-star"
-                  }`}
-                ></i>
-                <i
-                  onClick={() => setRating(3)}
-                  className={`bx text-3xl ${
-                    rating >= 3 ? "bxs-star text-yellow-400" : "bx-star"
-                  }`}
-                ></i>
-                <i
-                  onClick={() => setRating(4)}
-                  className={`bx text-3xl ${
-                    rating >= 4 ? "bxs-star text-yellow-400" : "bx-star"
-                  }`}
-                ></i>
-                <i
-                  onClick={() => setRating(5)}
-                  className={`bx text-3xl ${
-                    rating === 5 ? "bxs-star text-yellow-400" : "bx-star"
-                  }`}
-                ></i>
-              </div>
-              <textarea
-                ref={commentRef}
-                name=""
-                id=""
-                rows={5}
-                className="border w-72  border-black p-2"
-                placeholder="Write your comment here (optional)"
-              ></textarea>
-              <button
-                onClick={handleAddReview}
-                className="_fill-btn-blue w-72 "
-              >
-                Submit
-              </button>
-            </div>
-          )}
+
           <div className="flex gap-4 whitespace-nowrap overflow-x-auto px-6 _no-scrollbar bg-white my-10">
             {selectedReview && (
               <ReviewCard
