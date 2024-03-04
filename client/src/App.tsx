@@ -40,6 +40,7 @@ const ViewReport_tutor = lazy(
 const ManageContent = lazy(() => import("./pages/tutor/ManageContent.tsx"));
 const PaymentSuccess = lazy(() => import("./pages/user/PaymentSuccess.tsx"));
 const PaymentFailure = lazy(() => import("./pages/user/PaymentFailure.tsx"));
+const CourseCompleted = lazy(() => import("./pages/user/CourseCompleted.tsx"));
 import "react-toastify/dist/ReactToastify.css";
 import HideAuth from "./components/auth/HideAuth.tsx";
 const Interests = lazy(() => import("./pages/user/Interests.tsx"));
@@ -203,6 +204,14 @@ const App = () => {
               element={
                 <Suspense fallback={<Loading />}>
                   <CourseExercise />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/my-courses/learn/:courseId/completed"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <CourseCompleted />
                 </Suspense>
               }
             />

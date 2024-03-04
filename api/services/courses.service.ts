@@ -606,9 +606,10 @@ export class CoursesService {
         };
       }
       return {
-        success: false,
-        message: "No resources found",
+        success: true,
+        message: "No more resources",
         statusCode: 404,
+        nextResource: null,
       };
     } catch (error) {
       console.log(error);

@@ -61,7 +61,7 @@ const CourseExercise = () => {
         Number(exerciseOrder)! + 1
       }`;
     } else if (nextData?.nextChapter) {
-      window.location.href = `/my-courses/learn/${courseId}/${nextData.nextChapter}/1`;
+      window.location.href = `/my-courses/learn/${courseId}/${nextData.nextChapter}`;
     } else {
       window.location.href = "/my-courses/learn/" + courseId;
     }
