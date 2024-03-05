@@ -13,11 +13,18 @@ import { Server } from "socket.io";
 import messagesRepository from "./repositories/messages.repository.js";
 import MongoStore from "connect-mongo";
 import dotenv from "dotenv";
+import cors from "cors";
 dotenv.config();
 
 const app = express();
 connectDb();
 scheduleReportGeneration();
+
+app.use(
+  cors({
+    origin: "http://nebula.client.s3-website.ap-south-1.amazonaws.com/",
+  })
+);
 
 app.use(cookieParser());
 app.use(
