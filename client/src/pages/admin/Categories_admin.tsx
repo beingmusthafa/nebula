@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import CategoryCard from "../../components/admin/CategoryCard";
 import CategoryForm from "../../components/admin/CategoryForm";
 import { toast } from "react-toastify";
-import categoryData from "../../../testdata/categories";
 import AdminLoading from "../../components/admin/AdminLoading";
 
 interface Category {
