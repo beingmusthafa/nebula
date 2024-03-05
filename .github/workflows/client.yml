@@ -13,6 +13,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Install Dependencies
+      run: cd client && npm install
+
+    - name: Build Project
+      run: cd client && npm run build
+      
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
