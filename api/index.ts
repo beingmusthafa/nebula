@@ -22,7 +22,10 @@ scheduleReportGeneration();
 
 app.use(
   cors({
-    origin: "http://nebula.client.s3-website.ap-south-1.amazonaws.com/",
+    origin: [
+      "http://nebula.client.s3-website.ap-south-1.amazonaws.com/",
+      "http://localhost:5173",
+    ],
   })
 );
 
