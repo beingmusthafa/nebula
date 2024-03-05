@@ -128,7 +128,7 @@ const Courses = () => {
         </>
       ) : (
         //if courses are NOT filled
-        <div className="flex w-full mt-52 items-center justify-center text-xl font-semibold">
+        <div className="flex w-full my-80 md:mt-52 items-center justify-center text-xl font-semibold">
           <div className="flex flex-col items-center">
             <i className="bx bx-sad text-5xl text-sky-500"></i>No courses found
           </div>

@@ -202,7 +202,7 @@ const Header = () => {
               Profile
             </div>
             <button
-              className="text-red-500 font-semibold"
+              className="text-red-500 font-semibold my-4"
               onClick={() => setShowLogoutConfirm(true)}
             >
               Logout
