@@ -28,7 +28,9 @@ const Header = () => {
   const logout = async () => {
     const toastId = toast.loading("Logging out");
     try {
-      const res = await fetch("/api/auth/sign-out").then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/auth/sign-out"
+      ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       toast.dismiss(toastId);
       dispatch(signOut());
@@ -53,8 +55,12 @@ const Header = () => {
   const getCartAndWishlistCount = async () => {
     try {
       if (!currentUser) return;
-      const fetch1 = fetch("/api/get-cart-count").then((res) => res.json());
-      const fetch2 = fetch("/api/get-wishlist-count").then((res) => res.json());
+      const fetch1 = fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/get-cart-count"
+      ).then((res) => res.json());
+      const fetch2 = fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/get-wishlist-count"
+      ).then((res) => res.json());
       const [res1, res2] = await Promise.all([fetch1, fetch2]);
       if (!res1.success || !res2.success) {
         throw new Error(res1.success ? res2.message : res1.message);

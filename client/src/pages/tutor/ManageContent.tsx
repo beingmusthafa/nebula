@@ -74,9 +74,9 @@ const ManageContent = () => {
   let [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   let [loading, setLoading] = useState(true);
   const getData = async () => {
-    const res = await fetch(`/api/get-course-details/${id}`).then((res) =>
-      res.json()
-    );
+    const res = await fetch(
+      import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${id}`
+    ).then((res) => res.json());
     if (!res.success) return toast.error(res.message);
     setCourse(res.doc);
     setChapters(res.chapters);
@@ -215,9 +215,13 @@ const ManageContent = () => {
       if (deleteItem === "chapter") itemId = selectedChapter?._id;
       else if (deleteItem === "video") itemId = selectedVideo?._id;
       else if (deleteItem === "exercise") itemId = selectedExercise?._id;
-      const res = await fetch(`/api/tutor/delete-${deleteItem}/${itemId}`, {
-        method: "DELETE",
-      }).then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL +
+          `/api/tutor/delete-${deleteItem}/${itemId}`,
+        {
+          method: "DELETE",
+        }
+      ).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) return toast.error(res.message);
       toast.success("deleted item successfullly");

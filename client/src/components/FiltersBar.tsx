@@ -48,7 +48,9 @@ const FiltersBar: React.FC<Props> = ({ page, search, filters }) => {
   };
   const fetchCategories = async () => {
     try {
-      const res = await fetch("/api/get-categories").then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/get-categories"
+      ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setCategories(res.categories);
     } catch (error) {

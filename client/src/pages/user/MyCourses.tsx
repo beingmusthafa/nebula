@@ -27,9 +27,9 @@ const MyCourses = () => {
   const getCourses = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/get-purchased-courses").then((res) =>
-        res.json()
-      );
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/get-purchased-courses"
+      ).then((res) => res.json());
       setLoading(false);
       if (!res.success) throw new Error(res.message);
       setCourses(res.courses);

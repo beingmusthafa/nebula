@@ -17,9 +17,10 @@ const Users_admin = () => {
   let [loading, setLoading] = useState<boolean>(false);
   async function fetchUsers() {
     setLoading(true);
-    const res = await fetch(`/api/admin/get-all-users?page=${page}`).then(
-      (res) => res.json()
-    );
+    const res = await fetch(
+      import.meta.env.VITE_API_BASE_URL +
+        `/api/admin/get-all-users?page=${page}`
+    ).then((res) => res.json());
     console.log(res.message);
     setLoading(false);
     if (!res.success) return console.log(res.message);

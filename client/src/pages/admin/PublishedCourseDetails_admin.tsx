@@ -66,9 +66,10 @@ const PublishedCourseDetails_admin = () => {
     try {
       setLoading(true);
       async function getCourse() {
-        const res = await fetch(`/api/get-course-details/${courseId}`).then(
-          (res) => res.json()
-        );
+        const res = await fetch(
+          import.meta.env.VITE_API_BASE_URL +
+            `/api/get-course-details/${courseId}`
+        ).then((res) => res.json());
         console.log(res);
         if (!res.success) return toast.error(res.message);
         setCourse(res.doc);
@@ -145,9 +146,14 @@ const PublishedCourseDetails_admin = () => {
     setShowBlockConfirm(false);
     const toastId = toast.loading("Blocking course");
     try {
-      const res = await fetch("/api/admin/block-course/" + courseId, {
-        method: "PATCH",
-      }).then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL +
+          "/api/admin/block-course/" +
+          courseId,
+        {
+          method: "PATCH",
+        }
+      ).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
       location.reload();
@@ -160,9 +166,14 @@ const PublishedCourseDetails_admin = () => {
     setShowUnblockConfirm(false);
     const toastId = toast.loading("Unblocking course");
     try {
-      const res = await fetch("/api/admin/unblock-course/" + courseId, {
-        method: "PATCH",
-      }).then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL +
+          "/api/admin/unblock-course/" +
+          courseId,
+        {
+          method: "PATCH",
+        }
+      ).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
       location.reload();

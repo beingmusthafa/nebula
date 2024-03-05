@@ -14,9 +14,9 @@ const Reports_admin = () => {
   const getReports = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/get-${type}-reports`).then((res) =>
-        res.json()
-      );
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + `/api/admin/get-${type}-reports`
+      ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       setReports(res.reports);
       setLoading(false);

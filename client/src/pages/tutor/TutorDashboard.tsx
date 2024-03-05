@@ -65,9 +65,9 @@ const TutorDashboard = () => {
   const fetchTopCourses = async () => {
     try {
       setTopLoading(true);
-      const res = await fetch("/api/admin/get-top-courses").then((res) =>
-        res.json()
-      );
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-top-courses"
+      ).then((res) => res.json());
       setTopLoading(false);
       console.log({ top: res.courses });
       if (!res.success) throw new Error(res.message);
@@ -78,9 +78,9 @@ const TutorDashboard = () => {
   };
   const getGraphData = async () => {
     try {
-      const res = await fetch("/api/tutor/get-graph-data").then((res) =>
-        res.json()
-      );
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-graph-data"
+      ).then((res) => res.json());
       setLoading(false);
       if (!res.success) throw new Error(res.message);
       console.log(res.courseEnrollmentData);
@@ -106,9 +106,9 @@ const TutorDashboard = () => {
   const fetchCreatingCourses = async () => {
     try {
       setCreatingLoading(true);
-      const res = await fetch("/api/tutor/get-creating-courses").then((res) =>
-        res.json()
-      );
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-creating-courses"
+      ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setCreatingCourses(res.courses);
       setCreatingLoading(false);
@@ -120,9 +120,9 @@ const TutorDashboard = () => {
   const fetchPendingCourses = async () => {
     try {
       setPendingLoading(true);
-      const res = await fetch("/api/tutor/get-pending-courses").then((res) =>
-        res.json()
-      );
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-pending-courses"
+      ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setPendingCourses(res.courses);
       setPendingLoading(false);
@@ -134,9 +134,9 @@ const TutorDashboard = () => {
   const fetchPublishedCourses = async () => {
     try {
       setPublishedLoading(true);
-      const res = await fetch("/api/tutor/get-published-courses").then((res) =>
-        res.json()
-      );
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-published-courses"
+      ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setPublishedCourses(res.courses);
       setPublishedLoading(false);
@@ -157,7 +157,9 @@ const TutorDashboard = () => {
     const toastId = toast.loading("Making publish request");
     try {
       const res = await fetch(
-        "/api/tutor/make-publish-request/" + selectedCourse?._id,
+        import.meta.env.VITE_API_BASE_URL +
+          "/api/tutor/make-publish-request/" +
+          selectedCourse?._id,
         {
           method: "PATCH",
         }
@@ -177,7 +179,9 @@ const TutorDashboard = () => {
     const toastId = toast.loading("Cancelling publish request");
     try {
       const res = await fetch(
-        "/api/tutor/cancel-publish-request/" + selectedCourse?._id,
+        import.meta.env.VITE_API_BASE_URL +
+          "/api/tutor/cancel-publish-request/" +
+          selectedCourse?._id,
         {
           method: "PATCH",
         }
@@ -197,7 +201,9 @@ const TutorDashboard = () => {
     const toastId = toast.loading("Deleting course");
     try {
       const res = await fetch(
-        "/api/tutor/delete-course/" + selectedCourse?._id,
+        import.meta.env.VITE_API_BASE_URL +
+          "/api/tutor/delete-course/" +
+          selectedCourse?._id,
         {
           method: "DELETE",
         }

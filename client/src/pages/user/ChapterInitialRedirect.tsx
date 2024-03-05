@@ -8,7 +8,8 @@ const ChapterInitialRedirect = () => {
   const handleRedirect = async () => {
     try {
       const res = await fetch(
-        `/api/get-chapter-redirect-info/${courseId}/${chapterId}`
+        import.meta.env.VITE_API_BASE_URL +
+          `/api/get-chapter-redirect-info/${courseId}/${chapterId}`
       ).then((res) => res.json());
       console.log({ res });
       if (!res.success) throw new Error(res.message);

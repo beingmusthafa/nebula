@@ -38,9 +38,9 @@ const Wishlist = () => {
   const dispatch = useDispatch();
   async function getWishlistCourses() {
     setLoading(true);
-    const res = await fetch("/api/get-wishlist-courses").then((res) =>
-      res.json()
-    );
+    const res = await fetch(
+      import.meta.env.VITE_API_BASE_URL + "/api/get-wishlist-courses"
+    ).then((res) => res.json());
     if (!res.success) return toast.error(res.message);
     setCourses(res.docs);
     setLoading(false);
@@ -57,15 +57,18 @@ const Wishlist = () => {
   }, []);
   const removeFromWishlist = async (id: string) => {
     try {
-      const res = await fetch("/api/remove-from-wishlist", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          courseId: id,
-        }),
-      }).then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/remove-from-wishlist",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            courseId: id,
+          }),
+        }
+      ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setWishlistCount(wishlistCount - 1);
       getWishlistCourses();
@@ -76,15 +79,18 @@ const Wishlist = () => {
   };
   const moveToCart = async (id: string) => {
     try {
-      const res = await fetch("/api/add-to-cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          courseId: id,
-        }),
-      }).then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/add-to-cart",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            courseId: id,
+          }),
+        }
+      ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setCartCount(cartCount + 1);
       removeFromWishlist(id);

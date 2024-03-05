@@ -32,7 +32,9 @@ const Profile = () => {
   const getEnrollments = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/get-enrollments").then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/get-enrollments"
+      ).then((res) => res.json());
       setLoading(false);
       if (!res.success) throw new Error(res.message);
       setEnrollments(res.enrollments);
@@ -60,20 +62,25 @@ const Profile = () => {
       if (email !== currentUser.email) {
         body = { ...body, code: verificationRef.current?.value };
       }
-      const res = await fetch("/api/edit-profile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }).then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/edit-profile",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      ).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
       toast.success("Details saved successfully");
       setEditing(false);
       setShowVerification(false);
       setLoading(true);
-      const res2 = await fetch("/api/get-profile").then((res) => res.json());
+      const res2 = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/get-profile"
+      ).then((res) => res.json());
       setLoading(false);
       if (!res2.success) throw new Error(res2.message);
       dispatch(updateDetails(res2.user));
@@ -86,15 +93,19 @@ const Profile = () => {
   const startVerification = async () => {
     const toastId = toast.loading("Sending verification code");
     try {
-      const res = await fetch("/api/send-email-change-verification", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-        }),
-      }).then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL +
+          "/api/send-email-change-verification",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+          }),
+        }
+      ).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
       toast.info("Verification code sent to your email");
@@ -115,15 +126,20 @@ const Profile = () => {
       const formData = new FormData();
       formData.append("image", image!);
       setImage(null);
-      const res = await fetch("/api/change-profile-image", {
-        method: "PUT",
-        body: formData,
-      }).then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/change-profile-image",
+        {
+          method: "PUT",
+          body: formData,
+        }
+      ).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
       toast.success("Profile image changed successfully");
       setLoading(true);
-      const res2 = await fetch("/api/get-profile").then((res) => res.json());
+      const res2 = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/get-profile"
+      ).then((res) => res.json());
       setLoading(false);
       if (!res2.success) throw new Error(res2.message);
       dispatch(updateDetails(res2.user));
