@@ -26,7 +26,9 @@ const Home = () => {
   useEffect(() => {
     async function getSlides() {
       try {
-        const res = await fetch("/api/get-home-data").then((res) => res.json());
+        const res = await fetch(
+          import.meta.env.VITE_API_BASE_URL + "/api/get-home-data"
+        ).then((res) => res.json());
         if (!res.success) throw new Error(res.message);
         setImages(res.banners);
         setLists(res.categories);

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import MessageBox from "./MessageBox";
 import io from "socket.io-client";
 import { useSelector } from "react-redux";
-const socket = io("http://localhost:3000");
+const socket = io(import.meta.env.VITE_API_BASE_URL);
 
 interface Props {
   courseId: string;
@@ -39,9 +39,9 @@ const ChatRoom: React.FC<Props> = ({ courseId, setShow }) => {
   const getMessages = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/get-room-messages/" + courseId).then(
-        (res) => res.json()
-      );
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/get-room-messages/" + courseId
+      ).then((res) => res.json());
       setLoading(false);
       if (!res.success) throw new Error(res.message);
       setMessages(res.messages);

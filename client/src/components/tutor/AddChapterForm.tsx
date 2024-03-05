@@ -13,13 +13,16 @@ const AddChapterForm: React.FC<Props> = ({ course, setShow }) => {
     const title = titleRef.current?.value;
     if (!title?.trim()) return setError("Title is required!");
     const toastId = toast.loading("Adding chapter");
-    const res = await fetch("/api/tutor/add-chapter", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title, course }),
-    }).then((res) => res.json());
+    const res = await fetch(
+      import.meta.env.VITE_API_BASE_URL + "/api/tutor/add-chapter",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, course }),
+      }
+    ).then((res) => res.json());
     toast.dismiss(toastId);
     if (!res.success) {
       setError(res.message);

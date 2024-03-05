@@ -25,7 +25,8 @@ const CourseExercise = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        `/api/get-course-exercise/${courseId}/${chapterId}/${exerciseOrder}`
+        import.meta.env.VITE_API_BASE_URL +
+          `/api/get-course-exercise/${courseId}/${chapterId}/${exerciseOrder}`
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       let answerIndex;

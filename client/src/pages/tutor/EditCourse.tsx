@@ -34,9 +34,11 @@ const EditCourse = () => {
   const getCategoryDetails = async () => {
     if (!loading) setLoading(true);
     try {
-      const res = await fetch("/api/tutor/get-course-details/" + id).then(
-        (res) => res.json()
-      );
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL +
+          "/api/tutor/get-course-details/" +
+          id
+      ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setCategory(res.doc.category);
       setLanguage(res.doc.language);
@@ -58,9 +60,9 @@ const EditCourse = () => {
   }, []);
   const fetchCategories = async () => {
     try {
-      const res = await fetch("/api/tutor/get-categories").then((res) =>
-        res.json()
-      );
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-categories"
+      ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setCategories(res.categories);
     } catch (error) {
@@ -133,10 +135,13 @@ const EditCourse = () => {
       formData.append(`benefits[${i}]`, ben);
     });
     console.log(formData);
-    const res = await fetch("/api/tutor/edit-course", {
-      method: "PUT",
-      body: formData,
-    }).then((res) => res.json());
+    const res = await fetch(
+      import.meta.env.VITE_API_BASE_URL + "/api/tutor/edit-course",
+      {
+        method: "PUT",
+        body: formData,
+      }
+    ).then((res) => res.json());
     toast.dismiss(toastId);
     if (!res.success) return toast.error(res.message);
     navigate(-1);

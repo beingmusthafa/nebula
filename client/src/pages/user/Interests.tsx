@@ -19,7 +19,9 @@ const Interests = () => {
   console.log(interests);
   const getCategories = async () => {
     try {
-      const res = await fetch("/api/get-categories").then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/get-categories"
+      ).then((res) => res.json());
       console.log({ res });
       if (!res.success) throw new Error(res.message);
       setCategories(res.categories);
@@ -34,13 +36,16 @@ const Interests = () => {
   const addInterests = async () => {
     const toastId = toast.loading("Adding interests");
     try {
-      const res = await fetch("/api/add-interests", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ interests: Array.from(interests) }),
-      }).then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/add-interests",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ interests: Array.from(interests) }),
+        }
+      ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       toast.dismiss(toastId);
       dispatch(updateDetails(res.user));

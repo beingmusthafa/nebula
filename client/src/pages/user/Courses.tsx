@@ -60,9 +60,10 @@ const Courses = () => {
       async function fetchData() {
         setLoading(true);
         const res = await fetch(
-          `/api/search-courses?page=${currentPage}&search=${
-            search || ""
-          }&minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}&language=${language}&sort=${sort}`
+          import.meta.env.VITE_API_BASE_URL +
+            `/api/search-courses?page=${currentPage}&search=${
+              search || ""
+            }&minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}&language=${language}&sort=${sort}`
         ).then((res) => res.json());
         if (!res.success) return toast.error(res.message);
         const { docs: _docs, ...info } = res.result;

@@ -51,17 +51,20 @@ const SignUp = () => {
       setConfirmPasswordError("Passwords do not match");
       return;
     }
-    const res = await fetch("/api/auth/start-sign-up", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-      }),
-    }).then((res) => res.json());
+    const res = await fetch(
+      import.meta.env.VITE_API_BASE_URL + "/api/auth/start-sign-up",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      }
+    ).then((res) => res.json());
     setProcessing(false);
     if (!res.success) {
       setError(res.message);
@@ -78,20 +81,23 @@ const SignUp = () => {
     try {
       setError("");
       setProcessing(true);
-      const res = await fetch("/api/auth/finish-sign-up", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userDetails: {
-            name,
-            email,
-            password,
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/auth/finish-sign-up",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-          code: verificationCode,
-        }),
-      }).then((res) => res.json());
+          body: JSON.stringify({
+            userDetails: {
+              name,
+              email,
+              password,
+            },
+            code: verificationCode,
+          }),
+        }
+      ).then((res) => res.json());
       setProcessing(false);
       if (!res.success) return setError(res.message);
       console.log(res.user);
@@ -108,15 +114,18 @@ const SignUp = () => {
     try {
       setProcessing(true);
       setError("");
-      const res = await fetch("/api/auth/resend-code", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-        }),
-      }).then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/auth/resend-code",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+          }),
+        }
+      ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       setTimerComplete(false);
     } catch (error) {

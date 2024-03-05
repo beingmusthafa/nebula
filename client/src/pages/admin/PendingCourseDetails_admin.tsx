@@ -64,9 +64,10 @@ const PendingCourseDetails_admin = () => {
     try {
       setLoading(true);
       async function getCourse() {
-        const res = await fetch(`/api/get-course-details/${courseId}`).then(
-          (res) => res.json()
-        );
+        const res = await fetch(
+          import.meta.env.VITE_API_BASE_URL +
+            `/api/get-course-details/${courseId}`
+        ).then((res) => res.json());
         console.log(res);
         if (!res.success) return toast.error(res.message);
         setCourse(res.doc);
@@ -142,9 +143,14 @@ const PendingCourseDetails_admin = () => {
     setShowApproveConfirm(false);
     const toastId = toast.loading("Approving course");
     try {
-      const res = await fetch("/api/admin/approve-course/" + courseId, {
-        method: "PATCH",
-      }).then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL +
+          "/api/admin/approve-course/" +
+          courseId,
+        {
+          method: "PATCH",
+        }
+      ).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
       navigate("/admin/courses");
@@ -157,9 +163,14 @@ const PendingCourseDetails_admin = () => {
     setShowRejectConfirm(false);
     const toastId = toast.loading("Rejecting course");
     try {
-      const res = await fetch("/api/admin/reject-course/" + courseId, {
-        method: "PATCH",
-      }).then((res) => res.json());
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL +
+          "/api/admin/reject-course/" +
+          courseId,
+        {
+          method: "PATCH",
+        }
+      ).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
       navigate("/admin/courses");
