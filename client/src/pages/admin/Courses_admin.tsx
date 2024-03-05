@@ -28,9 +28,9 @@ const Courses_admin = () => {
   const fetchPendingCourses = async () => {
     try {
       setPendingLoading(true);
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-pending-courses"
-      ).then((res) => res.json());
+      const res = await fetch("/api/admin/get-pending-courses").then((res) =>
+        res.json()
+      );
       if (!res.success) throw new Error(res.message);
       setPendingCourses(res.courses);
       setPendingLoading(false);
@@ -43,9 +43,9 @@ const Courses_admin = () => {
   const fetchPublishedCourses = async () => {
     try {
       setPendingLoading(true);
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-published-courses"
-      ).then((res) => res.json());
+      const res = await fetch("/api/admin/get-published-courses").then((res) =>
+        res.json()
+      );
       if (!res.success) throw new Error(res.message);
       setPublishedCourses(res.courses);
       setPublishedLoading(false);

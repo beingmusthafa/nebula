@@ -23,13 +23,10 @@ const BannerAddForm: React.FC<Props> = ({ setShow, getData }) => {
         throw new Error("Link too long");
       formData.append("image", image!);
       formData.append("link", linkRef.current!.value);
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/admin/add-banner",
-        {
-          method: "POST",
-          body: formData,
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/admin/add-banner", {
+        method: "POST",
+        body: formData,
+      }).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
       toast.success("Banner edited successfully");

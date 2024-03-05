@@ -75,9 +75,9 @@ const LearnCourseEntry = () => {
   console.log(course);
   const getReviews = async () => {
     try {
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + `/api/get-reviews/${courseId}`
-      ).then((res) => res.json());
+      const res = await fetch(`/api/get-reviews/${courseId}`).then((res) =>
+        res.json()
+      );
       if (!res.success) throw new Error(res.message);
       console.log({ res });
       for (const review of res.reviews) {
@@ -95,9 +95,9 @@ const LearnCourseEntry = () => {
     }
   };
   async function getCourse() {
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${courseId}`
-    ).then((res) => res.json());
+    const res = await fetch(`/api/get-course-details/${courseId}`).then((res) =>
+      res.json()
+    );
     console.log(res);
     if (!res.success) return toast.error(res.message);
     setCourse(res.doc);
@@ -183,16 +183,12 @@ const LearnCourseEntry = () => {
   const handleDeleteReview = async () => {
     const toastId = toast.loading("Deleting review");
     try {
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL +
-          `/api/delete-review/${selectedReview?._id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      ).then((res) => res.json());
+      const res = await fetch(`/api/delete-review/${selectedReview?._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       toast.dismiss(toastId);
       location.reload();
@@ -213,20 +209,17 @@ const LearnCourseEntry = () => {
         toast.dismiss(toastId);
         return setError("Comment must be less than 500 characters");
       }
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/add-review",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            course: courseId,
-            rating,
-            comment: commentRef.current?.value.trim(),
-          }),
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/add-review", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          course: courseId,
+          rating,
+          comment: commentRef.current?.value.trim(),
+        }),
+      }).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       toast.dismiss(toastId);
       toast.success("Review added successfully");

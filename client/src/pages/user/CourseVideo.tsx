@@ -24,8 +24,7 @@ const CourseVideo = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL +
-          `/api/get-course-video/${courseId}/${chapterId}/${videoOrder}`
+        `/api/get-course-video/${courseId}/${chapterId}/${videoOrder}`
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       setVideo(res.video);

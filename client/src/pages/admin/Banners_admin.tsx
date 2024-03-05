@@ -24,9 +24,9 @@ const Banners_admin = () => {
   const getBanners = async () => {
     try {
       setLoading(true);
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-banners"
-      ).then((res) => res.json());
+      const res = await fetch("/api/admin/get-banners").then((res) =>
+        res.json()
+      );
       if (!res.success) throw new Error(res.message);
       setBanners(res.banners);
       setLoading(false);
@@ -42,9 +42,7 @@ const Banners_admin = () => {
       setShowDeleteConfirm(false);
       setLoading(true);
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL +
-          "/api/admin/delete-banner/" +
-          selectedBanner?._id,
+        "/api/admin/delete-banner/" + selectedBanner?._id,
         {
           method: "DELETE",
         }
@@ -63,14 +61,9 @@ const Banners_admin = () => {
   ) => {
     const toastId = toast.loading("Toggling banner");
     try {
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL +
-          `/api/admin/${action}-banner/` +
-          bannerId,
-        {
-          method: "PATCH",
-        }
-      ).then((res) => res.json());
+      const res = await fetch(`/api/admin/${action}-banner/` + bannerId, {
+        method: "PATCH",
+      }).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       toast.dismiss(toastId);
       toast.success(`Banner ${action}d`);

@@ -48,9 +48,9 @@ const Stats = () => {
   const navigate = useNavigate();
   const getGraphData = async () => {
     try {
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-graph-data"
-      ).then((res) => res.json());
+      const res = await fetch("/api/admin/get-graph-data").then((res) =>
+        res.json()
+      );
       setLoading(false);
       if (!res.success) throw new Error(res.message);
       console.log(res.courseEnrollmentData);
@@ -76,9 +76,9 @@ const Stats = () => {
   const fetchTopCourses = async () => {
     try {
       setTopLoading(true);
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-top-courses"
-      ).then((res) => res.json());
+      const res = await fetch("/api/admin/get-top-courses").then((res) =>
+        res.json()
+      );
       setTopLoading(false);
       console.log({ top: res.courses });
       if (!res.success) throw new Error(res.message);

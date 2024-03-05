@@ -23,9 +23,9 @@ const ViewReport_admin = () => {
   let [loading, setLoading] = useState(true);
   const getReport = async () => {
     try {
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-report/" + reportId
-      ).then((res) => res.json());
+      const res = await fetch("/api/tutor/get-report/" + reportId).then((res) =>
+        res.json()
+      );
       setLoading(false);
       if (!res.success) throw new Error(res.message);
       console.log(res.report);
@@ -43,9 +43,7 @@ const ViewReport_admin = () => {
     const toastId = toast.loading("Starting report download");
     try {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL +
-          "/api/tutor/download-report-pdf/" +
-          reportId
+        "/api/tutor/download-report-pdf/" + reportId
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       console.log("buffer", res.pdfBuffer);

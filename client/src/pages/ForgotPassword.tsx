@@ -22,18 +22,15 @@ const ForgotPassword = () => {
     if (!email.trim()) {
       return setError("Enter email!");
     }
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/auth/send-recovery-code",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-        }),
-      }
-    ).then((res) => res.json());
+    const res = await fetch("/api/auth/send-recovery-code", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    }).then((res) => res.json());
     setProcessing(false);
     if (!res.success) {
       return setError(res.message);
@@ -50,21 +47,17 @@ const ForgotPassword = () => {
     if (password !== confirmPassword) {
       return setError("Passwords do not match!");
     }
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL +
-        "/api/auth/verify-and-change-password",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          code,
-          password,
-        }),
-      }
-    ).then((res) => res.json());
+    const res = await fetch("/api/auth/verify-and-change-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        code,
+        password,
+      }),
+    }).then((res) => res.json());
     console.log(res);
     setProcessing(false);
     if (!res.success) {

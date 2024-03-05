@@ -36,11 +36,9 @@ const ExerciseForm: React.FC<Props> = ({ data, course, chapter, setShow }) => {
   let orderRef = useRef<HTMLSelectElement>(null);
   const getData = async () => {
     setLoading(true);
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL +
-        "/api/tutor/get-exercises-count/" +
-        chapter
-    ).then((res) => res.json());
+    const res = await fetch("/api/tutor/get-exercises-count/" + chapter).then(
+      (res) => res.json()
+    );
     if (!res.success) return toast.error(res.message);
     let arr = [];
     for (let i = 1; i <= res.count; i++) {
@@ -72,29 +70,24 @@ const ExerciseForm: React.FC<Props> = ({ data, course, chapter, setShow }) => {
         return setError("All fields are required");
       } else setError("");
       const toastId = toast.loading("Editing exercise...");
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL +
-          "/api/tutor/edit-exercise/" +
-          data?._id,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            chapter: chapter,
-            question: questionRef.current?.value,
-            options: [
-              optionARef.current?.value,
-              optionBRef.current?.value,
-              optionCRef.current?.value,
-              optionDRef.current?.value,
-            ],
-            answer: answerRef.current?.value,
-            order: orderRef.current?.value || "",
-          }),
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/tutor/edit-exercise/" + data?._id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          chapter: chapter,
+          question: questionRef.current?.value,
+          options: [
+            optionARef.current?.value,
+            optionBRef.current?.value,
+            optionCRef.current?.value,
+            optionDRef.current?.value,
+          ],
+          answer: answerRef.current?.value,
+          order: orderRef.current?.value || "",
+        }),
+      }).then((res) => res.json());
       if (!res.success) return setError(res.message);
       toast.dismiss(toastId);
       toast.success("Exercise edited successfully");

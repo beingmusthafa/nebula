@@ -20,19 +20,16 @@ const UserDetails_admin: React.FC = () => {
   const navigate = useNavigate();
   async function changeBlockStatus(blockStatus: boolean) {
     console.log("blockStatus", blockStatus);
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/admin/change-block-status",
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: user?.email,
-          blockStatus,
-        }),
-      }
-    ).then((res) => res.json());
+    const res = await fetch("/api/admin/change-block-status", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: user?.email,
+        blockStatus,
+      }),
+    }).then((res) => res.json());
     if (res.statusCode === 401) return navigate("/sign-in");
     if (!res.success) return console.log(res.message);
     console.log(res.message);
@@ -41,9 +38,9 @@ const UserDetails_admin: React.FC = () => {
   }
   useEffect(() => {
     const getUser = async () => {
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + `/api/admin/get-user/${id}`
-      ).then((res) => res.json());
+      const res = await fetch(`/api/admin/get-user/${id}`).then((res) =>
+        res.json()
+      );
       if (!res.success) return console.log(res.message);
       setUser(res.user);
       setLoading(false);

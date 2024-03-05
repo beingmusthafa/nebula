@@ -34,9 +34,9 @@ const AddExerciseForm: React.FC<Props> = ({ course, chapter, setShow }) => {
   let answerRef = useRef<HTMLSelectElement>(null);
   const getChapters = async () => {
     setLoading(true);
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-chapters/" + course
-    ).then((res) => res.json());
+    const res = await fetch("/api/tutor/get-chapters/" + course).then((res) =>
+      res.json()
+    );
     setLoading(false);
     if (!res.success) return toast.error(res.message);
     setChapters(res.chapters);
@@ -64,27 +64,24 @@ const AddExerciseForm: React.FC<Props> = ({ course, chapter, setShow }) => {
         return setError("All fields are required");
       } else setError("");
       const toastId = toast.loading("Adding exercise...");
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/tutor/add-exercise",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            chapter,
-            course: course,
-            question: questionRef.current?.value,
-            options: [
-              optionARef.current?.value,
-              optionBRef.current?.value,
-              optionCRef.current?.value,
-              optionDRef.current?.value,
-            ],
-            answer: answerRef.current?.value,
-          }),
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/tutor/add-exercise", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          chapter,
+          course: course,
+          question: questionRef.current?.value,
+          options: [
+            optionARef.current?.value,
+            optionBRef.current?.value,
+            optionCRef.current?.value,
+            optionDRef.current?.value,
+          ],
+          answer: answerRef.current?.value,
+        }),
+      }).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       toast.dismiss(toastId);
       toast.success("Exercise added successfully");

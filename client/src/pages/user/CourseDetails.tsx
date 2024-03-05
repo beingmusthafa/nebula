@@ -80,19 +80,18 @@ const CourseDetails = () => {
     try {
       setLoading(true);
       async function getCourse() {
-        const res = await fetch(
-          import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${id}`
-        ).then((res) => res.json());
+        const res = await fetch(`/api/get-course-details/${id}`).then((res) =>
+          res.json()
+        );
         console.log(res);
         if (!res.success) return toast.error(res.message);
         setCourse(res.doc);
         setChapters(res.chapters);
         console.log("chapters", res.chapters);
         if (currentUser) {
-          const res = await fetch(
-            import.meta.env.VITE_API_BASE_URL +
-              `/api/check-cart-and-wishlist/${id}`
-          ).then((res) => res.json());
+          const res = await fetch(`/api/check-cart-and-wishlist/${id}`).then(
+            (res) => res.json()
+          );
           if (!res.success) return toast.error(res.message);
           setData(res.data);
         }
@@ -108,9 +107,9 @@ const CourseDetails = () => {
 
   const getReviews = async () => {
     try {
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + `/api/get-reviews/${id}`
-      ).then((res) => res.json());
+      const res = await fetch(`/api/get-reviews/${id}`).then((res) =>
+        res.json()
+      );
       if (!res.success) throw new Error(res.message);
       console.log({ res });
       setReviews(res.reviews);
@@ -170,18 +169,15 @@ const CourseDetails = () => {
     const toastId = toast.loading("Adding to cart");
     try {
       if (!currentUser) navigate("/sign-in");
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/add-to-cart",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            courseId: id,
-          }),
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/add-to-cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          courseId: id,
+        }),
+      }).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
       setCartCount(cartCount + 1);
@@ -196,18 +192,15 @@ const CourseDetails = () => {
     const toastId = toast.loading("Removing from cart");
     try {
       if (!currentUser) navigate("/sign-in");
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/remove-from-cart",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            courseId: id,
-          }),
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/remove-from-cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          courseId: id,
+        }),
+      }).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
       setCartCount(cartCount - 1);
@@ -221,18 +214,15 @@ const CourseDetails = () => {
     const toastId = toast.loading("Adding to wishlist");
     try {
       if (!currentUser) navigate("/sign-in");
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/add-to-wishlist",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            courseId: id,
-          }),
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/add-to-wishlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          courseId: id,
+        }),
+      }).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
       setWishlistCount(wishlistCount + 1);
@@ -246,18 +236,15 @@ const CourseDetails = () => {
     const toastId = toast.loading("Removing from wishlist");
     try {
       if (!currentUser) navigate("/sign-in");
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/remove-from-wishlist",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            courseId: id,
-          }),
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/remove-from-wishlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          courseId: id,
+        }),
+      }).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) return toast.error(res.message);
       setWishlistCount(wishlistCount - 1);
@@ -270,16 +257,12 @@ const CourseDetails = () => {
   const handleDeleteReview = async () => {
     const toastId = toast.loading("Deleting review");
     try {
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL +
-          `/api/delete-review/${selectedReview?._id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      ).then((res) => res.json());
+      const res = await fetch(`/api/delete-review/${selectedReview?._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       toast.success(res.message);
       setSelectedReview(null);

@@ -12,19 +12,16 @@ const GoogleAuth = () => {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       console.log(result);
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/auth/google-auth",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: result.user.displayName,
-            email: result.user.email,
-          }),
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/auth/google-auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: result.user.displayName,
+          email: result.user.email,
+        }),
+      }).then((res) => res.json());
       console.log("res", res);
       if (!res.success) return console.log(res.message);
       console.log(res.user);

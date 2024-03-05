@@ -27,16 +27,13 @@ const EditChapterForm: React.FC<Props> = ({ course, data, setShow }) => {
       return;
     }
     const toastId = toast.loading("Editing chapter");
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/tutor/edit-chapter/" + data._id,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, order: orderRef.current?.value || "" }),
-      }
-    ).then((res) => res.json());
+    const res = await fetch("/api/tutor/edit-chapter/" + data._id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, order: orderRef.current?.value || "" }),
+    }).then((res) => res.json());
     toast.dismiss(toastId);
     if (!res.success) {
       setError(res.message);
@@ -47,11 +44,9 @@ const EditChapterForm: React.FC<Props> = ({ course, data, setShow }) => {
     location.reload();
   };
   const getData = async () => {
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL +
-        "/api/tutor/get-chapters-count/" +
-        course
-    ).then((res) => res.json());
+    const res = await fetch("/api/tutor/get-chapters-count/" + course).then(
+      (res) => res.json()
+    );
     if (!res.success) return toast.error(res.message);
     let arr = [];
     for (let i = 1; i <= res.count; i++) {

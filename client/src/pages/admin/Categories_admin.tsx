@@ -19,9 +19,9 @@ const Categories_admin = () => {
   let [loading, setLoading] = useState(true);
   const fetchCategories = async () => {
     setLoading(true);
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/admin/get-categories"
-    ).then((res) => res.json());
+    const res = await fetch("/api/admin/get-categories").then((res) =>
+      res.json()
+    );
     setLoading(false);
     console.log(res);
     if (!res.success) return toast.error(res.message);
@@ -35,8 +35,7 @@ const Categories_admin = () => {
     if (!targetCategory) return toast.error("Please select a category");
     try {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL +
-          `/api/admin/delete-category/${selectedCategory?._id}/move/${targetCategory}`,
+        `/api/admin/delete-category/${selectedCategory?._id}/move/${targetCategory}`,
         {
           method: "DELETE",
         }

@@ -46,9 +46,7 @@ const Cart = () => {
   console.log(courses);
   async function getCartCourses() {
     setLoading(true);
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/get-cart-courses"
-    ).then((res) => res.json());
+    const res = await fetch("/api/get-cart-courses").then((res) => res.json());
     if (!res.success) return toast.error(res.message);
     setCourses(res.docs);
     setBill(res.bill);
@@ -66,18 +64,15 @@ const Cart = () => {
   }, []);
   const removeFromCart = async (id: string) => {
     try {
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/remove-from-cart",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            courseId: id,
-          }),
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/remove-from-cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          courseId: id,
+        }),
+      }).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setCartCount(cartCount - 1);
       getCartCourses();
@@ -88,9 +83,9 @@ const Cart = () => {
   };
   const goToPayment = async () => {
     const stripe = await loadStripe(import.meta.env.VITE_STRIPE_CLIENT_KEY!);
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/create-checkout-session"
-    ).then((res) => res.json());
+    const res = await fetch("/api/create-checkout-session").then((res) =>
+      res.json()
+    );
     if (!res.success) return toast.error(res.message);
     const { sessionId } = res;
     const result = await stripe?.redirectToCheckout({ sessionId });

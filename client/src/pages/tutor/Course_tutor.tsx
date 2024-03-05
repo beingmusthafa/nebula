@@ -36,9 +36,9 @@ const Course_tutor = () => {
     try {
       setLoading(true);
       async function getCourse() {
-        const res = await fetch(
-          import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${id}`
-        ).then((res) => res.json());
+        const res = await fetch(`/api/get-course-details/${id}`).then((res) =>
+          res.json()
+        );
         console.log(res);
         if (!res.success) return toast.error(res.message);
         setCourse(res.doc);

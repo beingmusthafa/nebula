@@ -31,13 +31,10 @@ const CategoryForm: React.FC<Props> = ({
       const body = new FormData();
       body.append("image", imageFile as File);
       body.append("name", name);
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/admin/create-category",
-        {
-          method: "POST",
-          body,
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/admin/create-category", {
+        method: "POST",
+        body,
+      }).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) return toast.error(res.message);
       toast.success("Category added successfully");
@@ -60,13 +57,10 @@ const CategoryForm: React.FC<Props> = ({
       body.append("image", imageFile as File);
       body.append("name", name);
       body.append("id", id!);
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/admin/edit-category",
-        {
-          method: "PUT",
-          body,
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/admin/edit-category", {
+        method: "PUT",
+        body,
+      }).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) return toast.error(res.message);
       toast.success("Category edited successfully");

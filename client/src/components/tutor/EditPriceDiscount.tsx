@@ -33,21 +33,16 @@ const EditPriceDiscount: React.FC<Props> = ({ course, setShow, fetchData }) => {
       if (price - discount < 399) {
         throw new Error("Price including discount must be greater than 399");
       }
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL +
-          "/api/tutor/edit-price-discount/" +
-          course._id,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            price,
-            discount,
-          }),
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/tutor/edit-price-discount/" + course._id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          price,
+          discount,
+        }),
+      }).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       fetchData();
       setShow(false);

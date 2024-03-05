@@ -30,11 +30,9 @@ const VideoEditForm: React.FC<Props> = ({ data, course, chapter, setShow }) => {
   let orderRef = useRef<HTMLSelectElement>(null);
   const getData = async () => {
     setLoading(true);
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL +
-        "/api/tutor/get-videos-count/" +
-        chapter
-    ).then((res) => res.json());
+    const res = await fetch("/api/tutor/get-videos-count/" + chapter).then(
+      (res) => res.json()
+    );
     if (!res.success) return toast.error(res.message);
     let arr = [];
     for (let i = 1; i <= res.count; i++) {
@@ -62,13 +60,10 @@ const VideoEditForm: React.FC<Props> = ({ data, course, chapter, setShow }) => {
       formData.append("title", titleRef.current?.value!);
       if (orderRef.current?.value)
         formData.append("order", orderRef.current?.value);
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/tutor/edit-video/" + data._id,
-        {
-          method: "PUT",
-          body: formData,
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/tutor/edit-video/" + data._id, {
+        method: "PUT",
+        body: formData,
+      }).then((res) => res.json());
       if (!res.success) {
         toast.dismiss(toastId);
         return setError(res.message);

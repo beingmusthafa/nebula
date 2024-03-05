@@ -31,19 +31,16 @@ const EditReviewForm: React.FC<Props> = ({ review, setShow, getReviews }) => {
         toast.dismiss(toastId);
         return setError("Comment must be less than 500 characters");
       }
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/edit-review/" + review._id,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            rating,
-            comment: commentRef.current?.value.trim(),
-          }),
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/edit-review/" + review._id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          rating,
+          comment: commentRef.current?.value.trim(),
+        }),
+      }).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       toast.dismiss(toastId);
       toast.success("Review edited successfully");

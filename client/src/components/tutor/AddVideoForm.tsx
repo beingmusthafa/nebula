@@ -28,9 +28,9 @@ const VideoForm: React.FC<Props> = ({ course, chapter, setShow }) => {
   let titleRef = useRef<HTMLInputElement>(null);
   const getData = async () => {
     setLoading(true);
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-chapters/" + course
-    ).then((res) => res.json());
+    const res = await fetch("/api/tutor/get-chapters/" + course).then((res) =>
+      res.json()
+    );
     if (!res.success) return toast.error(res.message);
     setChapters(res.chapters);
     setLoading(false);
@@ -54,13 +54,10 @@ const VideoForm: React.FC<Props> = ({ course, chapter, setShow }) => {
       formData.append("chapter", chapter);
       // return console.log({ title: titleRef.current.value, video, chapter });
       const toastId = toast.loading("Adding video...");
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/tutor/add-video",
-        {
-          method: "POST",
-          body: formData,
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/tutor/add-video", {
+        method: "POST",
+        body: formData,
+      }).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       toast.dismiss(toastId);
       toast.success("Video added successfully");

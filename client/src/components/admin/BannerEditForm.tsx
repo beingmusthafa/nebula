@@ -23,15 +23,10 @@ const BannerEditForm: React.FC<Props> = ({ setShow, data, getData }) => {
       if (linkRef.current!.value.length > 1000)
         throw new Error("Link too long");
       formData.append("link", linkRef.current!.value);
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL +
-          "/api/admin/edit-banner/" +
-          data._id,
-        {
-          method: "PUT",
-          body: formData,
-        }
-      ).then((res) => res.json());
+      const res = await fetch("/api/admin/edit-banner/" + data._id, {
+        method: "PUT",
+        body: formData,
+      }).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
       toast.success("Banner edited successfully");
