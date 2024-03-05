@@ -23,7 +23,7 @@ scheduleReportGeneration();
 app.use(
   cors({
     origin: [
-      "http://nebula.client.s3-website.ap-south-1.amazonaws.com/",
+      "https://nebula-76xv2972a-muhammad-musthafas-projects.vercel.app",
       "http://localhost:5173",
     ],
   })
