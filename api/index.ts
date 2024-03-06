@@ -26,6 +26,7 @@ app.use(
       "https://nebula-76xv2972a-muhammad-musthafas-projects.vercel.app",
       "https://nebula-seven-sooty.vercel.app",
       "http://localhost:5173",
+      "https://dashboard.stripe.com/",
     ],
     credentials: true,
   })
