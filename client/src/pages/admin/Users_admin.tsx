@@ -19,7 +19,12 @@ const Users_admin = () => {
     setLoading(true);
     const res = await fetch(
       import.meta.env.VITE_API_BASE_URL +
-        `/api/admin/get-all-users?page=${page}`
+        `/api/admin/get-all-users?page=${page}`,
+      {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      }
     ).then((res) => res.json());
     console.log(res.message);
     setLoading(false);

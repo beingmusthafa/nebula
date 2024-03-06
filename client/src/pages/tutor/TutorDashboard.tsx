@@ -66,7 +66,12 @@ const TutorDashboard = () => {
     try {
       setTopLoading(true);
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-top-courses"
+        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-top-courses",
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       setTopLoading(false);
       console.log({ top: res.courses });
@@ -79,7 +84,12 @@ const TutorDashboard = () => {
   const getGraphData = async () => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-graph-data"
+        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-graph-data",
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       setLoading(false);
       if (!res.success) throw new Error(res.message);
@@ -107,7 +117,12 @@ const TutorDashboard = () => {
     try {
       setCreatingLoading(true);
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-creating-courses"
+        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-creating-courses",
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setCreatingCourses(res.courses);
@@ -121,7 +136,12 @@ const TutorDashboard = () => {
     try {
       setPendingLoading(true);
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-pending-courses"
+        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-pending-courses",
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setPendingCourses(res.courses);
@@ -135,7 +155,12 @@ const TutorDashboard = () => {
     try {
       setPublishedLoading(true);
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-published-courses"
+        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-published-courses",
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setPublishedCourses(res.courses);
@@ -161,6 +186,9 @@ const TutorDashboard = () => {
           "/api/tutor/make-publish-request/" +
           selectedCourse?._id,
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "PATCH",
         }
       ).then((res) => res.json());
@@ -183,6 +211,9 @@ const TutorDashboard = () => {
           "/api/tutor/cancel-publish-request/" +
           selectedCourse?._id,
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "PATCH",
         }
       ).then((res) => res.json());
@@ -205,6 +236,9 @@ const TutorDashboard = () => {
           "/api/tutor/delete-course/" +
           selectedCourse?._id,
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "DELETE",
         }
       ).then((res) => res.json());

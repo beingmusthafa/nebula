@@ -33,7 +33,13 @@ const Profile = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/get-enrollments"
+        import.meta.env.VITE_API_BASE_URL + "/api/get-enrollments",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       setLoading(false);
       if (!res.success) throw new Error(res.message);
@@ -68,6 +74,7 @@ const Profile = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify(body),
         }
@@ -79,7 +86,13 @@ const Profile = () => {
       setShowVerification(false);
       setLoading(true);
       const res2 = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/get-profile"
+        import.meta.env.VITE_API_BASE_URL + "/api/get-profile",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       setLoading(false);
       if (!res2.success) throw new Error(res2.message);
@@ -100,6 +113,7 @@ const Profile = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             email: email,
@@ -129,6 +143,9 @@ const Profile = () => {
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/change-profile-image",
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "PUT",
           body: formData,
         }
@@ -138,7 +155,13 @@ const Profile = () => {
       toast.success("Profile image changed successfully");
       setLoading(true);
       const res2 = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/get-profile"
+        import.meta.env.VITE_API_BASE_URL + "/api/get-profile",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       setLoading(false);
       if (!res2.success) throw new Error(res2.message);

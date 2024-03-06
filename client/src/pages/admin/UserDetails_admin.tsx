@@ -26,6 +26,7 @@ const UserDetails_admin: React.FC = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token"),
         },
         body: JSON.stringify({
           email: user?.email,
@@ -42,7 +43,12 @@ const UserDetails_admin: React.FC = () => {
   useEffect(() => {
     const getUser = async () => {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + `/api/admin/get-user/${id}`
+        import.meta.env.VITE_API_BASE_URL + `/api/admin/get-user/${id}`,
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       if (!res.success) return console.log(res.message);
       setUser(res.user);

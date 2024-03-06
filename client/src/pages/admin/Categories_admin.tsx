@@ -20,7 +20,12 @@ const Categories_admin = () => {
   const fetchCategories = async () => {
     setLoading(true);
     const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/admin/get-categories"
+      import.meta.env.VITE_API_BASE_URL + "/api/admin/get-categories",
+      {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      }
     ).then((res) => res.json());
     setLoading(false);
     console.log(res);
@@ -38,6 +43,9 @@ const Categories_admin = () => {
         import.meta.env.VITE_API_BASE_URL +
           `/api/admin/delete-category/${selectedCategory?._id}/move/${targetCategory}`,
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "DELETE",
         }
       ).then((res) => res.json());

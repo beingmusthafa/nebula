@@ -9,7 +9,13 @@ const ChapterInitialRedirect = () => {
     try {
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL +
-          `/api/get-chapter-redirect-info/${courseId}/${chapterId}`
+          `/api/get-chapter-redirect-info/${courseId}/${chapterId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       console.log({ res });
       if (!res.success) throw new Error(res.message);

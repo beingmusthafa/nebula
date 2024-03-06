@@ -47,7 +47,13 @@ const Cart = () => {
   async function getCartCourses() {
     setLoading(true);
     const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/get-cart-courses"
+      import.meta.env.VITE_API_BASE_URL + "/api/get-cart-courses",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      }
     ).then((res) => res.json());
     if (!res.success) return toast.error(res.message);
     setCourses(res.docs);
@@ -72,6 +78,7 @@ const Cart = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             courseId: id,
@@ -89,7 +96,13 @@ const Cart = () => {
   const goToPayment = async () => {
     const stripe = await loadStripe(import.meta.env.VITE_STRIPE_CLIENT_KEY!);
     const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/create-checkout-session"
+      import.meta.env.VITE_API_BASE_URL + "/api/create-checkout-session",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      }
     ).then((res) => res.json());
     if (!res.success) return toast.error(res.message);
     const { sessionId } = res;

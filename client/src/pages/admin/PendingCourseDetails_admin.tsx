@@ -66,7 +66,12 @@ const PendingCourseDetails_admin = () => {
       async function getCourse() {
         const res = await fetch(
           import.meta.env.VITE_API_BASE_URL +
-            `/api/get-course-details/${courseId}`
+            `/api/get-course-details/${courseId}`,
+          {
+            headers: {
+              "Authorization": "Bearer " + localStorage.getItem("token"),
+            },
+          }
         ).then((res) => res.json());
         console.log(res);
         if (!res.success) return toast.error(res.message);
@@ -148,6 +153,9 @@ const PendingCourseDetails_admin = () => {
           "/api/admin/approve-course/" +
           courseId,
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "PATCH",
         }
       ).then((res) => res.json());
@@ -168,6 +176,9 @@ const PendingCourseDetails_admin = () => {
           "/api/admin/reject-course/" +
           courseId,
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "PATCH",
         }
       ).then((res) => res.json());

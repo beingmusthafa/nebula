@@ -33,7 +33,12 @@ const VideoEditForm: React.FC<Props> = ({ data, course, chapter, setShow }) => {
     const res = await fetch(
       import.meta.env.VITE_API_BASE_URL +
         "/api/tutor/get-videos-count/" +
-        chapter
+        chapter,
+      {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      }
     ).then((res) => res.json());
     if (!res.success) return toast.error(res.message);
     let arr = [];
@@ -65,6 +70,9 @@ const VideoEditForm: React.FC<Props> = ({ data, course, chapter, setShow }) => {
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/tutor/edit-video/" + data._id,
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "PUT",
           body: formData,
         }

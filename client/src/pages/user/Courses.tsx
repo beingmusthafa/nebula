@@ -63,7 +63,13 @@ const Courses = () => {
           import.meta.env.VITE_API_BASE_URL +
             `/api/search-courses?page=${currentPage}&search=${
               search || ""
-            }&minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}&language=${language}&sort=${sort}`
+            }&minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}&language=${language}&sort=${sort}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + localStorage.getItem("token"),
+            },
+          }
         ).then((res) => res.json());
         if (!res.success) return toast.error(res.message);
         const { docs: _docs, ...info } = res.result;

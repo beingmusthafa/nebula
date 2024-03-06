@@ -24,7 +24,7 @@ class AuthMiddleware {
 
   async userIdentify(req: Request, res: Response, next: NextFunction) {
     try {
-      const token = req.cookies["access_token"];
+      const token = req.headers.authorization.split(" ")[1];
       if (!token) return next();
       const { id } = jwt.verify(token, process.env.JWT_SECRET);
       if (!id) return next();
@@ -72,10 +72,10 @@ class AuthMiddleware {
 
   async userAuth(req: Request, res: Response, next: NextFunction) {
     try {
-      const token = req.cookies["access_token"];
+      const token = req.headers.authorization.split(" ")[1];
       if (!token) throw customError(401, "Unauthorized");
       const { id } = jwt.verify(token, process.env.JWT_SECRET);
-      if (!id) throw customError(403, "Invalid token");
+      if (!id) throw customError(403, "Invalid token, login again");
       //TEST MODE/////////////////////////////////////////////////////////////////////////////
       // req.session.user = {
       //   _id: "65c38a47a80c66ffa1dd30ef",
@@ -120,10 +120,10 @@ class AuthMiddleware {
 
   async adminAuth(req: Request, res: Response, next: NextFunction) {
     try {
-      const token = req.cookies["access_token"];
+      const token = req.headers.authorization.split(" ")[1];
       if (!token) throw customError(401, "Unauthorized");
       const { id } = jwt.verify(token, process.env.JWT_SECRET);
-      if (!id) throw customError(401, "Invalid token");
+      if (!id) throw customError(403, "Invalid token, login again");
       //TEST MODE/////////////////////////////////////////////////////////////////////////////
       // req.session.user = {
       //   _id: "65c38a47a80c66ffa1dd30ef",

@@ -34,6 +34,9 @@ const CategoryForm: React.FC<Props> = ({
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/admin/create-category",
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "POST",
           body,
         }
@@ -63,6 +66,9 @@ const CategoryForm: React.FC<Props> = ({
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/admin/edit-category",
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "PUT",
           body,
         }

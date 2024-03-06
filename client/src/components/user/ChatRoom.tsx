@@ -40,7 +40,14 @@ const ChatRoom: React.FC<Props> = ({ courseId, setShow }) => {
     try {
       setLoading(true);
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/get-room-messages/" + courseId
+        import.meta.env.VITE_API_BASE_URL +
+          "/api/get-room-messages/" +
+          courseId,
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       setLoading(false);
       if (!res.success) throw new Error(res.message);

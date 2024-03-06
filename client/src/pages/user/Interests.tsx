@@ -20,7 +20,13 @@ const Interests = () => {
   const getCategories = async () => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/get-categories"
+        import.meta.env.VITE_API_BASE_URL + "/api/get-categories",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       console.log({ res });
       if (!res.success) throw new Error(res.message);
@@ -42,6 +48,7 @@ const Interests = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({ interests: Array.from(interests) }),
         }

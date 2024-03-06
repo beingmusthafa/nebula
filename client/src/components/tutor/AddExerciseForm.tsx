@@ -35,7 +35,12 @@ const AddExerciseForm: React.FC<Props> = ({ course, chapter, setShow }) => {
   const getChapters = async () => {
     setLoading(true);
     const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-chapters/" + course
+      import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-chapters/" + course,
+      {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      }
     ).then((res) => res.json());
     setLoading(false);
     if (!res.success) return toast.error(res.message);
@@ -70,6 +75,7 @@ const AddExerciseForm: React.FC<Props> = ({ course, chapter, setShow }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             chapter,

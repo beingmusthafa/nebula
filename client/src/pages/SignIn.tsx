@@ -15,28 +15,33 @@ const SignIn = () => {
   const dispatch = useDispatch();
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!(email.trim() && password.trim())) {
-      return setError("All fields are required");
-    }
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/auth/sign-in",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+    try {
+      if (!(email.trim() && password.trim())) {
+        return setError("All fields are required");
       }
-    ).then((res) => res.json());
-    if (!res.success) {
-      return setError(res.message);
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/auth/sign-in",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      ).then((res) => res.json());
+      if (!res.success) {
+        return setError(res.message);
+      }
+      dispatch(signIn(res.user));
+      setError(null);
+      localStorage.setItem("token", res.token);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
     }
-    dispatch(signIn(res.user));
-    setError(null);
-    navigate("/");
   }
   return (
     <div className="flex _bg-light h-fit w-full items-center">

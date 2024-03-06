@@ -49,7 +49,12 @@ const Stats = () => {
   const getGraphData = async () => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-graph-data"
+        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-graph-data",
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       setLoading(false);
       if (!res.success) throw new Error(res.message);
@@ -77,7 +82,12 @@ const Stats = () => {
     try {
       setTopLoading(true);
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-top-courses"
+        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-top-courses",
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       setTopLoading(false);
       console.log({ top: res.courses });

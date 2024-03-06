@@ -26,7 +26,13 @@ const CourseExercise = () => {
       setLoading(true);
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL +
-          `/api/get-course-exercise/${courseId}/${chapterId}/${exerciseOrder}`
+          `/api/get-course-exercise/${courseId}/${chapterId}/${exerciseOrder}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       let answerIndex;

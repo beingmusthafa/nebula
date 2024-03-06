@@ -68,7 +68,12 @@ const PublishedCourseDetails_admin = () => {
       async function getCourse() {
         const res = await fetch(
           import.meta.env.VITE_API_BASE_URL +
-            `/api/get-course-details/${courseId}`
+            `/api/get-course-details/${courseId}`,
+          {
+            headers: {
+              "Authorization": "Bearer " + localStorage.getItem("token"),
+            },
+          }
         ).then((res) => res.json());
         console.log(res);
         if (!res.success) return toast.error(res.message);
@@ -151,6 +156,9 @@ const PublishedCourseDetails_admin = () => {
           "/api/admin/block-course/" +
           courseId,
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "PATCH",
         }
       ).then((res) => res.json());
@@ -171,6 +179,9 @@ const PublishedCourseDetails_admin = () => {
           "/api/admin/unblock-course/" +
           courseId,
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "PATCH",
         }
       ).then((res) => res.json());

@@ -28,6 +28,9 @@ const BannerEditForm: React.FC<Props> = ({ setShow, data, getData }) => {
           "/api/admin/edit-banner/" +
           data._id,
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "PUT",
           body: formData,
         }

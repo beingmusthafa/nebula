@@ -29,6 +29,7 @@ const GoogleAuth = () => {
       if (!res.success) return console.log(res.message);
       console.log(res.user);
       dispatch(signIn(res.user));
+      localStorage.setItem("token", res.token);
       navigate("/");
     } catch (error) {
       console.log(error);

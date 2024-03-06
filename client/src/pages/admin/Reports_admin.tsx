@@ -15,7 +15,12 @@ const Reports_admin = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + `/api/admin/get-${type}-reports`
+        import.meta.env.VITE_API_BASE_URL + `/api/admin/get-${type}-reports`,
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       setReports(res.reports);

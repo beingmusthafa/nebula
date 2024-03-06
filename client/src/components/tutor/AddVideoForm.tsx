@@ -29,7 +29,12 @@ const VideoForm: React.FC<Props> = ({ course, chapter, setShow }) => {
   const getData = async () => {
     setLoading(true);
     const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-chapters/" + course
+      import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-chapters/" + course,
+      {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      }
     ).then((res) => res.json());
     if (!res.success) return toast.error(res.message);
     setChapters(res.chapters);
@@ -57,6 +62,9 @@ const VideoForm: React.FC<Props> = ({ course, chapter, setShow }) => {
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/tutor/add-video",
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "POST",
           body: formData,
         }

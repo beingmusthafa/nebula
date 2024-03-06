@@ -76,7 +76,13 @@ const LearnCourseEntry = () => {
   const getReviews = async () => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + `/api/get-reviews/${courseId}`
+        import.meta.env.VITE_API_BASE_URL + `/api/get-reviews/${courseId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       console.log({ res });
@@ -96,7 +102,13 @@ const LearnCourseEntry = () => {
   };
   async function getCourse() {
     const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${courseId}`
+      import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${courseId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      }
     ).then((res) => res.json());
     console.log(res);
     if (!res.success) return toast.error(res.message);
@@ -190,6 +202,7 @@ const LearnCourseEntry = () => {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
         }
       ).then((res) => res.json());
@@ -219,6 +232,7 @@ const LearnCourseEntry = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             course: courseId,

@@ -33,6 +33,7 @@ const EditChapterForm: React.FC<Props> = ({ course, data, setShow }) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token"),
         },
         body: JSON.stringify({ title, order: orderRef.current?.value || "" }),
       }
@@ -50,7 +51,12 @@ const EditChapterForm: React.FC<Props> = ({ course, data, setShow }) => {
     const res = await fetch(
       import.meta.env.VITE_API_BASE_URL +
         "/api/tutor/get-chapters-count/" +
-        course
+        course,
+      {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      }
     ).then((res) => res.json());
     if (!res.success) return toast.error(res.message);
     let arr = [];

@@ -41,6 +41,7 @@ const EditPriceDiscount: React.FC<Props> = ({ course, setShow, fetchData }) => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             price,

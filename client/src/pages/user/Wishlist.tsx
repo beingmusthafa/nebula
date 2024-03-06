@@ -39,7 +39,13 @@ const Wishlist = () => {
   async function getWishlistCourses() {
     setLoading(true);
     const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/get-wishlist-courses"
+      import.meta.env.VITE_API_BASE_URL + "/api/get-wishlist-courses",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      }
     ).then((res) => res.json());
     if (!res.success) return toast.error(res.message);
     setCourses(res.docs);
@@ -63,6 +69,7 @@ const Wishlist = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             courseId: id,
@@ -85,6 +92,7 @@ const Wishlist = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             courseId: id,

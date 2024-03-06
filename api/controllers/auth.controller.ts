@@ -33,14 +33,7 @@ class AuthController {
       if (!response.success) {
         return next(customError(response.statusCode, response.message));
       }
-      res
-        .cookie("access_token", response.token, {
-          sameSite: "none",
-          secure: true,
-          httpOnly: true,
-          expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
-        })
-        .json({ success: true, user: response.doc });
+      res.json({ success: true, user: response.doc, token: response.token });
     } catch (error) {
       next(customError(500, error.message));
     }
@@ -52,14 +45,7 @@ class AuthController {
       if (!response.success) {
         return next(customError(response.statusCode, response.message));
       }
-      res
-        .cookie("access_token", response.token, {
-          sameSite: "none",
-          secure: true,
-          httpOnly: true,
-          expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
-        })
-        .json({ success: true, user: response.doc });
+      res.json({ success: true, user: response.doc, token: response.token });
     } catch (error) {
       next(customError(500, error.message));
     }
@@ -72,14 +58,7 @@ class AuthController {
       if (!response.success) {
         return next(customError(response.statusCode, response.message));
       }
-      res
-        .cookie("access_token", response.token, {
-          sameSite: "none",
-          secure: true,
-          httpOnly: true,
-          expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
-        })
-        .json({ success: true, user: response.doc });
+      res.json({ success: true, user: response.doc, token: response.token });
     } catch (error) {
       next(customError(500, error.message));
     }
@@ -124,15 +103,7 @@ class AuthController {
       if (!response.success) {
         return next(customError(response.statusCode, response.message));
       }
-      res
-        .cookie("access_token", response.token, {
-          sameSite: "none",
-          secure: true,
-          httpOnly: true,
-          expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
-        })
-        .status(response.statusCode)
-        .json(response);
+      res.status(response.statusCode).json(response);
     } catch (error) {
       next(customError(500, error.message));
     }
@@ -141,8 +112,6 @@ class AuthController {
   async signOut(req: Request, res: Response, next: NextFunction) {
     try {
       req.session.destroy();
-      res.clearCookie("access_token");
-      res.clearCookie("connect.sid");
       res.status(200).json({
         success: true,
         message: "user successfully logged out",

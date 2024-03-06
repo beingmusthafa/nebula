@@ -104,6 +104,7 @@ const SignUp = () => {
       dispatch(signIn(res.user));
       setError(null);
       setVerificationStarted(false);
+      localStorage.setItem("token", res.token);
       navigate("/");
     } catch (error) {
       setError("Something went wrong");

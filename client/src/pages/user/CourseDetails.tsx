@@ -81,7 +81,13 @@ const CourseDetails = () => {
       setLoading(true);
       async function getCourse() {
         const res = await fetch(
-          import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${id}`
+          import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + localStorage.getItem("token"),
+            },
+          }
         ).then((res) => res.json());
         console.log(res);
         if (!res.success) return toast.error(res.message);
@@ -91,7 +97,13 @@ const CourseDetails = () => {
         if (currentUser) {
           const res = await fetch(
             import.meta.env.VITE_API_BASE_URL +
-              `/api/check-cart-and-wishlist/${id}`
+              `/api/check-cart-and-wishlist/${id}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token"),
+              },
+            }
           ).then((res) => res.json());
           if (!res.success) return toast.error(res.message);
           setData(res.data);
@@ -109,7 +121,13 @@ const CourseDetails = () => {
   const getReviews = async () => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + `/api/get-reviews/${id}`
+        import.meta.env.VITE_API_BASE_URL + `/api/get-reviews/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       console.log({ res });
@@ -176,6 +194,7 @@ const CourseDetails = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             courseId: id,
@@ -202,6 +221,7 @@ const CourseDetails = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             courseId: id,
@@ -227,6 +247,7 @@ const CourseDetails = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             courseId: id,
@@ -252,6 +273,7 @@ const CourseDetails = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             courseId: id,
@@ -277,6 +299,7 @@ const CourseDetails = () => {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
         }
       ).then((res) => res.json());

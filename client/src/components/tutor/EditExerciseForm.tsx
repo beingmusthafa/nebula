@@ -39,7 +39,12 @@ const ExerciseForm: React.FC<Props> = ({ data, course, chapter, setShow }) => {
     const res = await fetch(
       import.meta.env.VITE_API_BASE_URL +
         "/api/tutor/get-exercises-count/" +
-        chapter
+        chapter,
+      {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      }
     ).then((res) => res.json());
     if (!res.success) return toast.error(res.message);
     let arr = [];
@@ -80,6 +85,7 @@ const ExerciseForm: React.FC<Props> = ({ data, course, chapter, setShow }) => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             chapter: chapter,

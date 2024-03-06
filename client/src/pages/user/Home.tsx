@@ -27,7 +27,13 @@ const Home = () => {
     async function getSlides() {
       try {
         const res = await fetch(
-          import.meta.env.VITE_API_BASE_URL + "/api/get-home-data"
+          import.meta.env.VITE_API_BASE_URL + "/api/get-home-data",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + localStorage.getItem("token"),
+            },
+          }
         ).then((res) => res.json());
         if (!res.success) throw new Error(res.message);
         setImages(res.banners);

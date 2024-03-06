@@ -26,6 +26,9 @@ const BannerAddForm: React.FC<Props> = ({ setShow, getData }) => {
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/admin/add-banner",
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "POST",
           body: formData,
         }

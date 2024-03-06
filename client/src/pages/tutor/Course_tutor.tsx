@@ -37,7 +37,12 @@ const Course_tutor = () => {
       setLoading(true);
       async function getCourse() {
         const res = await fetch(
-          import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${id}`
+          import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${id}`,
+          {
+            headers: {
+              "Authorization": "Bearer " + localStorage.getItem("token"),
+            },
+          }
         ).then((res) => res.json());
         console.log(res);
         if (!res.success) return toast.error(res.message);

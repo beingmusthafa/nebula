@@ -17,63 +17,72 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   async function handleEmailSubmit(e: React.ChangeEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setProcessing(true);
-    if (!email.trim()) {
-      return setError("Enter email!");
-    }
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/auth/send-recovery-code",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-        }),
+    try {
+      e.preventDefault();
+      setProcessing(true);
+      if (!email.trim()) {
+        return setError("Enter email!");
       }
-    ).then((res) => res.json());
-    setProcessing(false);
-    if (!res.success) {
-      return setError(res.message);
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/auth/send-recovery-code",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+          }),
+        }
+      ).then((res) => res.json());
+      setProcessing(false);
+      if (!res.success) {
+        return setError(res.message);
+      }
+      setError(null);
+      setVerificationStarted(true);
+    } catch (error) {
+      console.log(error);
     }
-    setError(null);
-    setVerificationStarted(true);
   }
   async function handleVerifyAndChange(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setProcessing(true);
-    if (code !== undefined && !password.trim() && !confirmPassword.trim()) {
-      return setError("All fields are required!");
-    }
-    if (password !== confirmPassword) {
-      return setError("Passwords do not match!");
-    }
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL +
-        "/api/auth/verify-and-change-password",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          code,
-          password,
-        }),
+    try {
+      setProcessing(true);
+      if (code !== undefined && !password.trim() && !confirmPassword.trim()) {
+        return setError("All fields are required!");
       }
-    ).then((res) => res.json());
-    console.log(res);
-    setProcessing(false);
-    if (!res.success) {
-      return setError(res.message);
+      if (password !== confirmPassword) {
+        return setError("Passwords do not match!");
+      }
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL +
+          "/api/auth/verify-and-change-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            code,
+            password,
+          }),
+        }
+      ).then((res) => res.json());
+      console.log(res);
+      setProcessing(false);
+      if (!res.success) {
+        return setError(res.message);
+      }
+      setError(null);
+      setVerificationStarted(false);
+      dispatch(signIn(res.doc));
+      localStorage.setItem("token", res.token);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
     }
-    setError(null);
-    setVerificationStarted(false);
-    dispatch(signIn(res.doc));
-    navigate("/");
   }
   return (
     <div className="flex _bg-light h-fit w-full items-center">

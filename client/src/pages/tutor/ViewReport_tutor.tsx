@@ -24,7 +24,12 @@ const ViewReport_admin = () => {
   const getReport = async () => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-report/" + reportId
+        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-report/" + reportId,
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       setLoading(false);
       if (!res.success) throw new Error(res.message);
@@ -45,7 +50,12 @@ const ViewReport_admin = () => {
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL +
           "/api/tutor/download-report-pdf/" +
-          reportId
+          reportId,
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       console.log("buffer", res.pdfBuffer);

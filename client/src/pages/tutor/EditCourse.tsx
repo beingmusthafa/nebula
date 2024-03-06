@@ -37,7 +37,12 @@ const EditCourse = () => {
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL +
           "/api/tutor/get-course-details/" +
-          id
+          id,
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setCategory(res.doc.category);
@@ -61,7 +66,12 @@ const EditCourse = () => {
   const fetchCategories = async () => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-categories"
+        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-categories",
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setCategories(res.categories);
@@ -138,6 +148,9 @@ const EditCourse = () => {
     const res = await fetch(
       import.meta.env.VITE_API_BASE_URL + "/api/tutor/edit-course",
       {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
         method: "PUT",
         body: formData,
       }

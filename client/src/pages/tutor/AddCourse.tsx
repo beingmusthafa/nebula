@@ -30,7 +30,13 @@ const AddCourse = () => {
   const fetchCategories = async () => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-categories"
+        import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-categories",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
       setCategories(res.categories);
@@ -109,6 +115,9 @@ const AddCourse = () => {
     const res = await fetch(
       import.meta.env.VITE_API_BASE_URL + "/api/tutor/create-course",
       {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
         method: "POST",
         body: formData,
       }

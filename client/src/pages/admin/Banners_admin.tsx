@@ -25,7 +25,12 @@ const Banners_admin = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-banners"
+        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-banners",
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       setBanners(res.banners);
@@ -46,6 +51,9 @@ const Banners_admin = () => {
           "/api/admin/delete-banner/" +
           selectedBanner?._id,
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "DELETE",
         }
       ).then((res) => res.json());
@@ -68,6 +76,9 @@ const Banners_admin = () => {
           `/api/admin/${action}-banner/` +
           bannerId,
         {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
           method: "PATCH",
         }
       ).then((res) => res.json());

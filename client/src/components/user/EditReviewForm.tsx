@@ -37,6 +37,7 @@ const EditReviewForm: React.FC<Props> = ({ review, setShow, getReviews }) => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             rating,

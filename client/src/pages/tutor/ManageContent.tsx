@@ -75,7 +75,12 @@ const ManageContent = () => {
   let [loading, setLoading] = useState(true);
   const getData = async () => {
     const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${id}`
+      import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${id}`,
+      {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      }
     ).then((res) => res.json());
     if (!res.success) return toast.error(res.message);
     setCourse(res.doc);
@@ -220,6 +225,9 @@ const ManageContent = () => {
           `/api/tutor/delete-${deleteItem}/${itemId}`,
         {
           method: "DELETE",
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
         }
       ).then((res) => res.json());
       toast.dismiss(toastId);
