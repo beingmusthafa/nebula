@@ -163,8 +163,6 @@ router.post(
 router.get(
   "/get-reviews/:courseId",
   (req: Request, res: Response, next: NextFunction) =>
-    authMiddleware.userAuth(req, res, next),
-  (req: Request, res: Response, next: NextFunction) =>
     userReviewsController.getReviews(req, res, next)
 );
 

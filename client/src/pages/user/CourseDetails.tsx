@@ -105,7 +105,7 @@ const CourseDetails = () => {
               },
             }
           ).then((res) => res.json());
-          if (!res.success) return toast.error(res.message);
+          if (!res.success) return console.log("res", res.message);
           setData(res.data);
         }
       }
@@ -134,7 +134,6 @@ const CourseDetails = () => {
       setReviews(res.reviews);
       console.log(res);
     } catch (error: any) {
-      toast.error(error?.message || error);
       console.log(error);
     }
   };
@@ -185,9 +184,9 @@ const CourseDetails = () => {
     });
   }
   const addtoCart = async () => {
+    if (!currentUser) return navigate("/sign-in");
     const toastId = toast.loading("Adding to cart");
     try {
-      if (!currentUser) navigate("/sign-in");
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/add-to-cart",
         {
@@ -212,9 +211,9 @@ const CourseDetails = () => {
     }
   };
   const removeFromCart = async () => {
+    if (!currentUser) return navigate("/sign-in");
     const toastId = toast.loading("Removing from cart");
     try {
-      if (!currentUser) navigate("/sign-in");
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/remove-from-cart",
         {
@@ -238,9 +237,9 @@ const CourseDetails = () => {
     }
   };
   const addtoWishlist = async () => {
+    if (!currentUser) return navigate("/sign-in");
     const toastId = toast.loading("Adding to wishlist");
     try {
-      if (!currentUser) navigate("/sign-in");
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/add-to-wishlist",
         {
@@ -264,9 +263,9 @@ const CourseDetails = () => {
     }
   };
   const removeFromWishlist = async () => {
+    if (!currentUser) return navigate("/sign-in");
     const toastId = toast.loading("Removing from wishlist");
     try {
-      if (!currentUser) navigate("/sign-in");
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/remove-from-wishlist",
         {
@@ -310,7 +309,6 @@ const CourseDetails = () => {
       getReviews();
     } catch (error: any) {
       toast.dismiss(toastId);
-      toast.error(error);
       console.log(error);
     }
   };
