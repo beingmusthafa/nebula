@@ -66,6 +66,7 @@ class AuthMiddleware {
       }
       next();
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
@@ -114,6 +115,7 @@ class AuthMiddleware {
       }
       next();
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
@@ -161,6 +163,7 @@ class AuthMiddleware {
       }
       next();
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
