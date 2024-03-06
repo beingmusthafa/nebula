@@ -11,12 +11,10 @@ interface Category {
 
 const Interests = () => {
   const { currentUser } = useSelector((state: any) => state.user);
-  console.log("mounted");
   let [categories, setCategories] = useState<Category[]>([]);
   let [interests, setInterests] = useState<Set<string>>(new Set());
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(interests);
   const getCategories = async () => {
     try {
       const res = await fetch(
@@ -28,10 +26,8 @@ const Interests = () => {
           },
         }
       ).then((res) => res.json());
-      console.log({ res });
       if (!res.success) throw new Error(res.message);
       setCategories(res.categories);
-      console.log({ categories });
     } catch (error) {
       console.log(error);
     }

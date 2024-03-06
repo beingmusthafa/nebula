@@ -19,7 +19,6 @@ const UserDetails_admin: React.FC = () => {
   let [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   async function changeBlockStatus(blockStatus: boolean) {
-    console.log("blockStatus", blockStatus);
     const res = await fetch(
       import.meta.env.VITE_API_BASE_URL + "/api/admin/change-block-status",
       {
@@ -36,7 +35,6 @@ const UserDetails_admin: React.FC = () => {
     ).then((res) => res.json());
     if (res.statusCode === 401) return navigate("/sign-in");
     if (!res.success) return console.log(res.message);
-    console.log(res.message);
     const newUserData = { ...user, isBlocked: blockStatus };
     setUser(newUserData as User);
   }

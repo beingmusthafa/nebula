@@ -59,7 +59,6 @@ const PendingCourseDetails_admin = () => {
   let [showApproveConfirm, setShowApproveConfirm] = useState(false);
   let [showRejectConfirm, setShowRejectConfirm] = useState(false);
   const navigate = useNavigate();
-  console.log(course);
   useEffect(() => {
     try {
       setLoading(true);
@@ -73,11 +72,9 @@ const PendingCourseDetails_admin = () => {
             },
           }
         ).then((res) => res.json());
-        console.log(res);
         if (!res.success) return toast.error(res.message);
         setCourse(res.doc);
         setChapters(res.chapters);
-        console.log("chapters", res.chapters);
       }
       getCourse();
     } catch (error) {

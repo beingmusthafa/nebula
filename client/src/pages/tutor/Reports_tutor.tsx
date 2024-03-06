@@ -25,7 +25,6 @@ const Reports_tutor = () => {
       if (!res.success) throw new Error(res.message);
       setReports(res.reports);
       setLoading(false);
-      console.log(res.reports);
     } catch (error) {
       console.log(error);
     }

@@ -100,7 +100,6 @@ const SignUp = () => {
       ).then((res) => res.json());
       setProcessing(false);
       if (!res.success) return setError(res.message);
-      console.log(res.user);
       dispatch(signIn(res.user));
       setError(null);
       setVerificationStarted(false);

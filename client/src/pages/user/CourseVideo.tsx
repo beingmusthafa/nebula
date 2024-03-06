@@ -18,7 +18,6 @@ const CourseVideo = () => {
   let [video, setVideo] = useState<Video | null>(null);
   let [nextData, setNextData] = useState<NextData | null>(null);
   let [loading, setLoading] = useState<boolean>(true);
-  console.log({ nextData });
   const navigate = useNavigate();
   const getData = async () => {
     try {
@@ -42,7 +41,6 @@ const CourseVideo = () => {
       console.log(error);
     }
   };
-  console.log(nextData);
   useEffect(() => {
     getData();
   }, []);

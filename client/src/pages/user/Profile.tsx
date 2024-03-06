@@ -13,8 +13,6 @@ interface Enrollment {
 }
 const Profile = () => {
   const { currentUser } = useSelector((state: any) => state.user);
-  console.log(currentUser);
-  console.log(currentUser.email);
   let [loading, setLoading] = useState(false);
   let [email, setEmail] = useState<string>(currentUser.email);
   let [code, setCode] = useState<string>(currentUser.email);
@@ -53,7 +51,6 @@ const Profile = () => {
   const handleEdit = async () => {
     const toastId = toast.loading("Saving details");
     setError("");
-    console.log("editng");
     try {
       if (!email.trim() || !nameRef.current?.value.trim()) {
         setError("All fields are required");

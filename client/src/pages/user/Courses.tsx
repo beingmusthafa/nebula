@@ -34,9 +34,7 @@ interface PageInfo {
   total: number;
 }
 const Courses = () => {
-  console.log("parent");
   const location = useLocation();
-  console.log("location", location.search);
   const searchParams = new URLSearchParams(useLocation().search);
   const page = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
   const search = searchParams.get("search") || "";
@@ -51,7 +49,6 @@ const Courses = () => {
   const sort = searchParams.get("sort") || "";
   let [courses, setCourses] = useState<Course[]>([]);
   let [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
-  console.log(pageInfo);
   let [currentPage, setCurrentPage] = useState(page);
   const skeletons = new Array(10).fill(0);
   let [loading, setLoading] = useState(true);
@@ -59,24 +56,27 @@ const Courses = () => {
     try {
       async function fetchData() {
         setLoading(true);
-        const res = await fetch(
-          import.meta.env.VITE_API_BASE_URL +
-            `/api/search-courses?page=${currentPage}&search=${
-              search || ""
-            }&minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}&language=${language}&sort=${sort}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        ).then((res) => res.json());
-        if (!res.success) return toast.error(res.message);
-        const { docs: _docs, ...info } = res.result;
-        setCourses(_docs);
-        setPageInfo(info);
-        console.log({ docs: res.result.docs });
-        setLoading(false);
+        try {
+          const res = await fetch(
+            import.meta.env.VITE_API_BASE_URL +
+              `/api/search-courses?page=${currentPage}&search=${
+                search || ""
+              }&minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}&language=${language}&sort=${sort}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token"),
+              },
+            }
+          ).then((res) => res.json());
+          if (!res.success) return toast.error(res.message);
+          const { docs: _docs, ...info } = res.result;
+          setCourses(_docs);
+          setPageInfo(info);
+          setLoading(false);
+        } catch (error) {
+          console.log(error);
+        }
       }
       fetchData();
     } catch (error) {

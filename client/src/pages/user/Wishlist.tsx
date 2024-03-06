@@ -30,7 +30,6 @@ interface Course {
 const Wishlist = () => {
   const { wishlistCount, cartCount } = useSelector((state: any) => state.user);
   let [courses, setCourses] = useState<Course[]>([]);
-  console.log(courses);
   let [loading, setLoading] = useState<boolean>(true);
   let [selected, setSelected] = useState<Course | null>(null);
   let [showConfirm, setShowConfirm] = useState(false);

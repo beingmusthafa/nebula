@@ -58,7 +58,6 @@ const Stats = () => {
       ).then((res) => res.json());
       setLoading(false);
       if (!res.success) throw new Error(res.message);
-      console.log(res.courseEnrollmentData);
       let enrollmentArray: number[] = [];
       let revenueArray: number[] = [];
       let monthArray: string[] = [];
@@ -90,7 +89,6 @@ const Stats = () => {
         }
       ).then((res) => res.json());
       setTopLoading(false);
-      console.log({ top: res.courses });
       if (!res.success) throw new Error(res.message);
       setTopCourses(res.courses);
     } catch (error) {
@@ -101,7 +99,6 @@ const Stats = () => {
     getGraphData();
     fetchTopCourses();
   }, []);
-  console.log({ enrollments, revenue, months });
   return loading ? (
     <AdminLoading />
   ) : (

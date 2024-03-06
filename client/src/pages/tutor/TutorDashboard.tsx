@@ -74,7 +74,6 @@ const TutorDashboard = () => {
         }
       ).then((res) => res.json());
       setTopLoading(false);
-      console.log({ top: res.courses });
       if (!res.success) throw new Error(res.message);
       setTopCourses(res.courses);
     } catch (error) {
@@ -93,7 +92,6 @@ const TutorDashboard = () => {
       ).then((res) => res.json());
       setLoading(false);
       if (!res.success) throw new Error(res.message);
-      console.log(res.courseEnrollmentData);
       let enrollmentArray: number[] = [];
       let revenueArray: number[] = [];
       let monthArray: string[] = [];
@@ -218,7 +216,6 @@ const TutorDashboard = () => {
         }
       ).then((res) => res.json());
       toast.dismiss(toastId);
-      console.log({ res });
       if (!res.success) throw new Error(res.message);
       fetchCreatingCourses();
       fetchPendingCourses();

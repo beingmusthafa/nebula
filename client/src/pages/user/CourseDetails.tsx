@@ -71,11 +71,8 @@ const CourseDetails = () => {
     inWishlist: boolean | undefined;
   }>();
   let [chapters, setChapters] = useState<Chapter[] | null>(null);
-  let [tutor, setTutor] = useState<Tutor | null>(null);
   let [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  console.log(course);
   useEffect(() => {
     try {
       setLoading(true);
@@ -89,11 +86,9 @@ const CourseDetails = () => {
             },
           }
         ).then((res) => res.json());
-        console.log(res);
         if (!res.success) return toast.error(res.message);
         setCourse(res.doc);
         setChapters(res.chapters);
-        console.log("chapters", res.chapters);
         if (currentUser) {
           const res = await fetch(
             import.meta.env.VITE_API_BASE_URL +
@@ -105,7 +100,7 @@ const CourseDetails = () => {
               },
             }
           ).then((res) => res.json());
-          if (!res.success) return console.log("res", res.message);
+          if (!res.success) return console.log(res.message);
           setData(res.data);
         }
       }
@@ -130,9 +125,7 @@ const CourseDetails = () => {
         }
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
-      console.log({ res });
       setReviews(res.reviews);
-      console.log(res);
     } catch (error: any) {
       console.log(error);
     }

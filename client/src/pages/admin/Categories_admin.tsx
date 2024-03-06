@@ -28,11 +28,9 @@ const Categories_admin = () => {
       }
     ).then((res) => res.json());
     setLoading(false);
-    console.log(res);
     if (!res.success) return toast.error(res.message);
     setCategories(res.categories);
   };
-  console.log("helo");
   useEffect(() => {
     fetchCategories();
   }, []);

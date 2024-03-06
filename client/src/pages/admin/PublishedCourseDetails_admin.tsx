@@ -61,7 +61,6 @@ const PublishedCourseDetails_admin = () => {
   let [showBlockConfirm, setShowBlockConfirm] = useState(false);
   let [showUnblockConfirm, setShowUnblockConfirm] = useState(false);
   const navigate = useNavigate();
-  console.log(course);
   useEffect(() => {
     try {
       setLoading(true);
@@ -75,11 +74,9 @@ const PublishedCourseDetails_admin = () => {
             },
           }
         ).then((res) => res.json());
-        console.log(res);
         if (!res.success) return toast.error(res.message);
         setCourse(res.doc);
         setChapters(res.chapters);
-        console.log("chapters", res.chapters);
       }
       getCourse();
     } catch (error) {

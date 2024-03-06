@@ -44,7 +44,6 @@ const Course_tutor = () => {
             },
           }
         ).then((res) => res.json());
-        console.log(res);
         if (!res.success) return toast.error(res.message);
         setCourse(res.doc);
         setChapters(res.chapters);

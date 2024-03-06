@@ -17,7 +17,6 @@ const ChapterInitialRedirect = () => {
           },
         }
       ).then((res) => res.json());
-      console.log({ res });
       if (!res.success) throw new Error(res.message);
       if (!res.nextResource) {
         return (location.href = `/my-courses/learn/${courseId}/completed`);

@@ -97,11 +97,9 @@ const EditCourse = () => {
     setBenefits(newSet);
   }
   function addRequirement(req: string | undefined) {
-    console.log(req);
     if (!req || !req.trim()) return;
     let newSet = new Set(requirements);
     newSet.add(req.trim());
-    console.log({ newSet });
     setRequirements(newSet);
     if (reqInputRef.current) reqInputRef.current.value = "";
     reqInputRef.current?.focus();
@@ -144,7 +142,6 @@ const EditCourse = () => {
     Array.from(benefits).forEach((ben, i) => {
       formData.append(`benefits[${i}]`, ben);
     });
-    console.log(formData);
     const res = await fetch(
       import.meta.env.VITE_API_BASE_URL + "/api/tutor/edit-course",
       {

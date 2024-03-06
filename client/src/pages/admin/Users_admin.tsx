@@ -26,7 +26,6 @@ const Users_admin = () => {
         },
       }
     ).then((res) => res.json());
-    console.log(res.message);
     setLoading(false);
     if (!res.success) return console.log(res.message);
     setUsers([...users, ...res.result.docs]);
@@ -34,7 +33,6 @@ const Users_admin = () => {
   }
   useEffect(() => {
     fetchUsers();
-    console.log("run");
   }, [page]);
   return (
     <>

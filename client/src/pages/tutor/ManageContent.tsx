@@ -57,8 +57,6 @@ const ManageContent = () => {
   const { id } = useParams();
   let [course, setCourse] = useState<Course | null>(null);
   let [chapters, setChapters] = useState<Chapter[]>([]);
-  console.log(chapters);
-
   let [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
   let [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
   let [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);

@@ -39,7 +39,6 @@ const MyCourses = () => {
       setLoading(false);
       if (!res.success) throw new Error(res.message);
       setCourses(res.courses);
-      console.log(res.courses);
     } catch (error) {
       console.log(error);
     }

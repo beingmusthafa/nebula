@@ -36,7 +36,6 @@ const ViewReport_admin = () => {
       ).then((res) => res.json());
       setLoading(false);
       if (!res.success) throw new Error(res.message);
-      console.log(res.report);
       setReport(res.report);
     } catch (error) {
       console.log(error);
@@ -45,7 +44,6 @@ const ViewReport_admin = () => {
   useEffect(() => {
     getReport();
   }, []);
-  console.log({ report });
 
   const handleDownload = async () => {
     const toastId = toast.loading("Starting report download");
@@ -61,7 +59,6 @@ const ViewReport_admin = () => {
         }
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
-      console.log("buffer", res.pdfBuffer);
       const pdfBinary = Uint8Array.from(atob(res.pdfBuffer), (c) =>
         c.charCodeAt(0)
       );

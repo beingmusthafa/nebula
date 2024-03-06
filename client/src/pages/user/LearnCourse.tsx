@@ -72,7 +72,6 @@ const LearnCourseEntry = () => {
   let [tutor, setTutor] = useState<Tutor | null>(null);
   let [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
-  console.log(course);
   const getReviews = async () => {
     try {
       const res = await fetch(
@@ -85,7 +84,6 @@ const LearnCourseEntry = () => {
         }
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
-      console.log({ res });
       for (const review of res.reviews) {
         if (review.user._id === currentUser._id) {
           setReviewed(true);
@@ -94,27 +92,29 @@ const LearnCourseEntry = () => {
         }
       }
       setReviews(res.reviews);
-      console.log(res);
     } catch (error: any) {
       toast.error(error?.message || error);
       console.log(error);
     }
   };
   async function getCourse() {
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${courseId}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + localStorage.getItem("token"),
-        },
-      }
-    ).then((res) => res.json());
-    console.log(res);
-    if (!res.success) return toast.error(res.message);
-    setCourse(res.doc);
-    setChapters(res.chapters);
-    console.log("chapters", res.chapters);
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL +
+          `/api/get-course-details/${courseId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      ).then((res) => res.json());
+      if (!res.success) return console.log(res.message);
+      setCourse(res.doc);
+      setChapters(res.chapters);
+    } catch (error) {
+      console.log(error);
+    }
   }
   const getData = async () => {
     setLoading(true);

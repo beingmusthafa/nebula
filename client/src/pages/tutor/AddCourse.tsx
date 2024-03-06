@@ -48,7 +48,6 @@ const AddCourse = () => {
     fetchCategories();
   }, []);
   function addBenefit(ben: string | undefined) {
-    console.log(ben);
     if (!ben || !ben.trim()) return;
     let newSet = new Set(benefits);
     newSet.add(ben.trim());
@@ -62,11 +61,9 @@ const AddCourse = () => {
     setBenefits(newSet);
   }
   function addRequirement(req: string | undefined) {
-    console.log(req);
     if (!req || !req.trim()) return;
     let newSet = new Set(requirements);
     newSet.add(req.trim());
-    console.log({ newSet });
     setRequirements(newSet);
     if (reqInputRef.current) reqInputRef.current.value = "";
     reqInputRef.current?.focus();
@@ -90,7 +87,6 @@ const AddCourse = () => {
     else setDiscountError("");
     if (!language.trim()) setLanguageError("Enter a language");
     else setLanguageError("");
-    console.log({ language });
     if (!category) setCategoryError("Choose a category");
     else setCategoryError("");
     if (!(image && title && description && price && language && category)) {
@@ -111,7 +107,6 @@ const AddCourse = () => {
     Array.from(benefits).forEach((ben, i) => {
       formData.append(`benefits[${i}]`, ben);
     });
-    console.log(formData);
     const res = await fetch(
       import.meta.env.VITE_API_BASE_URL + "/api/tutor/create-course",
       {

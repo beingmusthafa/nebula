@@ -58,7 +58,6 @@ const CourseExercise = () => {
       console.log(error);
     }
   };
-  console.log({ nextData });
   useEffect(() => {
     getData();
   }, []);

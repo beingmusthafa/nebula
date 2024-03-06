@@ -43,7 +43,6 @@ const Cart = () => {
   let skeletons = new Array(7).fill(0);
   const [couponMessage, setCouponMessage] = useState("");
   const dispatch = useDispatch();
-  console.log(courses);
   async function getCartCourses() {
     setLoading(true);
     const res = await fetch(
@@ -94,20 +93,24 @@ const Cart = () => {
     }
   };
   const goToPayment = async () => {
-    const stripe = await loadStripe(import.meta.env.VITE_STRIPE_CLIENT_KEY!);
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/create-checkout-session",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + localStorage.getItem("token"),
-        },
-      }
-    ).then((res) => res.json());
-    if (!res.success) return toast.error(res.message);
-    const { sessionId } = res;
-    const result = await stripe?.redirectToCheckout({ sessionId });
-    if (result?.error) console.log(result.error.message);
+    try {
+      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_CLIENT_KEY!);
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/create-checkout-session",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      ).then((res) => res.json());
+      if (!res.success) return toast.error(res.message);
+      const { sessionId } = res;
+      const result = await stripe?.redirectToCheckout({ sessionId });
+      if (result?.error) console.log(result.error.message);
+    } catch (error) {
+      console.log(error);
+    }
   };
   if (loading) {
     return (

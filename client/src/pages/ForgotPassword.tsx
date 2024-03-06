@@ -70,7 +70,6 @@ const ForgotPassword = () => {
           }),
         }
       ).then((res) => res.json());
-      console.log(res);
       setProcessing(false);
       if (!res.success) {
         return setError(res.message);
