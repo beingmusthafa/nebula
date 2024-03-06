@@ -24,6 +24,7 @@ app.use(
   cors({
     origin: [
       "https://nebula-76xv2972a-muhammad-musthafas-projects.vercel.app",
+      "https://nebula-seven-sooty.vercel.app",
       "http://localhost:5173",
     ],
   })
