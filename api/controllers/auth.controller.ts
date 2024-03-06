@@ -35,6 +35,8 @@ class AuthController {
       }
       res
         .cookie("access_token", response.token, {
+          sameSite: "none",
+          secure: true,
           httpOnly: true,
           expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
         })
@@ -52,6 +54,8 @@ class AuthController {
       }
       res
         .cookie("access_token", response.token, {
+          sameSite: "none",
+          secure: true,
           httpOnly: true,
           expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
         })
@@ -70,6 +74,8 @@ class AuthController {
       }
       res
         .cookie("access_token", response.token, {
+          sameSite: "none",
+          secure: true,
           httpOnly: true,
           expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
         })
@@ -120,6 +126,8 @@ class AuthController {
       }
       res
         .cookie("access_token", response.token, {
+          sameSite: "none",
+          secure: true,
           httpOnly: true,
           expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
         })

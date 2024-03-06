@@ -27,6 +27,7 @@ app.use(
       "https://nebula-seven-sooty.vercel.app",
       "http://localhost:5173",
     ],
+    credentials: true,
   })
 );
 
