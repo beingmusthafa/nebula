@@ -74,6 +74,7 @@ class AuthMiddleware {
   async userAuth(req: Request, res: Response, next: NextFunction) {
     try {
       const token = req.headers.authorization.split(" ")[1];
+      console.log(token);
       if (!token) throw customError(401, "Unauthorized");
       const { id } = jwt.verify(token, process.env.JWT_SECRET);
       if (!id) throw customError(403, "Invalid token, login again");
