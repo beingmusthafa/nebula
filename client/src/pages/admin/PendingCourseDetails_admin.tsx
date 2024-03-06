@@ -294,17 +294,19 @@ const PendingCourseDetails_admin = () => {
       )}
       {course && course.tutor ? (
         <div className="flex flex-col border-2 w-4/5 md:w-1/2 mx-auto mt-10 p-6 rounded-2xl border-slate-300">
-          <h1 className="font-bold uppercase text-base mb-4 text-slate-500">
-            AUTHOR details
+          <h1 className="font-bold text-center md:text-start uppercase text-base mb-4 text-slate-500">
+            TUTOR details
           </h1>
-          <div className="flex items-start">
+          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-0 md:items-start">
             <img
               src={course.tutor?.image}
               className="w-32 h-32 mr-4 rounded-full"
               alt=""
             />
             <div className="flex flex-col">
-              <p className="text-lg font-semibold">{course.tutor?.name}</p>
+              <p className="text-lg text-center md:text-start  font-semibold">
+                {course.tutor?.name}
+              </p>
               <p className="text-sm mb-4 text-slate-600">
                 {course.tutor.bio || "No bio provided"}
               </p>

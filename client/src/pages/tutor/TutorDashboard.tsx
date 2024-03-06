@@ -309,21 +309,21 @@ const TutorDashboard = () => {
             />
           </div>
           <div className="flex flex-row md:flex-col justify-evenly">
-            <div className="h-fit flex flex-col items-center p-2 border-4 w-32 rounded-2xl border-cyan-300">
+            <div className="h-fit flex flex-col items-center p-2 border-4 w-28 md:w-32 rounded-2xl border-cyan-300">
               <p className="text-slate-500">Enrollments</p>
-              <p className="font-bold text-2xl text-slate-700">
+              <p className="font-bold text-xl md:text-2xl text-slate-700">
                 {currentEnrollments}
               </p>
             </div>
-            <div className="h-fit flex flex-col items-center p-2 border-4 w-32 rounded-2xl border-cyan-300">
+            <div className="h-fit flex flex-col items-center p-2 border-4 w-28 md:w-32 rounded-2xl border-cyan-300">
               <p className="text-slate-500">Revenue</p>
-              <p className="font-bold text-2xl text-slate-700">
+              <p className="font-bold text-xl md:text-2xl text-slate-700">
                 &#8377; {currentRevenue}
               </p>
             </div>
-            <div className="h-fit flex flex-col items-center p-2 border-4 w-32 rounded-2xl border-cyan-300">
+            <div className="h-fit flex flex-col items-center p-2 border-4 w-28 md:w-32 rounded-2xl border-cyan-300">
               <p className="text-slate-500">Earnings</p>
-              <p className="font-bold text-2xl text-slate-700">
+              <p className="font-bold text-xl md:text-2xl text-slate-700">
                 &#8377; {Math.round((currentRevenue / 100) * 20)}
               </p>
             </div>
@@ -333,7 +333,7 @@ const TutorDashboard = () => {
 
       <div className="_section-title">Bestselling courses</div>
       {topLoading ? (
-        <div className="flex gap-4 px-6 justify-start flex-wrap bg-white">
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-4 px-6 justify-start flex-wrap bg-white">
           {skeletons.map((_, index) => (
             <CourseSkeleton key={index} />
           ))}

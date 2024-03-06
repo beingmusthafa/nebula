@@ -51,7 +51,7 @@ const MyCourses = () => {
   return (
     <>
       <h1 className="_section-title">My courses</h1>
-      <div className="flex gap-4 px-6 justify-start flex-wrap bg-white mt-6">
+      <div className="flex flex-col items-center md:flex-row gap-4 px-6 justify-start flex-wrap bg-white mt-6">
         {loading ? (
           skeletons.map((_, i) => <CourseSkeleton key={i} />)
         ) : courses.length > 0 ? (
