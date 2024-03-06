@@ -19,6 +19,8 @@ import coursesRepositoryInstance, {
   CoursesRepository,
 } from "../repositories/courses.repository.js";
 import Stripe from "stripe";
+import dotenv from "dotenv";
+dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_KEY);
 
 export class EnrollmentsService {
@@ -101,8 +103,8 @@ export class EnrollmentsService {
         payment_method_types: ["card"],
         line_items: lineItems,
         mode: "payment",
-        success_url: "http://localhost:5173/payment-success",
-        cancel_url: "http://localhost:5173/payment-failure",
+        success_url: `${process.env.CLIENT_BASE_URL}/payment-success`,
+        cancel_url: `${process.env.CLIENT_BASE_URL}/payment-failure`,
         payment_intent_data: {
           metadata: {
             userId: userId.toString(),
