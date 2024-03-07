@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
 import RatingStars from "../../components/RatingStars";
 import Accordions from "../../components/Accordions";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
-import TutorDetailsSkeletion from "../../components/skeletons/TutorDetailsSkeletion";
 import ChaptersAccordionSkeletion from "../../components/skeletons/ChaptersAccordionSkeletion";
 import CourseDetailsSkeleton from "../../components/skeletons/CourseDetailsSkeleton";
 import { useSelector } from "react-redux";
 import ReviewCard from "../../components/user/ReviewCard";
 import ConfirmationPopup from "../../components/ConfirmationPopup";
 import EditReviewForm from "../../components/user/EditReviewForm";
-import ChatRoom from "../../components/user/ChatRoom";
+const ChatRoom = lazy(() => import("../../components/user/ChatRoom"));
+import Loading from "../../components/Loading";
 
 interface Course {
   title: string;
@@ -269,7 +269,9 @@ const LearnCourseEntry = () => {
         />
       )}
       {showChatRoom && (
-        <ChatRoom courseId={courseId!} setShow={setShowChatRoom} />
+        <Suspense fallback={<Loading />}>
+          <ChatRoom courseId={courseId!} setShow={setShowChatRoom} />
+        </Suspense>
       )}
       {course ? (
         <>

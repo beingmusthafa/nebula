@@ -66,6 +66,7 @@ const io = new Server(server, { cors: { origin: "http://localhost:5173" } });
 
 io.on("connection", (socket) => {
   console.log("new socket connection : ", socket.id);
+
   socket.on(
     "send-message",
     async (data: {
@@ -78,6 +79,7 @@ io.on("connection", (socket) => {
       course: string;
       createdAt: Date;
     }) => {
+      console.log("new message::", data);
       io.to(data.course).emit("receive-message", data);
       await messagesRepository.create({
         user: data.user._id,

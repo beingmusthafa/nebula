@@ -22,12 +22,10 @@ export class MessagesService {
     courseId: string
   ): ServiceResponse<{ messages?: object[] }> {
     try {
-      console.log({ userId, courseId });
       const enrolledInCourse = await this.enrollmentsRepository.findOne({
         user: userId,
         course: courseId,
       });
-      console.log("enrolled:::", enrolledInCourse);
       if (!enrolledInCourse) {
         return {
           success: false,

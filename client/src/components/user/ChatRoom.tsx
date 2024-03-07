@@ -20,7 +20,6 @@ interface Message {
 const ChatRoom: React.FC<Props> = ({ courseId, setShow }) => {
   const { currentUser } = useSelector((state: any) => state.user);
   let [messages, setMessages] = useState<Message[]>([]);
-  console.log(messages);
   let [loading, setLoading] = useState(true);
   const formatDate = (date: Date) => {
     const myDate = new Date();
@@ -52,12 +51,12 @@ const ChatRoom: React.FC<Props> = ({ courseId, setShow }) => {
       setLoading(false);
       if (!res.success) throw new Error(res.message);
       setMessages(res.messages);
-      console.log(res);
     } catch (error) {
       console.log(error);
     }
   };
   const sendMessage = () => {
+    messageRef.current?.focus();
     if (!messageRef.current?.value.trim()) return;
     const message = {
       user: {
@@ -88,6 +87,7 @@ const ChatRoom: React.FC<Props> = ({ courseId, setShow }) => {
     });
     socket.emit("join-course-room", courseId);
     socket.on("receive-message", (data: Message) => {
+      console.log("receieved mesg::::", data.message);
       setMessages((prevMessages) => [...prevMessages, data]);
     });
     return () => {
