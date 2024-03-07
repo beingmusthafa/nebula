@@ -19,10 +19,11 @@ jobs:
       - name: Deploy to DigitalOcean
         run: |
           sshpass -p ${{ secrets.DEPLOY_PASSWORD }} ssh -o StrictHostKeyChecking=no root@143.110.249.97 <<EOF
-          cd Nebula
 
       - name: Pull latest changes
-        run: git pull
+        run: |
+          git pull
+          cd Nebula
 
       - name: Install dependencies
         run: |
