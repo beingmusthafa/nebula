@@ -28,7 +28,11 @@ jobs:
         run: |
           cd api
           npm install
-      - name: Build and restart server
+
+      - name: compile ts
+        run: tsc
+
+      - name: restart server
         run: |
-          npm run prod
+          pm2 restart ./build/index.js
           EOF
