@@ -24,7 +24,7 @@ class AuthMiddleware {
 
   async userIdentify(req: Request, res: Response, next: NextFunction) {
     try {
-      const token = req.headers.authorization.split(" ")[1];
+      const token = req.headers.authorization?.split(" ")[1];
       if (!token || token === "null") return next();
       const { id } = jwt.verify(token, process.env.JWT_SECRET);
       if (!id) return next();
@@ -54,7 +54,7 @@ class AuthMiddleware {
 
   async userAuth(req: Request, res: Response, next: NextFunction) {
     try {
-      const token = req.headers.authorization.split(" ")[1];
+      const token = req.headers.authorization?.split(" ")[1];
       if (!token || token === "null") throw customError(401, "Unauthorized");
       const { id } = jwt.verify(token, process.env.JWT_SECRET);
       if (!id) throw customError(403, "Invalid token, login again");
@@ -84,7 +84,7 @@ class AuthMiddleware {
 
   async adminAuth(req: Request, res: Response, next: NextFunction) {
     try {
-      const token = req.headers.authorization.split(" ")[1];
+      const token = req.headers.authorization?.split(" ")[1];
       if (!token || token === "null") throw customError(401, "Unauthorized");
       const { id } = jwt.verify(token, process.env.JWT_SECRET);
       if (!id) throw customError(403, "Invalid token, login again");
