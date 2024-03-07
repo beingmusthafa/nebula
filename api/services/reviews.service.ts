@@ -28,7 +28,9 @@ export class ReviewsService {
         { projection: "rating" }
       );
       const avgRating =
-        reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length;
+        reviews.length > 0
+          ? reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length
+          : 0;
       await this.coursesRepository.updateOne(
         { _id: courseId },
         { rating: avgRating }
