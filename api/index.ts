@@ -62,7 +62,15 @@ const server = app.listen(3000, () => {
   console.log("Server started");
 });
 
-const io = new Server(server, { cors: { origin: "http://localhost:5173" } });
+const io = new Server(server, {
+  cors: {
+    origin: [
+      "https://nebula-76xv2972a-muhammad-musthafas-projects.vercel.app",
+      "https://nebula-seven-sooty.vercel.app",
+      "http://localhost:5173",
+    ],
+  },
+});
 
 io.on("connection", (socket) => {
   console.log("new socket connection : ", socket.id);
