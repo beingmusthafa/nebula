@@ -154,17 +154,17 @@ const App = () => {
               </Suspense>
             }
           />
-          <Route
-            path="/profile"
-            element={
-              <Suspense>
-                <Profile />
-                <Footer />
-              </Suspense>
-            }
-          />
 
           <Route element={<UserAuth />}>
+            <Route
+              path="/profile"
+              element={
+                <Suspense>
+                  <Profile />
+                  <Footer />
+                </Suspense>
+              }
+            />
             <Route
               path="/my-courses"
               element={
