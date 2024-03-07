@@ -18,7 +18,7 @@ jobs:
 
       - name: Deploy to DigitalOcean
         run: |
-          sshpass -p ${{ secrets.DEPLOY_PASSWORD }} ssh -o StrictHostKeyChecking=no root@143.110.249.97 <<EOF
+          sshpass -p ${{ secrets.DEPLOY_PASSWORD }} ssh -o StrictHostKeyChecking=no root@64.227.137.37 <<EOF
 
       - name: Pull latest changes
         run: |
