@@ -22,12 +22,7 @@ scheduleReportGeneration();
 
 app.use(
   cors({
-    origin: [
-      "https://nebula-76xv2972a-muhammad-musthafas-projects.vercel.app",
-      "https://nebula-seven-sooty.vercel.app",
-      "http://localhost:5173",
-      "https://dashboard.stripe.com/",
-    ],
+    origin: [process.env.CLIENT_BASE_URL, "https://dashboard.stripe.com/"],
     credentials: true,
   })
 );
@@ -64,11 +59,7 @@ const server = app.listen(3000, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: [
-      "https://nebula-76xv2972a-muhammad-musthafas-projects.vercel.app",
-      "https://nebula-seven-sooty.vercel.app",
-      "http://localhost:5173",
-    ],
+    origin: process.env.CLIENT_BASE_URL,
   },
 });
 
