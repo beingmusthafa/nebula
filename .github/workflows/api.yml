@@ -22,18 +22,18 @@ jobs:
 
       - name: Pull latest changes
         run: |
-          git pull
-          cd /root/Nebula
+          sudo git pull
+          sudo cd /root/Nebula
 
       - name: Install dependencies
         run: |
-          cd /root/Nebula/api
-          npm install
+          sudo cd /root/Nebula/api
+          sudo npm install
 
       - name: compile ts
-        run: tsc
+        run: sudo tsc
 
       - name: restart server
         run: |
-          pm2 restart ./build/index.js
+          sudo pm2 restart ./build/index.js
           EOF
