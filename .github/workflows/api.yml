@@ -1,0 +1,27 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    paths:
+      - 'api/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install sshpass
+      run: sudo apt-get install -y sshpass
+
+    - name: Deploy to DigitalOcean
+      run: |
+        sshpass -p ${{ secrets.DEPLOY_PASSWORD }} ssh -o StrictHostKeyChecking=no root@143.110.249.97 <<EOF
+          cd Nebula/api
+          git pull origin main
+          # Add any build or restart commands here. For example:
+          npm install
+          tsc && pm2 restart .build/index.js
+        EOF
