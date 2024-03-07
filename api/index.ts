@@ -78,7 +78,6 @@ io.on("connection", (socket) => {
       course: string;
       createdAt: Date;
     }) => {
-      console.log("new message::", data);
       io.to(data.course).emit("receive-message", data);
       await messagesRepository.create({
         user: data.user._id,
