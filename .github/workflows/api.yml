@@ -23,11 +23,11 @@ jobs:
       - name: Pull latest changes
         run: |
           git pull
-          cd Nebula
+          cd /root/Nebula
 
       - name: Install dependencies
         run: |
-          cd api
+          cd /root/Nebula/api
           npm install
 
       - name: compile ts
