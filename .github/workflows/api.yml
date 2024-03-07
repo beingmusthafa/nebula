@@ -16,7 +16,7 @@ jobs:
       - name: Install sshpass
         run: sudo apt-get install -y sshpass
 
-      - name: Deploy to DigitalOcean
+      - name: connect and auth to server
         run: |
           sshpass -p ${{ secrets.DEPLOY_PASSWORD }} ssh -o StrictHostKeyChecking=no root@64.227.137.37 <<EOF
 
