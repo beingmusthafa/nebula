@@ -15,23 +15,23 @@ jobs:
 
       - name: Set up SSH keys
         run: |
+          mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan 64.227.137.37 >> ~/.ssh/known_hosts
 
       - name: Pull latest changes
         run: |
-          cd /root/Nebula
-          git pull
+          ssh user@64.227.137.37 'cd /root/Nebula && git pull'
 
       - name: Install dependencies
         run: |
-          cd /root/Nebula/api
-          npm install
+          ssh user@64.227.137.37 'cd /root/Nebula/api && npm install'
 
       - name: Compile TypeScript
-        run: tsc
+        run: |
+          ssh user@64.227.137.37 'cd /root/Nebula && tsc'
 
       - name: Restart server
         run: |
-          pm2 restart ./build/index.js
+          ssh user@64.227.137.37 'pm2 restart ./build/index.js'
