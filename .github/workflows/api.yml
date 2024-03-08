@@ -13,10 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: connect and auth to server
+      - name: Set up SSH keys
         run: |
-          ssh root@64.227.137.37
-          ${{ secrets.DEPLOY_PASSWORD }}
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan 64.227.137.37 >> ~/.ssh/known_hosts
 
       - name: Pull latest changes
         run: |
@@ -28,10 +29,9 @@ jobs:
           cd /root/Nebula/api
           npm install
 
-      - name: compile ts
+      - name: Compile TypeScript
         run: tsc
 
-      - name: restart server
+      - name: Restart server
         run: |
           pm2 restart ./build/index.js
-          EOF
