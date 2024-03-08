@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const PaymentSuccess = () => {
   const navigate = useNavigate();
   setTimeout(() => {
-    navigate("/");
+    location.href = "/";
   }, 3000);
   return (
     <div className="fixed h-full w-full flex flex-col  items-center pt-64 md:pt-32">
