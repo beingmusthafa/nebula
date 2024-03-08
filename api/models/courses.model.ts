@@ -54,7 +54,7 @@ const coursesModel = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: "creation",
+      default: "creating",
       enum: ["creating", "pending", "published"],
     },
     language: {
