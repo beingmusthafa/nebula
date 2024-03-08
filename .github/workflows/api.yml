@@ -6,9 +6,8 @@ on:
       - "api/**"
 
 jobs:
-  build-and-deploy:
+  setup:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -20,6 +19,10 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan 64.227.137.37 >> ~/.ssh/known_hosts
 
+  deploy:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
       - name: Pull latest changes
         run: |
           ssh root@64.227.137.37 'cd /root/Nebula && git pull'
@@ -28,6 +31,10 @@ jobs:
         run: |
           ssh root@64.227.137.37 'cd /root/Nebula/api && npm install'
 
+  build:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
       - name: Compile TypeScript
         run: |
           ssh root@64.227.137.37 'cd /root/Nebula && tsc'
