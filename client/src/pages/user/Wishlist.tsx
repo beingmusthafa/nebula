@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { toast } from "react-toastify";
-import Loading from "../../components/Loading";
-import RatingStars from "../../components/RatingStars";
 import { Link } from "react-router-dom";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 import CourseCard from "../../components/CourseCard";
 import ConfirmationPopup from "../../components/ConfirmationPopup";
-import { useDispatch, useSelector } from "react-redux";
-import { setCartCount, setWishlistCount } from "../../redux/user/userSlice";
+import { CartWishlistContext } from "../../components/context/CartWishlistContext";
 
 interface Course {
   _id: string;
@@ -28,13 +25,13 @@ interface Course {
   requirements: string[];
 }
 const Wishlist = () => {
-  const { wishlistCount, cartCount } = useSelector((state: any) => state.user);
+  const { cartCount, wishlistCount, setCartCount, setWishlistCount } =
+    useContext(CartWishlistContext)!;
   let [courses, setCourses] = useState<Course[]>([]);
   let [loading, setLoading] = useState<boolean>(true);
   let [selected, setSelected] = useState<Course | null>(null);
   let [showConfirm, setShowConfirm] = useState(false);
   let skeletons = new Array(7).fill(0);
-  const dispatch = useDispatch();
   async function getWishlistCourses() {
     setLoading(true);
     const res = await fetch(
@@ -76,7 +73,7 @@ const Wishlist = () => {
         }
       ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
-      setWishlistCount(wishlistCount - 1);
+      setWishlistCount((prev) => prev - 1);
       getWishlistCourses();
       toast.success(res.message);
     } catch (error) {
@@ -99,7 +96,7 @@ const Wishlist = () => {
         }
       ).then((res) => res.json());
       if (!res.success) return toast.error(res.message);
-      setCartCount(cartCount + 1);
+      setCartCount((prev) => prev + 1);
       removeFromWishlist(id);
       toast.success(res.message);
     } catch (error) {

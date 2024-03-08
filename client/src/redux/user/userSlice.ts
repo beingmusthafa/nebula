@@ -2,8 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentUser: null,
-  cartCount: null,
-  wishlistCount: null,
 };
 
 const userSlice = createSlice({
@@ -18,23 +16,9 @@ const userSlice = createSlice({
     },
     signOut(state) {
       state.currentUser = null;
-      state.cartCount = null;
-      state.wishlistCount = null;
-    },
-    setCartCount(state, action) {
-      state.cartCount = action.payload;
-    },
-    setWishlistCount(state, action) {
-      state.wishlistCount = action.payload;
     },
   },
 });
 
-export const {
-  signIn,
-  signOut,
-  updateDetails,
-  setCartCount,
-  setWishlistCount,
-} = userSlice.actions;
+export const { signIn, signOut, updateDetails } = userSlice.actions;
 export default userSlice.reducer;

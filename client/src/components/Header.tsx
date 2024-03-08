@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import lightLogo from "../assets/nebula_light.png";
 import {
   Link,
@@ -8,18 +8,19 @@ import {
 } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setWishlistCount, signIn, signOut } from "../redux/user/userSlice";
+import { signIn, signOut } from "../redux/user/userSlice";
 import { motion } from "framer-motion";
 import ConfirmationPopup from "./ConfirmationPopup";
 import { toast } from "react-toastify";
+import { CartWishlistContext } from "./context/CartWishlistContext";
 
 const Header = () => {
-  let { currentUser, cartCount, wishlistCount } = useSelector(
-    (state: any) => state.user
-  );
+  let { currentUser } = useSelector((state: any) => state.user);
   const searchText = location.pathname.startsWith("/courses")
     ? new URLSearchParams(useLocation().search).get("search")
     : "";
+  const { cartCount, wishlistCount, setCartCount, setWishlistCount } =
+    useContext(CartWishlistContext)!;
   let [showOptions, setShowOptions] = useState(false);
   let [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   let searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -81,8 +82,8 @@ const Header = () => {
       if (!res1.success || !res2.success) {
         throw new Error(res1.success ? res2.message : res1.message);
       }
-      dispatch(setWishlistCount(res1.count));
-      dispatch(setWishlistCount(res2.count));
+      setCartCount(res1.count);
+      setWishlistCount(res2.count);
     } catch (error) {
       console.log(error);
     }
@@ -135,7 +136,7 @@ const Header = () => {
               </Link>
               <Link to={"/wishlist"}>
                 <i className="bx hover:bg-slate-200 _transition-0-5 rounded-full py-1 px-2 bx-heart text-2xl cursor-pointer relative">
-                  {wishlistCount > 0 && (
+                  {wishlistCount! > 0 && (
                     <span className="absolute font-sans top-0 -right-1 px-2 bg-sky-500 rounded-full text-white font-bold text-sm">
                       {wishlistCount}
                     </span>
@@ -144,9 +145,9 @@ const Header = () => {
               </Link>
               <Link to={"/cart"}>
                 <i className="bx hover:bg-slate-200 _transition-0-5 rounded-full py-1 px-2 bx-cart-alt text-2xl cursor-pointer relative">
-                  {cartCount > 0 && (
+                  {cartCount! > 0 && (
                     <span className="absolute font-sans top-0 -right-1 px-2 bg-sky-500 rounded-full text-white font-bold text-sm">
-                      {cartCount}
+                      {cartCount!}
                     </span>
                   )}
                 </i>

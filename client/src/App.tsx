@@ -54,6 +54,7 @@ const CourseExercise = lazy(() => import("./pages/user/CourseExercise.tsx"));
 const Profile = lazy(() => import("./pages/user/Profile.tsx"));
 import InterestsGate from "./components/InterestsGate.tsx";
 import Footer from "./components/Footer.tsx";
+import CartWishlistContextComponent from "./components/context/CartWishlistContext.tsx";
 const PendingCourseDetails_admin = lazy(
   () => import("./pages/admin/PendingCourseDetails_admin.tsx")
 );
@@ -63,319 +64,321 @@ const PublishedCourseDetails_admin = lazy(
 const App = () => {
   return (
     <BrowserRouter>
-      <Header />
-      <ToastContainer transition={Slide} />
-      <Routes>
-        <Route element={<HideAuth />}>
-          <Route
-            path="/sign-up"
-            element={
-              <Suspense fallback={<Loading />}>
-                <SignUp />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/sign-in"
-            element={
-              <Suspense fallback={<Loading />}>
-                <SignIn />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/admin-sign-in"
-            element={
-              <Suspense fallback={<Loading />}>
-                <AdminSignIn />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/forgot-password"
-            element={
-              <Suspense fallback={<Loading />}>
-                <ForgotPassword />
-              </Suspense>
-            }
-          />
-        </Route>
-        <Route
-          path="/add-interests"
-          element={
-            <Suspense fallback={<Loading />}>
-              <Interests />
-            </Suspense>
-          }
-        />
-
-        <Route element={<InterestsGate />}>
-          <Route
-            path="/"
-            element={
-              <Suspense fallback={<Loading />}>
-                <Home />
-                <Footer />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/payment-success"
-            element={
-              <Suspense fallback={<Loading />}>
-                <PaymentSuccess />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/payment-failure"
-            element={
-              <Suspense fallback={<Loading />}>
-                <PaymentFailure />
-              </Suspense>
-            }
-          />
-
-          <Route
-            path="/courses"
-            element={
-              <Suspense fallback={<Loading />}>
-                <Courses />
-                <Footer />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/course-details/:id"
-            element={
-              <Suspense fallback={<Loading />}>
-                <CourseDetails />
-                <Footer />
-              </Suspense>
-            }
-          />
-
-          <Route element={<UserAuth />}>
+      <CartWishlistContextComponent>
+        <Header />
+        <ToastContainer transition={Slide} />
+        <Routes>
+          <Route element={<HideAuth />}>
             <Route
-              path="/profile"
+              path="/sign-up"
               element={
-                <Suspense>
-                  <Profile />
-                  <Footer />
+                <Suspense fallback={<Loading />}>
+                  <SignUp />
                 </Suspense>
               }
             />
             <Route
-              path="/my-courses"
+              path="/sign-in"
               element={
                 <Suspense fallback={<Loading />}>
-                  <MyCourses />
-                  <Footer />
+                  <SignIn />
                 </Suspense>
               }
             />
             <Route
-              path="/my-courses/learn/:courseId"
+              path="/admin-sign-in"
               element={
                 <Suspense fallback={<Loading />}>
-                  <LearnCourse />
-                  <Footer />
+                  <AdminSignIn />
                 </Suspense>
               }
             />
             <Route
-              path="/my-courses/learn/:courseId/:chapterId"
+              path="/forgot-password"
               element={
                 <Suspense fallback={<Loading />}>
-                  <ChapterInitialRedirect />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/my-courses/learn/:courseId/:chapterId/video/:videoOrder"
-              element={
-                <Suspense fallback={<Loading />}>
-                  <CourseVideo />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/my-courses/learn/:courseId/:chapterId/exercise/:exerciseOrder"
-              element={
-                <Suspense fallback={<Loading />}>
-                  <CourseExercise />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/my-courses/learn/:courseId/completed"
-              element={
-                <Suspense fallback={<Loading />}>
-                  <CourseCompleted />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/cart"
-              element={
-                <Suspense fallback={<Loading />}>
-                  <Cart />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/wishlist"
-              element={
-                <Suspense fallback={<Loading />}>
-                  <Wishlist />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/tutor"
-              element={
-                <Suspense fallback={<Loading />}>
-                  <TutorDashboard />
-                  <Footer />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/tutor/add-course"
-              element={
-                <Suspense fallback={<Loading />}>
-                  <AddCourse />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/tutor/edit-course/:id"
-              element={
-                <Suspense fallback={<Loading />}>
-                  <EditCourse />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/tutor/manage-course-content/:id"
-              element={
-                <Suspense fallback={<Loading />}>
-                  <ManageContent />
-                  <Footer />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/tutor/course/:id"
-              element={
-                <Suspense fallback={<Loading />}>
-                  <Course_tutor />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/tutor/reports"
-              element={
-                <Suspense fallback={<Loading />}>
-                  <Reports_tutor />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/tutor/reports/view-report/:reportId"
-              element={
-                <Suspense fallback={<Loading />}>
-                  <ViewReport_tutor />
+                  <ForgotPassword />
                 </Suspense>
               }
             />
           </Route>
-        </Route>
-        {/* Admin routes */}
-        <Route path="/admin/*" element={<AdminAuth />}>
           <Route
-            path="users"
+            path="/add-interests"
             element={
               <Suspense fallback={<Loading />}>
-                <Users_admin />
+                <Interests />
               </Suspense>
             }
           />
-          <Route
-            path="stats"
-            element={
-              <Suspense fallback={<Loading />}>
-                <Stats_admin />
-              </Suspense>
-            }
-          />
-          <Route
-            path="stats/reports"
-            element={
-              <Suspense fallback={<Loading />}>
-                <Reports_admin />
-              </Suspense>
-            }
-          />
-          <Route
-            path="stats/reports/view-report/:reportId"
-            element={
-              <Suspense fallback={<Loading />}>
-                <ViewReport_admin />
-              </Suspense>
-            }
-          />
-          <Route
-            path="banners"
-            element={
-              <Suspense fallback={<Loading />}>
-                <Banners_admin />
-              </Suspense>
-            }
-          />
-          <Route
-            path="courses"
-            element={
-              <Suspense fallback={<Loading />}>
-                <Courses_admin />
-              </Suspense>
-            }
-          />
-          <Route
-            path="courses/pending/:courseId"
-            element={
-              <Suspense fallback={<Loading />}>
-                <PendingCourseDetails_admin />
-              </Suspense>
-            }
-          />
-          <Route
-            path="courses/published/:courseId"
-            element={
-              <Suspense fallback={<Loading />}>
-                <PublishedCourseDetails_admin />
-              </Suspense>
-            }
-          />
-          <Route
-            path="courses/categories"
-            element={
-              <Suspense fallback={<Loading />}>
-                <Categories_admin />
-              </Suspense>
-            }
-          />
-          <Route
-            path="users/user-details/:id"
-            element={
-              <Suspense fallback={<Loading />}>
-                <UserDetails_admin />
-              </Suspense>
-            }
-          />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+
+          <Route element={<InterestsGate />}>
+            <Route
+              path="/"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Home />
+                  <Footer />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/payment-success"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <PaymentSuccess />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/payment-failure"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <PaymentFailure />
+                </Suspense>
+              }
+            />
+
+            <Route
+              path="/courses"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Courses />
+                  <Footer />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/course-details/:id"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <CourseDetails />
+                  <Footer />
+                </Suspense>
+              }
+            />
+
+            <Route element={<UserAuth />}>
+              <Route
+                path="/profile"
+                element={
+                  <Suspense>
+                    <Profile />
+                    <Footer />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/my-courses"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <MyCourses />
+                    <Footer />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/my-courses/learn/:courseId"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <LearnCourse />
+                    <Footer />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/my-courses/learn/:courseId/:chapterId"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <ChapterInitialRedirect />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/my-courses/learn/:courseId/:chapterId/video/:videoOrder"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <CourseVideo />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/my-courses/learn/:courseId/:chapterId/exercise/:exerciseOrder"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <CourseExercise />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/my-courses/learn/:courseId/completed"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <CourseCompleted />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/cart"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <Cart />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/wishlist"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <Wishlist />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/tutor"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <TutorDashboard />
+                    <Footer />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/tutor/add-course"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <AddCourse />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/tutor/edit-course/:id"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <EditCourse />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/tutor/manage-course-content/:id"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <ManageContent />
+                    <Footer />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/tutor/course/:id"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <Course_tutor />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/tutor/reports"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <Reports_tutor />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/tutor/reports/view-report/:reportId"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <ViewReport_tutor />
+                  </Suspense>
+                }
+              />
+            </Route>
+          </Route>
+          {/* Admin routes */}
+          <Route path="/admin/*" element={<AdminAuth />}>
+            <Route
+              path="users"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Users_admin />
+                </Suspense>
+              }
+            />
+            <Route
+              path="stats"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Stats_admin />
+                </Suspense>
+              }
+            />
+            <Route
+              path="stats/reports"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Reports_admin />
+                </Suspense>
+              }
+            />
+            <Route
+              path="stats/reports/view-report/:reportId"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <ViewReport_admin />
+                </Suspense>
+              }
+            />
+            <Route
+              path="banners"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Banners_admin />
+                </Suspense>
+              }
+            />
+            <Route
+              path="courses"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Courses_admin />
+                </Suspense>
+              }
+            />
+            <Route
+              path="courses/pending/:courseId"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <PendingCourseDetails_admin />
+                </Suspense>
+              }
+            />
+            <Route
+              path="courses/published/:courseId"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <PublishedCourseDetails_admin />
+                </Suspense>
+              }
+            />
+            <Route
+              path="courses/categories"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Categories_admin />
+                </Suspense>
+              }
+            />
+            <Route
+              path="users/user-details/:id"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <UserDetails_admin />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </CartWishlistContextComponent>
     </BrowserRouter>
   );
 };
