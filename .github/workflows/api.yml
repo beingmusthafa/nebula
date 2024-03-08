@@ -22,16 +22,16 @@ jobs:
 
       - name: Pull latest changes
         run: |
-          ssh user@64.227.137.37 'cd /root/Nebula && git pull'
+          ssh root@64.227.137.37 'cd /root/Nebula && git pull'
 
       - name: Install dependencies
         run: |
-          ssh user@64.227.137.37 'cd /root/Nebula/api && npm install'
+          ssh root@64.227.137.37 'cd /root/Nebula/api && npm install'
 
       - name: Compile TypeScript
         run: |
-          ssh user@64.227.137.37 'cd /root/Nebula && tsc'
+          ssh root@64.227.137.37 'cd /root/Nebula && tsc'
 
       - name: Restart server
         run: |
-          ssh user@64.227.137.37 'pm2 restart ./build/index.js'
+          ssh root@64.227.137.37 'pm2 restart ./build/index.js'
