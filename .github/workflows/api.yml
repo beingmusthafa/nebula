@@ -13,12 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install sshpass
-        run: sudo apt-get install -y sshpass
-
       - name: connect and auth to server
         run: |
-          sshpass -p ${{ secrets.DEPLOY_PASSWORD }} ssh -o StrictHostKeyChecking=no root@64.227.137.37 <<EOF
+          ssh root@64.227.137.37
+          ${{ secrets.DEPLOY_PASSWORD }}
 
       - name: Pull latest changes
         run: |
