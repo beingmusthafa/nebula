@@ -7,9 +7,9 @@ import path from "path";
 import coursesRepositoryInstance, {
   CoursesRepository,
 } from "../repositories/courses.repository.js";
-import IReviewsInterface from "../interfaces/service.interfaces/reviews.service.interface.js";
+import IReviewsService from "../interfaces/service.interfaces/reviews.service.interface.js";
 
-export class ReviewsService implements IReviewsInterface {
+export class ReviewsService implements IReviewsService {
   private reviewsRepository: ReviewsRepository;
   private coursesRepository: CoursesRepository;
   constructor(

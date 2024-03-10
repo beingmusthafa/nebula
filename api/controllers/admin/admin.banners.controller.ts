@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import bannerServiceInstance, {
-  BannersService,
-} from "../../services/banners.service.js";
+import bannerServiceInstance from "../../services/banners.service.js";
 import customError from "../../utils/error.js";
+import IBannersService from "../../interfaces/service.interfaces/banners.service.interface.js";
 
 class AdminBannersController {
-  private bannersService: BannersService;
-  constructor(bannersService: BannersService) {
+  private bannersService: IBannersService;
+  constructor(bannersService: IBannersService) {
     this.bannersService = bannersService;
   }
 

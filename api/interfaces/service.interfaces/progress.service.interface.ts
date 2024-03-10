@@ -21,4 +21,10 @@ export default interface IProgressService {
     courseId: string | mongoose.Types.ObjectId,
     exerciseId: string | mongoose.Types.ObjectId
   );
+
+  addVideoProgress(
+    userId: string | mongoose.Types.ObjectId,
+    courseId: string | mongoose.Types.ObjectId,
+    videoId: string | mongoose.Types.ObjectId
+  );
 }

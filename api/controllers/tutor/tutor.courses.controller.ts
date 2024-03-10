@@ -1,23 +1,20 @@
 import { Request, Response, NextFunction } from "express";
-import coursesServiceInstance, {
-  CoursesService,
-} from "../../services/courses.service.js";
+import coursesServiceInstance from "../../services/courses.service.js";
 import customError from "../../utils/error.js";
-import categoriesServiceInstance, {
-  CategoriesService,
-} from "../../services/categories.service.js";
-import chaptersServiceInstance, {
-  ChaptersService,
-} from "../../services/chapters.service.js";
+import categoriesServiceInstance from "../../services/categories.service.js";
+import chaptersServiceInstance from "../../services/chapters.service.js";
+import ICoursesService from "../../interfaces/service.interfaces/courses.service.interface.js";
+import ICategoriesService from "../../interfaces/service.interfaces/categories.service.interface.js";
+import IChaptersService from "../../interfaces/service.interfaces/chapters.service.interface.js";
 
 class TutorController {
-  private coursesService: CoursesService;
-  private categoriesService: CategoriesService;
-  private chaptersService: ChaptersService;
+  private coursesService: ICoursesService;
+  private categoriesService: ICategoriesService;
+  private chaptersService: IChaptersService;
   constructor(
-    coursesService: CoursesService,
-    categoriesService: CategoriesService,
-    chaptersService: ChaptersService
+    coursesService: ICoursesService,
+    categoriesService: ICategoriesService,
+    chaptersService: IChaptersService
   ) {
     this.coursesService = coursesService;
     this.categoriesService = categoriesService;

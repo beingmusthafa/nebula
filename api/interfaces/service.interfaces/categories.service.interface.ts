@@ -1,7 +1,7 @@
 import ServiceResponse from "../../types/serviceresponse.type.js";
 import ICategories from "../categories.interface.js";
 
-export default interface ICategoryService {
+export default interface ICategoriesService {
   getAll(): ServiceResponse<{ categories?: ICategories[] }>;
 
   create(data: { name: string; image: Express.Multer.File }): ServiceResponse;

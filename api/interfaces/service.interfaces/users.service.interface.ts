@@ -28,4 +28,6 @@ export default interface IUsersService {
     userId: string | mongoose.Types.ObjectId,
     image: Buffer
   ): ServiceResponse;
+
+  changeBlockStatus(email: string, blockStatus: boolean): ServiceResponse;
 }

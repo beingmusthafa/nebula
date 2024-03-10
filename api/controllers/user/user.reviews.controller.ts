@@ -3,10 +3,11 @@ import customError from "../../utils/error.js";
 import reviewsServiceInstance, {
   ReviewsService,
 } from "../../services/reviews.service.js";
+import IReviewsService from "../../interfaces/service.interfaces/reviews.service.interface.js";
 
 class UsersReviewsController {
-  private reviewsService: ReviewsService;
-  constructor(reviewsService: ReviewsService) {
+  private reviewsService: IReviewsService;
+  constructor(reviewsService: IReviewsService) {
     this.reviewsService = reviewsService;
   }
 

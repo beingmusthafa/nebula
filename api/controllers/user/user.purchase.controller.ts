@@ -1,14 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import cartsServiceInstance, {
-  CartsService,
-} from "../../services/carts.service.js";
-import wishlistServiceInstance, {
-  WishlistsService,
-} from "../../services/wishlists.service.js";
-import enrollmentsServiceInstance, {
-  EnrollmentsService,
-} from "../../services/enrollments.service.js";
+import cartsServiceInstance from "../../services/carts.service.js";
+import wishlistServiceInstance from "../../services/wishlists.service.js";
+import enrollmentsServiceInstance from "../../services/enrollments.service.js";
 import customError from "../../utils/error.js";
+import ICartsService from "../../interfaces/service.interfaces/carts.service.interface.js";
+import IWishlistsService from "../../interfaces/service.interfaces/wishlists.service.interface.js";
+import IEnrollmentsService from "../../interfaces/service.interfaces/enrollments.service.interface.js";
 declare global {
   namespace Express {
     interface Request {
@@ -17,13 +14,13 @@ declare global {
   }
 }
 class UserPurchaseController {
-  private cartsService: CartsService;
-  private wishlistsService: WishlistsService;
-  private enrollmentsService: EnrollmentsService;
+  private cartsService: ICartsService;
+  private wishlistsService: IWishlistsService;
+  private enrollmentsService: IEnrollmentsService;
   constructor(
-    cartsService: CartsService,
-    wishlistsService: WishlistsService,
-    enrollmentsService: EnrollmentsService
+    cartsService: ICartsService,
+    wishlistsService: IWishlistsService,
+    enrollmentsService: IEnrollmentsService
   ) {
     this.cartsService = cartsService;
     this.wishlistsService = wishlistsService;

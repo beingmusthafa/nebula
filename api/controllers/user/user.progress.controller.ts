@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import progressServiceInstance, {
-  ProgressService,
-} from "../../services/progress.service.js";
+import progressServiceInstance from "../../services/progress.service.js";
 import customError from "../../utils/error.js";
+import IProgressService from "../../interfaces/service.interfaces/progress.service.interface.js";
 
 class UserProgressController {
-  private progressService: ProgressService;
-  constructor(progressService: ProgressService) {
+  private progressService: IProgressService;
+  constructor(progressService: IProgressService) {
     this.progressService = progressService;
   }
 

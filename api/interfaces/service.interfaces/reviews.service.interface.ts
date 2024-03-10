@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import ServiceResponse from "../../types/serviceresponse.type.js";
 
-export default interface IReviewsInterface {
+export default interface IReviewsService {
   addReview(review: {
     user: mongoose.Types.ObjectId | string;
     course: string | mongoose.Types.ObjectId;

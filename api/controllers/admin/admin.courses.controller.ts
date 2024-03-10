@@ -1,12 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import coursesServiceInstance, {
-  CoursesService,
-} from "../../services/courses.service.js";
+import coursesServiceInstance from "../../services/courses.service.js";
 import customError from "../../utils/error.js";
+import ICoursesService from "../../interfaces/service.interfaces/courses.service.interface.js";
 
 class AdminCategoriesController {
-  private coursesService: CoursesService;
-  constructor(coursesService: CoursesService) {
+  private coursesService: ICoursesService;
+  constructor(coursesService: ICoursesService) {
     this.coursesService = coursesService;
   }
 

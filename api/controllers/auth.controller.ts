@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import UsersInterface from "../interfaces/users.interface.js";
-import authServiceInstance, { AuthService } from "../services/auth.service.js";
+import authServiceInstance from "../services/auth.service.js";
 import customError from "../utils/error.js";
+import IAuthService from "../interfaces/service.interfaces/auth.service.interface.js";
 
 class AuthController {
-  private authService: AuthService;
+  private authService: IAuthService;
 
-  constructor(authService: AuthService) {
+  constructor(authService: IAuthService) {
     this.authService = authService;
   }
 

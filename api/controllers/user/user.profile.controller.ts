@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import usersServiceInstance, {
-  UsersService,
-} from "../../services/users.service.js";
+import usersServiceInstance from "../../services/users.service.js";
 import customError from "../../utils/error.js";
+import IUsersService from "../../interfaces/service.interfaces/users.service.interface.js";
 
 class UserProfileController {
-  private usersService: UsersService;
-  constructor(usersService: UsersService) {
+  private usersService: IUsersService;
+  constructor(usersService: IUsersService) {
     this.usersService = usersService;
   }
 

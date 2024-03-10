@@ -1,18 +1,16 @@
 import { Request, Response, NextFunction } from "express";
-import enrollmentsServiceInstance, {
-  EnrollmentsService,
-} from "../../services/enrollments.service.js";
+import enrollmentsServiceInstance from "../../services/enrollments.service.js";
 import customError from "../../utils/error.js";
-import reportsServiceInstance, {
-  ReportsService,
-} from "../../services/reports.service.js";
+import reportsServiceInstance from "../../services/reports.service.js";
+import IEnrollmentsService from "../../interfaces/service.interfaces/enrollments.service.interface.js";
+import IReportsInterface from "../../interfaces/service.interfaces/reports.service.interface.js";
 
 class AdminStatsController {
-  private enrollmentsService: EnrollmentsService;
-  private reportsService: ReportsService;
+  private enrollmentsService: IEnrollmentsService;
+  private reportsService: IReportsInterface;
   constructor(
-    enrollmentsService: EnrollmentsService,
-    reportsService: ReportsService
+    enrollmentsService: IEnrollmentsService,
+    reportsService: IReportsInterface
   ) {
     this.enrollmentsService = enrollmentsService;
     this.reportsService = reportsService;
