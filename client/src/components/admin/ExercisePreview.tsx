@@ -1,12 +1,7 @@
 import React, { SetStateAction } from "react";
-
-interface Exercise {
-  question: string;
-  options: string[];
-  answer: string;
-}
+import IExercise from "../../interfaces/exercises.interface";
 interface Props {
-  exercise: Exercise;
+  exercise: IExercise;
   setShow: React.Dispatch<SetStateAction<boolean>>;
 }
 const ExercisePreview: React.FC<Props> = ({ exercise, setShow }) => {

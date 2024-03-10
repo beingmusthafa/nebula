@@ -1,27 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import Loading from "../Loading";
-interface Chapter {
-  _id: string;
-  order: number;
-  title: string;
-}
-interface Video {
-  _id: string;
-  video: string;
-  order: number;
-  title: string;
-  duration: number;
-  chapter: string;
-  course: string;
-}
+import IChapter from "../../interfaces/chapters.interface";
+
 interface Props {
   course: string;
   chapter: string;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const VideoForm: React.FC<Props> = ({ course, chapter, setShow }) => {
-  let [chapters, setChapters] = useState<Chapter[]>([]);
+  let [chapters, setChapters] = useState<IChapter[]>([]);
   let [loading, setLoading] = useState(true);
   let [error, setError] = useState("");
   let [video, setVideo] = useState<File | null>(null);

@@ -5,25 +5,8 @@ import { toast } from "react-toastify";
 import Loading from "../../components/Loading";
 import CourseCard from "../../components/CourseCard";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
+import ICourse from "../../interfaces/courses.interface";
 
-interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-  price: number;
-  discount: number;
-  rating: number;
-  ratingCount: number;
-  language: string;
-  tutor: {
-    name: string;
-    image: string;
-    bio: string;
-  };
-  benefits: string[];
-  requirements: string[];
-}
 interface PageInfo {
   page: number;
   pages: number;
@@ -47,7 +30,7 @@ const Courses = () => {
   const category = searchParams.get("category") || "";
   const language = searchParams.get("language") || "";
   const sort = searchParams.get("sort") || "";
-  let [courses, setCourses] = useState<Course[]>([]);
+  let [courses, setCourses] = useState<ICourse[]>([]);
   let [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   let [currentPage, setCurrentPage] = useState(page);
   const skeletons = new Array(10).fill(0);

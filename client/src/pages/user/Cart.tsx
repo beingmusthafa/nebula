@@ -7,24 +7,8 @@ import ConfirmationPopup from "../../components/ConfirmationPopup";
 import { loadStripe } from "@stripe/stripe-js";
 import { useDispatch, useSelector } from "react-redux";
 import { CartWishlistContext } from "../../components/context/CartWishlistContext";
-interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-  price: number;
-  discount: number;
-  rating: number;
-  ratingCount: number;
-  language: string;
-  tutor: {
-    name: string;
-    image: string;
-    bio: string;
-  };
-  benefits: string[];
-  requirements: string[];
-}
+import ICourse from "../../interfaces/courses.interface";
+
 interface Bill {
   totalPrice: number;
   totalDiscount: number;
@@ -33,9 +17,9 @@ interface Bill {
 const Cart = () => {
   const { cartCount, setCartCount } = useContext(CartWishlistContext)!;
   let [loading, setLoading] = useState<boolean>(true);
-  let [courses, setCourses] = useState<Course[]>([]);
+  let [courses, setCourses] = useState<ICourse[]>([]);
   let [bill, setBill] = useState<Bill | null>(null);
-  let [selected, setSelected] = useState<Course | null>(null);
+  let [selected, setSelected] = useState<ICourse | null>(null);
   let [showConfirm, setShowConfirm] = useState(false);
   let skeletons = new Array(7).fill(0);
   const [couponMessage, setCouponMessage] = useState("");

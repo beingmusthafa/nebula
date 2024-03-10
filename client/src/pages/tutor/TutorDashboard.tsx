@@ -6,20 +6,8 @@ import { toast } from "react-toastify";
 import ConfirmationPopup from "../../components/ConfirmationPopup";
 import LineChartComponent from "../../components/tutor/LineChart";
 import EditPriceDiscount from "../../components/tutor/EditPriceDiscount";
+import ICourse from "../../interfaces/courses.interface";
 
-interface Course {
-  _id: string;
-  title: string;
-  rating: number;
-  ratingCount: number;
-  price: number;
-  discount: number;
-  thumbnail: string;
-  tutor: {
-    name: string;
-    image: string;
-  };
-}
 let monthNames = [
   "",
   "January",
@@ -43,10 +31,10 @@ const TutorDashboard = () => {
   let [showMakePublishConfirm, setShowMakePublishConfirm] = useState(false);
   let [showCancelPublishConfirm, setShowCancelPublishConfirm] = useState(false);
   let [showEditPricingForm, setShowEditPricingForm] = useState(false);
-  let [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-  let [creatingCourses, setCreatingCourses] = useState<Course[]>([]);
-  let [pendingCourses, setPendingCourses] = useState<Course[]>([]);
-  let [publishedCourses, setPublishedCourses] = useState<Course[]>([]);
+  let [selectedCourse, setSelectedCourse] = useState<ICourse | null>(null);
+  let [creatingCourses, setCreatingCourses] = useState<ICourse[]>([]);
+  let [pendingCourses, setPendingCourses] = useState<ICourse[]>([]);
+  let [publishedCourses, setPublishedCourses] = useState<ICourse[]>([]);
   let [creatingLoading, setCreatingLoading] = useState(false);
   let [pendingLoading, setPendingLoading] = useState(false);
   let [publishedLoading, setPublishedLoading] = useState(false);
@@ -59,9 +47,9 @@ const TutorDashboard = () => {
   let [revenue, setRevenue] = useState<number[]>([]);
   let [months, setMonths] = useState<string[]>([]);
   let [topLoading, setTopLoading] = useState(true);
-  let [topCourses, setTopCourses] = useState<{ data: Course; count: number }[]>(
-    []
-  );
+  let [topCourses, setTopCourses] = useState<
+    { data: ICourse; count: number }[]
+  >([]);
   const fetchTopCourses = async () => {
     try {
       setTopLoading(true);

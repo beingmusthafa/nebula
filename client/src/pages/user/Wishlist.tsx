@@ -5,31 +5,14 @@ import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 import CourseCard from "../../components/CourseCard";
 import ConfirmationPopup from "../../components/ConfirmationPopup";
 import { CartWishlistContext } from "../../components/context/CartWishlistContext";
+import ICourse from "../../interfaces/courses.interface";
 
-interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-  price: number;
-  rating: number;
-  ratingCount: number;
-  language: string;
-  discount: number;
-  tutor: {
-    name: string;
-    image: string;
-    bio: string;
-  };
-  benefits: string[];
-  requirements: string[];
-}
 const Wishlist = () => {
   const { cartCount, wishlistCount, setCartCount, setWishlistCount } =
     useContext(CartWishlistContext)!;
-  let [courses, setCourses] = useState<Course[]>([]);
+  let [courses, setCourses] = useState<ICourse[]>([]);
   let [loading, setLoading] = useState<boolean>(true);
-  let [selected, setSelected] = useState<Course | null>(null);
+  let [selected, setSelected] = useState<ICourse | null>(null);
   let [showConfirm, setShowConfirm] = useState(false);
   let skeletons = new Array(7).fill(0);
   async function getWishlistCourses() {

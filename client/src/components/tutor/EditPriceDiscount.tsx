@@ -1,20 +1,9 @@
 import React, { SetStateAction, useRef, useState } from "react";
 import Loading from "../Loading";
-interface Course {
-  _id: string;
-  title: string;
-  rating: number;
-  ratingCount: number;
-  price: number;
-  discount: number;
-  thumbnail: string;
-  tutor: {
-    name: string;
-    image: string;
-  };
-}
+import ICourse from "../../interfaces/courses.interface";
+
 interface Props {
-  course: Course;
+  course: ICourse;
   setShow: React.Dispatch<SetStateAction<boolean>>;
   fetchData: () => void;
 }

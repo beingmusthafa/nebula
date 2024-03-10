@@ -12,54 +12,20 @@ import EditExerciseForm from "../../components/tutor/EditExerciseForm";
 import AddChapterForm from "../../components/tutor/AddChapterForm";
 import EditChapterForm from "../../components/tutor/EditChapterForm";
 import ConfirmationPopup from "../../components/ConfirmationPopup";
-interface Course {
-  _id: string;
-  title: string;
-  rating: number;
-  ratingCount: number;
-  price: number;
-  discount: number;
-  thumbnail: string;
-  description: string;
-  language: string;
-  tutor: {
-    name: string;
-    image: string;
-  };
-}
-interface Chapter {
-  _id: string;
-  title: string;
-  order: number;
-  videos: Video[];
-  exercises: any[];
-}
-interface Video {
-  _id: string;
-  video: string;
-  order: number;
-  title: string;
-  duration: number;
-  chapter: string;
-  course: string;
-}
-interface Exercise {
-  _id: string;
-  order: number;
-  title: string;
-  chapter: string;
-  course: string;
-  question: string;
-  options: string[];
-  answer: string;
-}
+import ICourse from "../../interfaces/courses.interface";
+import IChapter from "../../interfaces/chapters.interface";
+import IVideo from "../../interfaces/videos.interface";
+import IExercise from "../../interfaces/exercises.interface";
+
 const ManageContent = () => {
   const { id } = useParams();
-  let [course, setCourse] = useState<Course | null>(null);
-  let [chapters, setChapters] = useState<Chapter[]>([]);
-  let [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
-  let [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
-  let [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+  let [course, setCourse] = useState<ICourse | null>(null);
+  let [chapters, setChapters] = useState<IChapter[]>([]);
+  let [selectedChapter, setSelectedChapter] = useState<IChapter | null>(null);
+  let [selectedVideo, setSelectedVideo] = useState<IVideo | null>(null);
+  let [selectedExercise, setSelectedExercise] = useState<IExercise | null>(
+    null
+  );
   let [showAddChapterForm, setShowAddChapterForm] = useState(false);
   let [showEditChapterForm, setShowEditChapterForm] = useState(false);
   let [showAddVideoForm, setShowAddVideoForm] = useState(false);

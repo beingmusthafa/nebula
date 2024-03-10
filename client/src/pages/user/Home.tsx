@@ -2,23 +2,11 @@ import React, { useEffect, useState } from "react";
 import CourseCard from "../../components/CourseCard";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 import { Link } from "react-router-dom";
+import ICourse from "../../interfaces/courses.interface";
 
-interface Course {
-  _id: string;
-  title: string;
-  rating: number;
-  ratingCount: number;
-  price: number;
-  discount: number;
-  thumbnail: string;
-  tutor: {
-    name: string;
-    image: string;
-  };
-}
 const Home = () => {
   let [images, setImages] = useState<{ image: string; link: string }[]>([]);
-  let [lists, setLists] = useState<{ category: string; courses: Course[] }[]>(
+  let [lists, setLists] = useState<{ category: string; courses: ICourse[] }[]>(
     []
   );
   let [currentIndex, setCurrentIndex] = useState(0);

@@ -1,13 +1,8 @@
 import React, { SetStateAction } from "react";
+import IVideo from "../../interfaces/videos.interface";
 
-interface Video {
-  video: string;
-  title: string;
-  duration: number;
-  _id: string;
-}
 interface Props {
-  video: Video;
+  video: IVideo;
   setShow: React.Dispatch<SetStateAction<boolean>>;
 }
 const VideoPreview: React.FC<Props> = ({ video, setShow }) => {

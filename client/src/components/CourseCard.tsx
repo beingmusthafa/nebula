@@ -2,22 +2,11 @@ import React, { ReactNode, useState } from "react";
 import RatingStars from "./RatingStars";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import ICourse from "../interfaces/courses.interface";
 
 interface Props {
   showTutor?: boolean;
-  course: {
-    _id: string;
-    title: string;
-    rating: number;
-    ratingCount: number;
-    price: number;
-    discount: number;
-    thumbnail: string;
-    tutor: {
-      name: string;
-      image: string;
-    };
-  };
+  course: ICourse;
   showPrice?: boolean;
   extraElements?: ReactNode;
   redirectTo?: string;

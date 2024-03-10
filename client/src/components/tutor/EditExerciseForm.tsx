@@ -1,24 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import Loading from "../Loading";
+import IChapter from "../../interfaces/chapters.interface";
+import IExercise from "../../interfaces/exercises.interface";
 
-interface Chapter {
-  _id: string;
-  order: number;
-  title: string;
-}
-interface Exercise {
-  _id: string;
-  order: number;
-  title: string;
-  chapter: string;
-  course: string;
-  question: string;
-  options: string[];
-  answer: string;
-}
 interface Props {
-  data?: Exercise;
+  data?: IExercise;
   course: string;
   chapter: string;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;

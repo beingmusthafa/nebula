@@ -5,32 +5,13 @@ import RatingStars from "../../components/RatingStars";
 import Accordions from "../../components/Accordions";
 import ChaptersAccordionSkeletion from "../../components/skeletons/ChaptersAccordionSkeletion";
 import CourseDetailsSkeleton from "../../components/skeletons/CourseDetailsSkeleton";
-interface Course {
-  title: string;
-  description: string;
-  thumbnail: string;
-  price: number;
-  discount: number;
-  rating: number;
-  language: string;
-  tutor: {
-    name: string;
-    image: string;
-    bio: string;
-  };
-  benefits: string[];
-  requirements: string[];
-}
-interface Chapter {
-  title: string;
-  videos: { title: string; duration: number }[];
-  exercises: { title: string; duration: string }[];
-}
+import ICourse from "../../interfaces/courses.interface";
+import IChapter from "../../interfaces/chapters.interface";
 const Course_tutor = () => {
   const { id } = useParams();
-  let [course, setCourse] = useState<Course | null>(null);
+  let [course, setCourse] = useState<ICourse | null>(null);
   let [loading, setLoading] = useState(true);
-  let [chapters, setChapters] = useState<Chapter[] | null>(null);
+  let [chapters, setChapters] = useState<IChapter[] | null>(null);
   const navigate = useNavigate();
   useEffect(() => {
     try {
@@ -142,11 +123,11 @@ const Course_tutor = () => {
               />
             </div>
           </div>
-          {course.benefits.length > 0 && (
+          {course.benefits?.length! > 0 && (
             <>
               <h2 className="_section-title2">Course benefits</h2>
               <div className="flex flex-col items-start mx-auto px-10 gap-2">
-                {course.benefits.map((benefit, i) => (
+                {course.benefits?.map((benefit, i) => (
                   <div
                     key={i}
                     className="flex items-center gap-2 text-base text-wrap overflow-hidden text-ellipsis"
@@ -159,11 +140,11 @@ const Course_tutor = () => {
               </div>
             </>
           )}
-          {course.requirements.length > 0 && (
+          {course.requirements?.length! > 0 && (
             <>
               <h2 className="_section-title2">Pre-requisites</h2>
               <div className="flex flex-col items-start mx-auto px-10 gap-2">
-                {course.requirements.map((requirement, i) => (
+                {course.requirements?.map((requirement, i) => (
                   <div
                     key={i}
                     className="flex items-center gap-2 text-base text-wrap overflow-hidden text-ellipsis"

@@ -12,22 +12,9 @@ import ConfirmationPopup from "../../components/ConfirmationPopup";
 import EditReviewForm from "../../components/user/EditReviewForm";
 const ChatRoom = lazy(() => import("../../components/user/ChatRoom"));
 import Loading from "../../components/Loading";
-
-interface Course {
-  title: string;
-  description: string;
-  thumbnail: string;
-  price: number;
-  rating: number;
-  language: string;
-  tutor: {
-    name: string;
-    image: string;
-    bio: string;
-  };
-  benefits: string[];
-  requirements: string[];
-}
+import ICourse from "../../interfaces/courses.interface";
+import IChapter from "../../interfaces/chapters.interface";
+import IReview from "../../interfaces/reviews.interface";
 interface Tutor {
   image: string;
   name: string;
@@ -38,34 +25,18 @@ interface Tutor {
   inWishlist?: boolean;
   inCart?: boolean;
 }
-interface Chapter {
-  _id: string;
-  title: string;
-  order: number;
-  videos: { title: string; duration: number }[];
-  exercises: object[];
-}
-interface Review {
-  _id: string;
-  user: {
-    _id: string;
-    name: string;
-    image: string;
-  };
-  rating: number;
-  comment: string;
-}
+
 const LearnCourseEntry = () => {
   const { courseId } = useParams();
   const { currentUser } = useSelector((state: any) => state.user);
-  let [course, setCourse] = useState<Course | null>(null);
-  let [reviews, setReviews] = useState<Review[]>([]);
+  let [course, setCourse] = useState<ICourse | null>(null);
+  let [reviews, setReviews] = useState<IReview[]>([]);
   let [reviewed, setReviewed] = useState(false);
-  let [selectedReview, setSelectedReview] = useState<Review | null>(null);
+  let [selectedReview, setSelectedReview] = useState<IReview | null>(null);
   let [showDeleteReview, setShowDeleteReview] = useState(false);
   let [showEditReview, setShowEditReview] = useState(false);
   let [showChatRoom, setShowChatRoom] = useState(false);
-  let [chapters, setChapters] = useState<Chapter[] | null>(null);
+  let [chapters, setChapters] = useState<IChapter[] | null>(null);
   let [error, setError] = useState("");
   let [rating, setRating] = useState(1);
   let commentRef = useRef<HTMLTextAreaElement>(null);

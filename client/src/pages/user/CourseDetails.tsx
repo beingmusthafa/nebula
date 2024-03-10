@@ -12,23 +12,10 @@ import EditReviewForm from "../../components/user/EditReviewForm";
 import ConfirmationPopup from "../../components/ConfirmationPopup";
 import { useSelector } from "react-redux";
 import { CartWishlistContext } from "../../components/context/CartWishlistContext";
+import ICourse from "../../interfaces/courses.interface";
+import IReview from "../../interfaces/reviews.interface";
+import IChapter from "../../interfaces/chapters.interface";
 
-interface Course {
-  title: string;
-  description: string;
-  thumbnail: string;
-  price: number;
-  discount: number;
-  rating: number;
-  language: string;
-  tutor: {
-    name: string;
-    image: string;
-    bio: string;
-  };
-  benefits: string[];
-  requirements: string[];
-}
 interface Tutor {
   image: string;
   name: string;
@@ -39,39 +26,23 @@ interface Tutor {
   inWishlist?: boolean;
   inCart?: boolean;
 }
-interface Chapter {
-  _id: string;
-  title: string;
-  order: number;
-  videos: { title: string; duration: number }[];
-  exercises: { title: string; duration: string }[];
-}
-interface Review {
-  _id: string;
-  user: {
-    _id: string;
-    name: string;
-    image: string;
-  };
-  rating: number;
-  comment: string;
-}
+
 const CourseDetails = () => {
   const { id } = useParams();
   const { currentUser } = useSelector((state: any) => state.user);
 
   const { cartCount, wishlistCount, setCartCount, setWishlistCount } =
     useContext(CartWishlistContext)!;
-  let [course, setCourse] = useState<Course | null>(null);
-  let [reviews, setReviews] = useState<Review[]>([]);
-  let [selectedReview, setSelectedReview] = useState<Review | null>(null);
+  let [course, setCourse] = useState<ICourse | null>(null);
+  let [reviews, setReviews] = useState<IReview[]>([]);
+  let [selectedReview, setSelectedReview] = useState<IReview | null>(null);
   let [showDeleteReview, setShowDeleteReview] = useState(false);
   let [showEditReview, setShowEditReview] = useState(false);
   let [data, setData] = useState<{
     inCart: Boolean | undefined;
     inWishlist: boolean | undefined;
   }>();
-  let [chapters, setChapters] = useState<Chapter[] | null>(null);
+  let [chapters, setChapters] = useState<IChapter[] | null>(null);
   let [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   useEffect(() => {
@@ -395,11 +366,11 @@ const CourseDetails = () => {
               </div>
             </div>
           </div>
-          {course.benefits.length > 0 && (
+          {course.benefits?.length! > 0 && (
             <>
               <h2 className="_section-title2">Course benefits</h2>
               <div className="flex flex-col items-start mx-auto px-10 gap-2">
-                {course.benefits.map((benefit, i) => (
+                {course.benefits?.map((benefit, i) => (
                   <div
                     key={i}
                     className="flex items-center gap-2 text-base text-wrap overflow-hidden text-ellipsis"
@@ -412,11 +383,11 @@ const CourseDetails = () => {
               </div>
             </>
           )}
-          {course.requirements.length > 0 && (
+          {course.requirements?.length! > 0 && (
             <>
               <h2 className="_section-title2">Pre-requisites</h2>
               <div className="flex flex-col items-start mx-auto px-10 gap-2">
-                {course.requirements.map((requirement, i) => (
+                {course.requirements?.map((requirement, i) => (
                   <div
                     key={i}
                     className="flex items-center gap-2 text-base text-wrap overflow-hidden text-ellipsis"

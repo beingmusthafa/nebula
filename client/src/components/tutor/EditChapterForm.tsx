@@ -1,15 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import { toast } from "react-toastify";
-interface Chapter {
-  _id: string;
-  title: string;
-  order: number;
-  videos: any[];
-  exercises: any[];
-}
+import IChapter from "../../interfaces/chapters.interface";
+
 interface Props {
   course: string;
-  data: Chapter;
+  data: IChapter;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const EditChapterForm: React.FC<Props> = ({ course, data, setShow }) => {

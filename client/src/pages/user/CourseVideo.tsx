@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading";
+import IVideo from "../../interfaces/videos.interface";
 
-interface Video {
-  _id: string;
-  title: string;
-  video: string;
-  order: number;
-}
 interface NextData {
   nextVideo: boolean;
   nextExercise: boolean;
@@ -15,7 +10,7 @@ interface NextData {
 }
 const CourseVideo = () => {
   const { courseId, chapterId, videoOrder } = useParams();
-  let [video, setVideo] = useState<Video | null>(null);
+  let [video, setVideo] = useState<IVideo | null>(null);
   let [nextData, setNextData] = useState<NextData | null>(null);
   let [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();

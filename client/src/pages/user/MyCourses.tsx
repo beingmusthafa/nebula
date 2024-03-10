@@ -1,27 +1,10 @@
 import React, { useEffect, useState } from "react";
 import CourseCard from "../../components/CourseCard";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
+import ICourse from "../../interfaces/courses.interface";
 
-interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-  price: number;
-  discount: number;
-  rating: number;
-  ratingCount: number;
-  language: string;
-  tutor: {
-    name: string;
-    image: string;
-    bio: string;
-  };
-  benefits: string[];
-  requirements: string[];
-}
 const MyCourses = () => {
-  let [courses, setCourses] = useState<Course[]>([]);
+  let [courses, setCourses] = useState<ICourse[]>([]);
   let [loading, setLoading] = useState(true);
   let skeletons = new Array(10).fill(0);
   const getCourses = async () => {

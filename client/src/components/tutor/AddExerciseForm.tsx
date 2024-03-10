@@ -1,29 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import Loading from "../Loading";
+import IChapter from "../../interfaces/chapters.interface";
+import IExercise from "../../interfaces/exercises.interface";
 
-interface Chapter {
-  _id: string;
-  order: number;
-  title: string;
-}
-interface Exercise {
-  _id: string;
-  order: number;
-  title: string;
-  chapter: string;
-  course: string;
-  question: string;
-  options: string[];
-  answer: string;
-}
 interface Props {
   course: string;
   chapter: string;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const AddExerciseForm: React.FC<Props> = ({ course, chapter, setShow }) => {
-  let [chapters, setChapters] = useState<Chapter[]>([]);
+  let [chapters, setChapters] = useState<IChapter[]>([]);
   let [loading, setLoading] = useState(true);
   let [error, setError] = useState("");
   let questionRef = useRef<HTMLInputElement>(null);

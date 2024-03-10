@@ -1,22 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import Loading from "../Loading";
-interface Chapter {
-  _id: string;
-  order: number;
-  title: string;
-}
-interface Video {
-  _id: string;
-  video: string;
-  order: number;
-  title: string;
-  duration: number;
-  chapter: string;
-  course: string;
-}
+import IVideo from "../../interfaces/videos.interface";
+
 interface Props {
-  data: Video;
+  data: IVideo;
   course: string;
   chapter: string;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;

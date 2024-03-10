@@ -2,24 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "../../components/Loading";
 import { toast } from "react-toastify";
+import IReport from "../../interfaces/reports.interface";
 
-interface Report {
-  type: "weekly" | "monthly" | "yearly";
-  tutor: string;
-  enrollmentsCount: number;
-  enrollmentsByCourse: {
-    name: string;
-    count: number;
-  }[];
-  averageRating: number;
-  revenue: number;
-  earnings: number;
-  startDate: Date;
-  endDate: Date;
-}
 const ViewReport_admin = () => {
   const { reportId } = useParams();
-  let [report, setReport] = useState<Report | null>(null);
+  let [report, setReport] = useState<IReport | null>(null);
   let [loading, setLoading] = useState(true);
   const getReport = async () => {
     try {
