@@ -15,4 +15,5 @@ export default interface ICourse {
     image: string;
     bio?: string;
   };
+  isBlocked?: boolean;
 }

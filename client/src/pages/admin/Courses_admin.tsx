@@ -3,27 +3,13 @@ import { Link } from "react-router-dom";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 import CourseCard from "../../components/CourseCard";
 import { toast } from "react-toastify";
-import ConfirmationPopup_Admin from "../../components/ConfirmationPopup_Admin";
-interface Course {
-  _id: string;
-  title: string;
-  rating: number;
-  ratingCount: number;
-  price: number;
-  discount: number;
-  thumbnail: string;
-  isBlocked: string;
-  status: string;
-  tutor: {
-    name: string;
-    image: string;
-  };
-}
+import ICourse from "../../interfaces/courses.interface";
+
 const Courses_admin = () => {
   let [pendingLoading, setPendingLoading] = useState(true);
-  let [pendingCourses, setPendingCourses] = useState<Course[]>([]);
+  let [pendingCourses, setPendingCourses] = useState<ICourse[]>([]);
   let [publishedLoading, setPublishedLoading] = useState(true);
-  let [publishedCourses, setPublishedCourses] = useState<Course[]>([]);
+  let [publishedCourses, setPublishedCourses] = useState<ICourse[]>([]);
   const skeletons = new Array(5).fill(0);
   const fetchPendingCourses = async () => {
     try {

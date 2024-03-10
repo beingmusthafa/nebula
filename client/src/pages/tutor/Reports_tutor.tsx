@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Loading from "../../components/Loading";
 import { Link } from "react-router-dom";
-import IReport from "../../interfaces/reports.interface";
+import { ITutorReport } from "../../interfaces/reports.interface";
 
 const Reports_tutor = () => {
-  let [reports, setReports] = useState<IReport[]>([]);
+  let [reports, setReports] = useState<ITutorReport[]>([]);
   let [loading, setLoading] = useState(true);
   let [type, setType] = useState("monthly");
   const getReports = async () => {

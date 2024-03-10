@@ -4,6 +4,7 @@ import AdminLoading from "../../components/admin/AdminLoading";
 import CourseCard from "../../components/CourseCard";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 import { Link, useNavigate } from "react-router-dom";
+import ICourse from "../../interfaces/courses.interface";
 let monthNames = [
   "",
   "January",
@@ -19,19 +20,6 @@ let monthNames = [
   "November",
   "December",
 ];
-interface Course {
-  _id: string;
-  title: string;
-  rating: number;
-  ratingCount: number;
-  price: number;
-  discount: number;
-  thumbnail: string;
-  tutor: {
-    name: string;
-    image: string;
-  };
-}
 const Stats = () => {
   const currentMonth = new Date().getMonth() + 1;
   let [currentEnrollments, setCurrentEnrollments] = useState(0);
@@ -41,9 +29,9 @@ const Stats = () => {
   let [revenue, setRevenue] = useState<number[]>([]);
   let [months, setMonths] = useState<string[]>([]);
   let [topLoading, setTopLoading] = useState(true);
-  let [topCourses, setTopCourses] = useState<{ data: Course; count: number }[]>(
-    []
-  );
+  let [topCourses, setTopCourses] = useState<
+    { data: ICourse; count: number }[]
+  >([]);
   const skeletons = new Array(5).fill(0);
   const navigate = useNavigate();
   const getGraphData = async () => {

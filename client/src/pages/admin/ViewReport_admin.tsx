@@ -2,27 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AdminLoading from "../../components/admin/AdminLoading";
 import { toast } from "react-toastify";
+import { IAdminReport } from "../../interfaces/reports.interface";
 
-interface Report {
-  type: "weekly" | "monthly" | "yearly";
-  usersCount: number;
-  enrollmentsCount: number;
-  revenue: number;
-  earnings: number;
-  enrollmentsByCategory: {
-    name: string;
-    count: number;
-  }[];
-  enrollmentsByCourse: {
-    name: string;
-    count: number;
-  }[];
-  startDate: Date;
-  endDate: Date;
-}
 const ViewReport_admin = () => {
   const { reportId } = useParams();
-  let [report, setReport] = useState<Report | null>(null);
+  let [report, setReport] = useState<IAdminReport | null>(null);
   let [loading, setLoading] = useState(true);
   const getReport = async () => {
     try {

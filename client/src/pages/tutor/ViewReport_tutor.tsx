@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "../../components/Loading";
 import { toast } from "react-toastify";
-import IReport from "../../interfaces/reports.interface";
+import { ITutorReport } from "../../interfaces/reports.interface";
 
 const ViewReport_admin = () => {
   const { reportId } = useParams();
-  let [report, setReport] = useState<IReport | null>(null);
+  let [report, setReport] = useState<ITutorReport | null>(null);
   let [loading, setLoading] = useState(true);
   const getReport = async () => {
     try {

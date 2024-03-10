@@ -11,52 +11,22 @@ import { useSelector } from "react-redux";
 import ConfirmationPopup_Admin from "../../components/ConfirmationPopup_Admin";
 import VideoPreview from "../../components/admin/VideoPreview";
 import ExercisePreview from "../../components/admin/ExercisePreview";
-
-interface Course {
-  title: string;
-  description: string;
-  thumbnail: string;
-  price: number;
-  rating: number;
-  language: string;
-  tutor: {
-    name: string;
-    image: string;
-    bio: string;
-  };
-  benefits: string[];
-  requirements: string[];
-  status: string;
-  isBlocked: boolean;
-}
-interface Video {
-  video: string;
-  title: string;
-  duration: number;
-  _id: string;
-}
-interface Exercise {
-  question: string;
-  options: string[];
-  answer: string;
-}
-interface Chapter {
-  _id: string;
-  title: string;
-  order: number;
-  videos: Video[];
-  exercises: Exercise[];
-}
+import ICourse from "../../interfaces/courses.interface";
+import IVideo from "../../interfaces/videos.interface";
+import IExercise from "../../interfaces/exercises.interface";
+import IChapter from "../../interfaces/chapters.interface";
 
 const PublishedCourseDetails_admin = () => {
   const { courseId } = useParams();
   const { currentUser } = useSelector((state: any) => state.user);
-  let [course, setCourse] = useState<Course | null>(null);
+  let [course, setCourse] = useState<ICourse | null>(null);
   let [showVideoPreview, setShowVideoPreview] = useState(false);
   let [showExercisePreview, setShowExercisePreview] = useState(false);
-  let [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
-  let [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
-  let [chapters, setChapters] = useState<Chapter[] | null>(null);
+  let [selectedVideo, setSelectedVideo] = useState<IVideo | null>(null);
+  let [selectedExercise, setSelectedExercise] = useState<IExercise | null>(
+    null
+  );
+  let [chapters, setChapters] = useState<IChapter[] | null>(null);
   let [loading, setLoading] = useState<boolean>(true);
   let [showBlockConfirm, setShowBlockConfirm] = useState(false);
   let [showUnblockConfirm, setShowUnblockConfirm] = useState(false);
@@ -247,11 +217,11 @@ const PublishedCourseDetails_admin = () => {
               <div className="flex mx-auto gap-4 mt-4"></div>
             </div>
           </div>
-          {course.benefits.length > 0 && (
+          {course.benefits?.length! > 0 && (
             <>
               <h2 className="_section-title2">Course benefits</h2>
               <div className="flex flex-col items-start mx-auto px-10 gap-2">
-                {course.benefits.map((benefit, i) => (
+                {course.benefits?.map((benefit, i) => (
                   <div
                     key={i}
                     className="flex items-center gap-2 text-base text-wrap overflow-hidden text-ellipsis"
@@ -264,11 +234,11 @@ const PublishedCourseDetails_admin = () => {
               </div>
             </>
           )}
-          {course.requirements.length > 0 && (
+          {course.requirements?.length! > 0 && (
             <>
               <h2 className="_section-title2">Pre-requisites</h2>
               <div className="flex flex-col items-start mx-auto px-10 gap-2">
-                {course.requirements.map((requirement, i) => (
+                {course.requirements?.map((requirement, i) => (
                   <div
                     key={i}
                     className="flex items-center gap-2 text-base text-wrap overflow-hidden text-ellipsis"
