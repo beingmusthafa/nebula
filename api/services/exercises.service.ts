@@ -7,8 +7,9 @@ import exercisesRepositoryInstance, {
   ExercisesRepository,
 } from "../repositories/exercises.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
+import IExercisesService from "../interfaces/service.interfaces/exercises.service.interface.js";
 
-export class ExercisesService {
+export class ExercisesService implements IExercisesService {
   private exercisesRepository: ExercisesRepository;
   private chaptersRepository: ChaptersRepository;
   constructor(

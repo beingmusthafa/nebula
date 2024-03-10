@@ -14,8 +14,9 @@ import mailer, { Mailer } from "../utils/mailer.js";
 import { v2 as cloudinary } from "cloudinary";
 import { uploadtoCloudinary } from "../utils/parser.js";
 import { resizeImage } from "../utils/cropper.js";
+import IUsersService from "../interfaces/service.interfaces/users.service.interface.js";
 
-export class UsersService {
+export class UsersService implements IUsersService {
   private usersRepository: UsersRepository;
   private otpsRepository: OtpsRepository;
   private mailer: Mailer;
@@ -126,7 +127,7 @@ export class UsersService {
     }
   }
 
-  async sendChangeEmailVerification(email: string) {
+  async sendChangeEmailVerification(email: string): ServiceResponse {
     try {
       if (!email) {
         return {

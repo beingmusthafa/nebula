@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import IExercises from "../interfaces/exercises.interface.js";
-import IVideos from "../interfaces/videos.interface.js";
 import chaptersRepositoryInstance, {
   ChaptersRepository,
 } from "../repositories/chapters.repository.js";
@@ -13,8 +11,9 @@ import coursesRepositoryInstance, {
 import ServiceResponse from "../types/serviceresponse.type.js";
 import { uploadVideoToCloudinary } from "../utils/parser.js";
 import { v2 as cloudinary } from "cloudinary";
+import IVideosService from "../interfaces/service.interfaces/videos.service.interface.js";
 
-export class VideosService {
+export class VideosService implements IVideosService {
   private videosRepository: VideosRepository;
   private chaptersRepository: ChaptersRepository;
   private coursesRepository: CoursesRepository;
@@ -105,7 +104,7 @@ export class VideosService {
     id: string,
     userId: string | mongoose.Types.ObjectId,
     data: { video: Buffer; title: string; order: number }
-  ) {
+  ): ServiceResponse {
     try {
       let updation: {
         title?: string;

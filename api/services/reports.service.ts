@@ -7,7 +7,8 @@ import tutorReportsRepositoryInstance, {
 } from "../repositories/tutorReports.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import { generateReportPdf } from "../utils/pdf.js";
-export class ReportsService {
+import IReportsInterface from "../interfaces/service.interfaces/reports.service.interface.js";
+export class ReportsService implements IReportsInterface {
   private adminReportsRepository: AdminReportsRepository;
   private tutorReportsRepository: TutorReportsRepository;
   private pdfGenerator: (

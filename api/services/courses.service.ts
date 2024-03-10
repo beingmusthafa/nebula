@@ -24,9 +24,9 @@ import enrollmentsRepositoryInstance, {
 } from "../repositories/enrollments.repository.js";
 import { v2 as cloudinary } from "cloudinary";
 import ICurrentUser from "../interfaces/currentUser.interface.js";
-import { error } from "console";
+import ICoursesService from "../interfaces/service.interfaces/courses.service.interface.js";
 
-export class CoursesService {
+export class CoursesService implements ICoursesService {
   private coursesRepository: CoursesRepository;
   private categoriesRepository: CategoriesRepository;
   private chaptersRepository: ChaptersRepository;

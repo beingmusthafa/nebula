@@ -1,4 +1,5 @@
 import ICategories from "../interfaces/categories.interface.js";
+import ICategoryService from "../interfaces/service.interfaces/categories.service.interface.js";
 import categoriesRepositoryInstance, {
   CategoriesRepository,
 } from "../repositories/categories.repository.js";
@@ -9,7 +10,7 @@ import ServiceResponse from "../types/serviceresponse.type.js";
 import { resizeImage } from "../utils/cropper.js";
 import { uploadtoCloudinary } from "../utils/parser.js";
 
-export class CategoriesService {
+export class CategoriesService implements ICategoryService {
   private categoriesRepository: CategoriesRepository;
   private coursesRepository: CoursesRepository;
   constructor(

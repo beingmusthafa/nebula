@@ -66,7 +66,10 @@ export class BannersService {
       throw error;
     }
   }
-  async editBanner(bannerId: string, data: { image: Buffer; link: string }) {
+  async editBanner(
+    bannerId: string,
+    data: { image: Buffer; link: string }
+  ): ServiceResponse {
     try {
       if (data.link.length < 10) {
         return {
@@ -104,7 +107,7 @@ export class BannersService {
     }
   }
 
-  async deleteBanner(bannerId: string) {
+  async deleteBanner(bannerId: string): ServiceResponse {
     try {
       const oldDoc = await this.bannersRepository.findOne(bannerId);
       await cloudinary.uploader.destroy(oldDoc.imagePublicId);
@@ -120,7 +123,10 @@ export class BannersService {
     }
   }
 
-  async toggleBanner(bannerId: string, action: "enable" | "disable") {
+  async toggleBanner(
+    bannerId: string,
+    action: "enable" | "disable"
+  ): ServiceResponse {
     try {
       await this.bannersRepository.updateOne(bannerId, {
         isActive: action === "enable",

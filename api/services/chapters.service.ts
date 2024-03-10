@@ -11,8 +11,9 @@ import videosRepositoryInstance, {
   VideosRepository,
 } from "../repositories/videos.repository.js";
 import { v2 as cloudinary } from "cloudinary";
+import IChaptersService from "../interfaces/service.interfaces/chapters.service.interface.js";
 
-export class ChaptersService {
+export class ChaptersService implements IChaptersService {
   private chaptersRepository: ChaptersRepository;
   private exercisesRepository: ExercisesRepository;
   private videosRepository: VideosRepository;

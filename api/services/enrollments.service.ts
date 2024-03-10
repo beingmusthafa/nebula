@@ -20,10 +20,11 @@ import coursesRepositoryInstance, {
 } from "../repositories/courses.repository.js";
 import Stripe from "stripe";
 import dotenv from "dotenv";
+import IEnrollmentsService from "../interfaces/service.interfaces/enrollments.service.interface.js";
 dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_KEY);
 
-export class EnrollmentsService {
+export class EnrollmentsService implements IEnrollmentsService {
   private enrollmentsRepository: EnrollmentsRepository;
   private coursesRepository: CoursesRepository;
   private cartsRepository: CartsRepository;

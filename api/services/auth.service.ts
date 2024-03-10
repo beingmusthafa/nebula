@@ -9,8 +9,9 @@ import otpsRepositoryInstance, {
 } from "../repositories/otps.repository.js";
 import mailerInstance, { Mailer } from "../utils/mailer.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
+import IAuthService from "../interfaces/service.interfaces/auth.service.interface.js";
 
-export class AuthService {
+export class AuthService implements IAuthService {
   private usersRepository: UsersRepository;
   private otpsRepository: OtpsRepository;
   private mailer: Mailer;

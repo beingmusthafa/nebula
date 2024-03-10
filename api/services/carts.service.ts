@@ -2,23 +2,15 @@ import mongoose from "mongoose";
 import cartsRepositoryInstance, {
   CartsRepository,
 } from "../repositories/carts.repository.js";
-import wishlistRepositoryInstance, {
-  WishlistsRepository,
-} from "../repositories/wishlists.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import ICourses from "../interfaces/courses.interface.js";
 import enrollmentsRepositoryInstance, {
   EnrollmentsRepository,
 } from "../repositories/enrollments.repository.js";
-import progressRepositoryInstance, {
-  ProgressRepository,
-} from "../repositories/progress.repository.js";
 import coursesRepositoryInstance, {
   CoursesRepository,
 } from "../repositories/courses.repository.js";
-import progressServiceInstance, {
-  ProgressService,
-} from "./progress.service.js";
+import ICartsService from "../interfaces/service.interfaces/carts.service.interface.js";
 
 interface User {
   prototype?: mongoose.Types.ObjectId;
@@ -46,28 +38,20 @@ interface Cart {
   };
 }
 
-export class CartsService {
+export class CartsService implements ICartsService {
   private cartsRepository: CartsRepository;
   private coursesRepository: CoursesRepository;
   private enrollmentsRepository: EnrollmentsRepository;
-  private progressRepository: ProgressRepository;
-  private wishlistsRepository: WishlistsRepository;
-  private progressService: ProgressService;
 
   constructor(
     cartsRepository: CartsRepository,
-    wishlistsRepository: WishlistsRepository,
     enrollmentsRepository: EnrollmentsRepository,
-    coursesRepository: CoursesRepository,
-    progressRepository: ProgressRepository,
-    progressService: ProgressService
+    coursesRepository: CoursesRepository
   ) {
     this.cartsRepository = cartsRepository;
-    this.wishlistsRepository = wishlistsRepository;
+
     this.enrollmentsRepository = enrollmentsRepository;
     this.coursesRepository = coursesRepository;
-    this.progressRepository = progressRepository;
-    this.progressService = progressService;
   }
 
   private async isActionValid(
@@ -211,9 +195,6 @@ export class CartsService {
 }
 export default new CartsService(
   cartsRepositoryInstance,
-  wishlistRepositoryInstance,
   enrollmentsRepositoryInstance,
-  coursesRepositoryInstance,
-  progressRepositoryInstance,
-  progressServiceInstance
+  coursesRepositoryInstance
 );

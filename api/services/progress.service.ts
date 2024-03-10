@@ -10,9 +10,9 @@ import videosRepositoryInstance, {
 import exercisesRepositoryInstance, {
   ExercisesRepository,
 } from "../repositories/exercises.repository.js";
-import ICourses from "../interfaces/courses.interface.js";
+import IProgressService from "../interfaces/service.interfaces/progress.service.interface.js";
 
-export class ProgressService {
+export class ProgressService implements IProgressService {
   private progressRepository: ProgressRepository;
   private videosRepository: VideosRepository;
   private exercisesRepository: ExercisesRepository;

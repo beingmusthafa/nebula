@@ -3,7 +3,8 @@ import wishlistsRepositoryInstance, {
   WishlistsRepository,
 } from "../repositories/wishlists.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
-export class WishlistsService {
+import IWishlistsService from "../interfaces/service.interfaces/wishlists.service.interface.js";
+export class WishlistsService implements IWishlistsService {
   private wishlistsRepository: WishlistsRepository;
   constructor(wishlistsRepository: WishlistsRepository) {
     this.wishlistsRepository = wishlistsRepository;

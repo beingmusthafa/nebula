@@ -5,8 +5,9 @@ import ServiceResponse from "../types/serviceresponse.type.js";
 import enrollmentsRepositoryInstance, {
   EnrollmentsRepository,
 } from "../repositories/enrollments.repository.js";
+import IMessagesService from "../interfaces/service.interfaces/messages.service.interface.js";
 
-export class MessagesService {
+export class MessagesService implements IMessagesService {
   private messagesRepository: MessagesRepository;
   private enrollmentsRepository: EnrollmentsRepository;
   constructor(
