@@ -53,8 +53,8 @@ export class CoursesService {
     userData?: ICurrentUser
   ): ServiceResponse<{ results: object[] }> {
     try {
-      let categoryFilter: any = {};
-      let coursesFilter: any = {};
+      let categoryFilter: { _id?: object } = {};
+      let coursesFilter: { _id?: object; status?: "published" } = {};
       if (userData) {
         categoryFilter = {
           _id: { $in: userData.interests },
@@ -723,7 +723,10 @@ export class CoursesService {
     };
   }> {
     try {
-      let nextData: any = {
+      let nextData: {
+        nextExercise: boolean;
+        nextChapter: false | mongoose.Types.ObjectId;
+      } = {
         nextExercise: false,
         nextChapter: false,
       };
@@ -788,7 +791,10 @@ export class CoursesService {
     userId?: string | mongoose.Types.ObjectId
   ): ServiceResponse<{ courses: object[] }> {
     try {
-      let filter: any = {
+      let filter: {
+        tutor?: string;
+        status: "creating";
+      } = {
         status: "creating",
       };
       if (userId) filter = { ...filter, tutor: userId.toString() };
@@ -809,7 +815,10 @@ export class CoursesService {
     userId?: string | mongoose.Types.ObjectId
   ): ServiceResponse<{ courses: object[] }> {
     try {
-      let filter: any = {
+      let filter: {
+        tutor?: string;
+        status: "pending";
+      } = {
         status: "pending",
       };
       if (userId) filter = { ...filter, tutor: userId.toString() };
@@ -830,7 +839,10 @@ export class CoursesService {
     userId?: string | mongoose.Types.ObjectId
   ): ServiceResponse<{ courses: object[] }> {
     try {
-      let filter: any = {
+      let filter: {
+        tutor?: string;
+        status: "published";
+      } = {
         status: "published",
       };
       if (userId) filter = { ...filter, tutor: userId.toString() };

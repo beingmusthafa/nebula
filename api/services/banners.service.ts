@@ -75,7 +75,11 @@ export class BannersService {
           statusCode: 400,
         };
       }
-      let newDoc: any = {};
+      let newDoc: {
+        image?: string;
+        imagePublicId?: string;
+        link?: string;
+      } = {};
       if (data.image) {
         const oldDoc = await this.bannersRepository.findOne(bannerId);
         await cloudinary.uploader.destroy(oldDoc.imagePublicId);
