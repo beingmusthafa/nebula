@@ -82,20 +82,30 @@ const ViewReport_admin = () => {
       <h3 className="font-semibold text-xl mb-4 mt-16">Stats</h3>
       <table className="w-72">
         <tr>
-          <th>New users</th>
-          <td>{report?.usersCount}</td>
+          <th className="border border-black p-4 text-center">New users</th>
+          <td className="border border-black p-4 text-center">
+            {report?.usersCount}
+          </td>
         </tr>
         <tr>
-          <th>No. of enrollments</th>
-          <td>{report?.enrollmentsCount}</td>
+          <th className="border border-black p-4 text-center">
+            No. of enrollments
+          </th>
+          <td className="border border-black p-4 text-center">
+            {report?.enrollmentsCount}
+          </td>
         </tr>
         <tr>
-          <th>Revenue</th>
-          <td>{report?.revenue}</td>
+          <th className="border border-black p-4 text-center">Revenue</th>
+          <td className="border border-black p-4 text-center">
+            {report?.revenue}
+          </td>
         </tr>
         <tr>
-          <th>Earnings</th>
-          <td>{report?.earnings}</td>
+          <th className="border border-black p-4 text-center">Earnings</th>
+          <td className="border border-black p-4 text-center">
+            {report?.earnings}
+          </td>
         </tr>
       </table>
 
@@ -104,14 +114,20 @@ const ViewReport_admin = () => {
       </h3>
       <table className="w-72">
         <tr>
-          <th>Category</th>
-          <th>No. of enrollments</th>
+          <th className="border border-black p-4 text-center">Category</th>
+          <th className="border border-black p-4 text-center">
+            No. of enrollments
+          </th>
         </tr>
         {report?.enrollmentsByCategory.map((category) => {
           return (
             <tr>
-              <td>{category.name}</td>
-              <td>{category.count}</td>
+              <td className="border border-black p-4 text-center">
+                {category.name}
+              </td>
+              <td className="border border-black p-4 text-center">
+                {category.count}
+              </td>
             </tr>
           );
         })}
@@ -122,14 +138,20 @@ const ViewReport_admin = () => {
       </h3>
       <table className="w-72">
         <tr>
-          <th>Course</th>
-          <th>No. of enrollments</th>
+          <th className="border border-black p-4 text-center">Course</th>
+          <th className="border border-black p-4 text-center">
+            No. of enrollments
+          </th>
         </tr>
         {report?.enrollmentsByCourse.map((course) => {
           return (
             <tr>
-              <td>{course.name}</td>
-              <td>{course.count}</td>
+              <td className="border border-black p-4 text-center">
+                {course.name}
+              </td>
+              <td className="border border-black p-4 text-center">
+                {course.count}
+              </td>
             </tr>
           );
         })}

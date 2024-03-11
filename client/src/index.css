@@ -31,13 +31,13 @@ body {
   font-family: "DM Sans", sans-serif;
   /* background-color: var(--light); */
 }
-th,
+/* th,
 td,
 table {
   border: 1px solid black;
   text-align: center;
   padding: 1rem;
-}
+} */
 ._font-tilt-warp {
   font-family: "Tilt Warp", sans-serif;
 }

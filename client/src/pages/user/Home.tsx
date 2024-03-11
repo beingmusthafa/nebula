@@ -44,7 +44,9 @@ const Home = () => {
   return (
     <>
       {images.length > 0 ? (
-        <Link to={images[currentIndex]?.link}>
+        <Link
+          to={import.meta.env.VITE_API_BASE_URL + images[currentIndex]?.link}
+        >
           <img
             className="w-full object-cover"
             src={
