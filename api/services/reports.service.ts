@@ -1,23 +1,21 @@
 import mongoose from "mongoose";
-import adminReportsRepositoryInstance, {
-  AdminReportsRepository,
-} from "../repositories/adminReports.repository.js";
-import tutorReportsRepositoryInstance, {
-  TutorReportsRepository,
-} from "../repositories/tutorReports.repository.js";
+import adminReportsRepositoryInstance from "../repositories/adminReports.repository.js";
+import tutorReportsRepositoryInstance from "../repositories/tutorReports.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import { generateReportPdf } from "../utils/pdf.js";
 import IReportsInterface from "../interfaces/service.interfaces/reports.service.interface.js";
+import IAdminReportsRepository from "../interfaces/repository.interfaces/adminReports.repository.interface.js";
+import ITutorReportsRepository from "../interfaces/repository.interfaces/tutorReports.repository.interface.js";
 export class ReportsService implements IReportsInterface {
-  private adminReportsRepository: AdminReportsRepository;
-  private tutorReportsRepository: TutorReportsRepository;
+  private adminReportsRepository: IAdminReportsRepository;
+  private tutorReportsRepository: ITutorReportsRepository;
   private pdfGenerator: (
     report: any,
     type: "admin" | "tutor"
   ) => Promise<Buffer>;
   constructor(
-    adminReportsRepository: AdminReportsRepository,
-    tutorReportsRepository: TutorReportsRepository,
+    adminReportsRepository: IAdminReportsRepository,
+    tutorReportsRepository: ITutorReportsRepository,
     pdfGenerator: (report: any, type: "admin" | "tutor") => Promise<Buffer>
   ) {
     this.adminReportsRepository = adminReportsRepository;

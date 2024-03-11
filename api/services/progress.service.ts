@@ -1,25 +1,22 @@
 import { error } from "console";
-import progressRepositoryInstance, {
-  ProgressRepository,
-} from "../repositories/progress.repository.js";
+import progressRepositoryInstance from "../repositories/progress.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import mongoose from "mongoose";
-import videosRepositoryInstance, {
-  VideosRepository,
-} from "../repositories/videos.repository.js";
-import exercisesRepositoryInstance, {
-  ExercisesRepository,
-} from "../repositories/exercises.repository.js";
+import videosRepositoryInstance from "../repositories/videos.repository.js";
+import exercisesRepositoryInstance from "../repositories/exercises.repository.js";
 import IProgressService from "../interfaces/service.interfaces/progress.service.interface.js";
+import IProgressRepository from "../interfaces/repository.interfaces/progress.repository.interface.js";
+import IVideosRepository from "../interfaces/repository.interfaces/videos.repository.interface.js";
+import IExercisesRepository from "../interfaces/repository.interfaces/exercises.repository.interface.js";
 
 export class ProgressService implements IProgressService {
-  private progressRepository: ProgressRepository;
-  private videosRepository: VideosRepository;
-  private exercisesRepository: ExercisesRepository;
+  private progressRepository: IProgressRepository;
+  private videosRepository: IVideosRepository;
+  private exercisesRepository: IExercisesRepository;
   constructor(
-    progressRepository: ProgressRepository,
-    videosRepository: VideosRepository,
-    exercisesRepository: ExercisesRepository
+    progressRepository: IProgressRepository,
+    videosRepository: IVideosRepository,
+    exercisesRepository: IExercisesRepository
   ) {
     this.progressRepository = progressRepository;
     this.videosRepository = videosRepository;

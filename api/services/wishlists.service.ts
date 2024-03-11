@@ -1,15 +1,14 @@
 import mongoose from "mongoose";
-import wishlistsRepositoryInstance, {
-  WishlistsRepository,
-} from "../repositories/wishlists.repository.js";
+import wishlistsRepositoryInstance from "../repositories/wishlists.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import IWishlistsService from "../interfaces/service.interfaces/wishlists.service.interface.js";
+import IWishlistsRepository from "../interfaces/repository.interfaces/wishlists.repository.interface.js";
 export class WishlistsService implements IWishlistsService {
-  private wishlistsRepository: WishlistsRepository;
-  constructor(wishlistsRepository: WishlistsRepository) {
+  private wishlistsRepository: IWishlistsRepository;
+  constructor(wishlistsRepository: IWishlistsRepository) {
     this.wishlistsRepository = wishlistsRepository;
   }
-
+  I;
   async getCount(
     userId: string | mongoose.Types.ObjectId
   ): ServiceResponse<{ count: number }> {

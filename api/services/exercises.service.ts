@@ -1,20 +1,18 @@
 import mongoose from "mongoose";
 import IExercises from "../interfaces/exercises.interface.js";
-import chaptersRepositoryInstance, {
-  ChaptersRepository,
-} from "../repositories/chapters.repository.js";
-import exercisesRepositoryInstance, {
-  ExercisesRepository,
-} from "../repositories/exercises.repository.js";
+import chaptersRepositoryInstance from "../repositories/chapters.repository.js";
+import exercisesRepositoryInstance from "../repositories/exercises.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import IExercisesService from "../interfaces/service.interfaces/exercises.service.interface.js";
+import IExercisesRepository from "../interfaces/repository.interfaces/exercises.repository.interface.js";
+import IChaptersRepository from "../interfaces/repository.interfaces/chapters.repository.interface.js";
 
 export class ExercisesService implements IExercisesService {
-  private exercisesRepository: ExercisesRepository;
-  private chaptersRepository: ChaptersRepository;
+  private exercisesRepository: IExercisesRepository;
+  private chaptersRepository: IChaptersRepository;
   constructor(
-    exercisesRepository: ExercisesRepository,
-    chaptersRepository: ChaptersRepository
+    exercisesRepository: IExercisesRepository,
+    chaptersRepository: IChaptersRepository
   ) {
     this.exercisesRepository = exercisesRepository;
     this.chaptersRepository = chaptersRepository;

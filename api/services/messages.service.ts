@@ -1,18 +1,16 @@
-import messagesRepositoryInstance, {
-  MessagesRepository,
-} from "../repositories/messages.repository.js";
+import messagesRepositoryInstance from "../repositories/messages.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
-import enrollmentsRepositoryInstance, {
-  EnrollmentsRepository,
-} from "../repositories/enrollments.repository.js";
+import enrollmentsRepositoryInstance from "../repositories/enrollments.repository.js";
 import IMessagesService from "../interfaces/service.interfaces/messages.service.interface.js";
+import IMessagesRepository from "../interfaces/repository.interfaces/messages.repository.interface.js";
+import IEnrollmentsRepository from "../interfaces/repository.interfaces/enrollments.repository.interface.js";
 
 export class MessagesService implements IMessagesService {
-  private messagesRepository: MessagesRepository;
-  private enrollmentsRepository: EnrollmentsRepository;
+  private messagesRepository: IMessagesRepository;
+  private enrollmentsRepository: IEnrollmentsRepository;
   constructor(
-    messagesRepository: MessagesRepository,
-    enrollmentsRepository: EnrollmentsRepository
+    messagesRepository: IMessagesRepository,
+    enrollmentsRepository: IEnrollmentsRepository
   ) {
     this.messagesRepository = messagesRepository;
     this.enrollmentsRepository = enrollmentsRepository;

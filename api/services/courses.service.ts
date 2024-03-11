@@ -7,39 +7,35 @@ import ServiceResponse from "../types/serviceresponse.type.js";
 import PaginationResult from "../types/PaginationResult.js";
 import { resizeImage } from "../utils/cropper.js";
 import { uploadtoCloudinary } from "../utils/parser.js";
-import categoriesRepositoryInstance, {
-  CategoriesRepository,
-} from "../repositories/categories.repository.js";
-import chaptersRepositoryInstance, {
-  ChaptersRepository,
-} from "../repositories/chapters.repository.js";
-import videosRepositoryInstance, {
-  VideosRepository,
-} from "../repositories/videos.repository.js";
-import exercisesRepositoryInstance, {
-  ExercisesRepository,
-} from "../repositories/exercises.repository.js";
-import enrollmentsRepositoryInstance, {
-  EnrollmentsRepository,
-} from "../repositories/enrollments.repository.js";
+import categoriesRepositoryInstance from "../repositories/categories.repository.js";
+import chaptersRepositoryInstance from "../repositories/chapters.repository.js";
+import videosRepositoryInstance from "../repositories/videos.repository.js";
+import exercisesRepositoryInstance from "../repositories/exercises.repository.js";
+import enrollmentsRepositoryInstance from "../repositories/enrollments.repository.js";
 import { v2 as cloudinary } from "cloudinary";
 import ICurrentUser from "../interfaces/currentUser.interface.js";
 import ICoursesService from "../interfaces/service.interfaces/courses.service.interface.js";
+import ICoursesRepository from "../interfaces/repository.interfaces/courses.repository.interface.js";
+import ICategoriesRepository from "../interfaces/repository.interfaces/categories.repository.interface.js";
+import IChaptersRepository from "../interfaces/repository.interfaces/chapters.repository.interface.js";
+import IVideosRepository from "../interfaces/repository.interfaces/videos.repository.interface.js";
+import IExercisesRepository from "../interfaces/repository.interfaces/exercises.repository.interface.js";
+import IEnrollmentsRepository from "../interfaces/repository.interfaces/enrollments.repository.interface.js";
 
 export class CoursesService implements ICoursesService {
-  private coursesRepository: CoursesRepository;
-  private categoriesRepository: CategoriesRepository;
-  private chaptersRepository: ChaptersRepository;
-  private videosRepository: VideosRepository;
-  private exercisesRepository: ExercisesRepository;
-  private enrollmentsRepository: EnrollmentsRepository;
+  private coursesRepository: ICoursesRepository;
+  private categoriesRepository: ICategoriesRepository;
+  private chaptersRepository: IChaptersRepository;
+  private videosRepository: IVideosRepository;
+  private exercisesRepository: IExercisesRepository;
+  private enrollmentsRepository: IEnrollmentsRepository;
   constructor(
-    coursesRepository: CoursesRepository,
-    categoriesRepository: CategoriesRepository,
-    chaptersRepository: ChaptersRepository,
-    videosRepository: VideosRepository,
-    exercisesRepository: ExercisesRepository,
-    enrollmentsRepository: EnrollmentsRepository
+    coursesRepository: ICoursesRepository,
+    categoriesRepository: ICategoriesRepository,
+    chaptersRepository: IChaptersRepository,
+    videosRepository: IVideosRepository,
+    exercisesRepository: IExercisesRepository,
+    enrollmentsRepository: IEnrollmentsRepository
   ) {
     this.coursesRepository = coursesRepository;
     this.categoriesRepository = categoriesRepository;

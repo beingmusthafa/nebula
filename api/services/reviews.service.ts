@@ -1,20 +1,17 @@
 import mongoose from "mongoose";
-import reviewsRepositoryInstance, {
-  ReviewsRepository,
-} from "../repositories/reviews.repository.js";
+import reviewsRepositoryInstance from "../repositories/reviews.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
-import path from "path";
-import coursesRepositoryInstance, {
-  CoursesRepository,
-} from "../repositories/courses.repository.js";
+import coursesRepositoryInstance from "../repositories/courses.repository.js";
 import IReviewsService from "../interfaces/service.interfaces/reviews.service.interface.js";
+import IReviewsRepository from "../interfaces/repository.interfaces/reviews.repository.interface.js";
+import ICoursesRepository from "../interfaces/repository.interfaces/courses.repository.interface.js";
 
 export class ReviewsService implements IReviewsService {
-  private reviewsRepository: ReviewsRepository;
-  private coursesRepository: CoursesRepository;
+  private reviewsRepository: IReviewsRepository;
+  private coursesRepository: ICoursesRepository;
   constructor(
-    reviewsRepository: ReviewsRepository,
-    coursesRepository: CoursesRepository
+    reviewsRepository: IReviewsRepository,
+    coursesRepository: ICoursesRepository
   ) {
     this.reviewsRepository = reviewsRepository;
     this.coursesRepository = coursesRepository;

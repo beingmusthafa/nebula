@@ -17,13 +17,13 @@ interface ICourseDoc extends mongoose.Document {
   isBlocked?: boolean;
 }
 export default interface ICoursesRepository {
-  find(queryFilter: object, options: QueryOptions);
+  find(queryFilter: object, options?: QueryOptions);
 
   count(query: object): Promise<number>;
 
-  findById(id: string | mongoose.Types.ObjectId, options: QueryOptions);
+  findById(id: string | mongoose.Types.ObjectId, options?: QueryOptions);
 
-  findOne(filter: object, options: QueryOptions);
+  findOne(filter: object, options?: QueryOptions);
 
   findOneAndUpdate(query: object, updation: object);
 

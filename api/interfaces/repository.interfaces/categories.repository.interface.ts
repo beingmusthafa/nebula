@@ -1,8 +1,8 @@
 import { QueryOptions } from "mongoose";
 import CategoriesInterface from "../categories.interface.js";
 
-export default interface ICategoriesInterface {
-  find(queryFilter: object, options?: QueryOptions);
+export default interface ICategoriesRepository {
+  find(queryFilter?: object, options?: QueryOptions);
 
   count(query: object);
 

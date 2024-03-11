@@ -1,19 +1,17 @@
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import UsersInterface from "../interfaces/users.interface.js";
-import usersRepositoryInstance, {
-  UsersRepository,
-} from "../repositories/users.repository.js";
-import otpsRepositoryInstance, {
-  OtpsRepository,
-} from "../repositories/otps.repository.js";
+import usersRepositoryInstance from "../repositories/users.repository.js";
+import otpsRepositoryInstance from "../repositories/otps.repository.js";
 import mailerInstance, { Mailer } from "../utils/mailer.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import IAuthService from "../interfaces/service.interfaces/auth.service.interface.js";
+import IUsersRepository from "../interfaces/repository.interfaces/users.repository.interface.js";
+import IOtpsRepository from "../interfaces/repository.interfaces/otps.repository.interface.js";
 
 export class AuthService implements IAuthService {
-  private usersRepository: UsersRepository;
-  private otpsRepository: OtpsRepository;
+  private usersRepository: IUsersRepository;
+  private otpsRepository: IOtpsRepository;
   private mailer: Mailer;
 
   private hashPassword(password: string) {
@@ -30,8 +28,8 @@ export class AuthService implements IAuthService {
     return jwt.verify(token, process.env.JWT_SECRET);
   }
   constructor(
-    usersRepository: UsersRepository,
-    otpsRepository: OtpsRepository,
+    usersRepository: IUsersRepository,
+    otpsRepository: IOtpsRepository,
     mailer: Mailer
   ) {
     this.usersRepository = usersRepository;

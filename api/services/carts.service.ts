@@ -1,52 +1,23 @@
 import mongoose from "mongoose";
-import cartsRepositoryInstance, {
-  CartsRepository,
-} from "../repositories/carts.repository.js";
+import cartsRepositoryInstance from "../repositories/carts.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import ICourses from "../interfaces/courses.interface.js";
-import enrollmentsRepositoryInstance, {
-  EnrollmentsRepository,
-} from "../repositories/enrollments.repository.js";
-import coursesRepositoryInstance, {
-  CoursesRepository,
-} from "../repositories/courses.repository.js";
+import enrollmentsRepositoryInstance from "../repositories/enrollments.repository.js";
+import coursesRepositoryInstance from "../repositories/courses.repository.js";
 import ICartsService from "../interfaces/service.interfaces/carts.service.interface.js";
-
-interface User {
-  prototype?: mongoose.Types.ObjectId;
-  cacheHexString?: unknown;
-  generate?: {};
-  createFromTime?: {};
-  createFromHexString?: {};
-  createFromBase64?: {};
-  isValid?: {};
-}
-interface Cart {
-  user: User;
-  course: {
-    prototype?: mongoose.Types.ObjectId;
-    cacheHexString?: unknown;
-    generate?: {};
-    createFromTime?: {};
-    createFromHexString?: {};
-    createFromBase64?: {};
-    isValid?: {};
-    title?: string;
-    thumbnail?: string;
-    price?: number;
-    discount?: number;
-  };
-}
+import ICartsRepository from "../interfaces/repository.interfaces/carts.repository.interface.js";
+import ICoursesRepository from "../interfaces/repository.interfaces/courses.repository.interface.js";
+import IEnrollmentsRepository from "../interfaces/repository.interfaces/enrollments.repository.interface.js";
 
 export class CartsService implements ICartsService {
-  private cartsRepository: CartsRepository;
-  private coursesRepository: CoursesRepository;
-  private enrollmentsRepository: EnrollmentsRepository;
+  private cartsRepository: ICartsRepository;
+  private coursesRepository: ICoursesRepository;
+  private enrollmentsRepository: IEnrollmentsRepository;
 
   constructor(
-    cartsRepository: CartsRepository,
-    enrollmentsRepository: EnrollmentsRepository,
-    coursesRepository: CoursesRepository
+    cartsRepository: ICartsRepository,
+    enrollmentsRepository: IEnrollmentsRepository,
+    coursesRepository: ICoursesRepository
   ) {
     this.cartsRepository = cartsRepository;
 

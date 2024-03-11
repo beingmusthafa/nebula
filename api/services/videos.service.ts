@@ -1,26 +1,23 @@
 import mongoose from "mongoose";
-import chaptersRepositoryInstance, {
-  ChaptersRepository,
-} from "../repositories/chapters.repository.js";
-import videosRepositoryInstance, {
-  VideosRepository,
-} from "../repositories/videos.repository.js";
-import coursesRepositoryInstance, {
-  CoursesRepository,
-} from "../repositories/courses.repository.js";
+import chaptersRepositoryInstance from "../repositories/chapters.repository.js";
+import videosRepositoryInstance from "../repositories/videos.repository.js";
+import coursesRepositoryInstance from "../repositories/courses.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import { uploadVideoToCloudinary } from "../utils/parser.js";
 import { v2 as cloudinary } from "cloudinary";
 import IVideosService from "../interfaces/service.interfaces/videos.service.interface.js";
+import IVideosRepository from "../interfaces/repository.interfaces/videos.repository.interface.js";
+import IChaptersRepository from "../interfaces/repository.interfaces/chapters.repository.interface.js";
+import ICoursesRepository from "../interfaces/repository.interfaces/courses.repository.interface.js";
 
 export class VideosService implements IVideosService {
-  private videosRepository: VideosRepository;
-  private chaptersRepository: ChaptersRepository;
-  private coursesRepository: CoursesRepository;
+  private videosRepository: IVideosRepository;
+  private chaptersRepository: IChaptersRepository;
+  private coursesRepository: ICoursesRepository;
   constructor(
-    videosRepository: VideosRepository,
-    chaptersRepository: ChaptersRepository,
-    coursesRepository: CoursesRepository
+    videosRepository: IVideosRepository,
+    chaptersRepository: IChaptersRepository,
+    coursesRepository: ICoursesRepository
   ) {
     this.videosRepository = videosRepository;
     this.chaptersRepository = chaptersRepository;

@@ -1,43 +1,37 @@
-import enrollmentsRepositoryInstance, {
-  EnrollmentsRepository,
-} from "../repositories/enrollments.repository.js";
-import cartsRepositoryInstance, {
-  CartsRepository,
-} from "../repositories/carts.repository.js";
-import wishlistRepositoryInstance, {
-  WishlistsRepository,
-} from "../repositories/wishlists.repository.js";
-import progressRepositoryInstance, {
-  ProgressRepository,
-} from "../repositories/progress.repository.js";
-import progressServiceInstance, {
-  ProgressService,
-} from "./progress.service.js";
+import enrollmentsRepositoryInstance from "../repositories/enrollments.repository.js";
+import cartsRepositoryInstance from "../repositories/carts.repository.js";
+import wishlistRepositoryInstance from "../repositories/wishlists.repository.js";
+import progressRepositoryInstance from "../repositories/progress.repository.js";
+import progressServiceInstance from "./progress.service.js";
 import mongoose from "mongoose";
 import ServiceResponse from "../types/serviceresponse.type.js";
-import coursesRepositoryInstance, {
-  CoursesRepository,
-} from "../repositories/courses.repository.js";
+import coursesRepositoryInstance from "../repositories/courses.repository.js";
 import Stripe from "stripe";
 import dotenv from "dotenv";
 import IEnrollmentsService from "../interfaces/service.interfaces/enrollments.service.interface.js";
+import IEnrollmentsRepository from "../interfaces/repository.interfaces/enrollments.repository.interface.js";
+import ICoursesRepository from "../interfaces/repository.interfaces/courses.repository.interface.js";
+import ICartsRepository from "../interfaces/repository.interfaces/carts.repository.interface.js";
+import IWishlistsRepository from "../interfaces/repository.interfaces/wishlists.repository.interface.js";
+import IProgressRepository from "../interfaces/repository.interfaces/progress.repository.interface.js";
+import IProgressService from "../interfaces/service.interfaces/progress.service.interface.js";
 dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_KEY);
 
 export class EnrollmentsService implements IEnrollmentsService {
-  private enrollmentsRepository: EnrollmentsRepository;
-  private coursesRepository: CoursesRepository;
-  private cartsRepository: CartsRepository;
-  private wishlistsRepository: WishlistsRepository;
-  private progressRepository: ProgressRepository;
-  private progressService: ProgressService;
+  private enrollmentsRepository: IEnrollmentsRepository;
+  private coursesRepository: ICoursesRepository;
+  private cartsRepository: ICartsRepository;
+  private wishlistsRepository: IWishlistsRepository;
+  private progressRepository: IProgressRepository;
+  private progressService: IProgressService;
   constructor(
-    enrollmentsRepossitory: EnrollmentsRepository,
-    coursesRepository: CoursesRepository,
-    cartsRepository: CartsRepository,
-    wishlistsRepository: WishlistsRepository,
-    progressRepository: ProgressRepository,
-    progressService: ProgressService
+    enrollmentsRepossitory: IEnrollmentsRepository,
+    coursesRepository: ICoursesRepository,
+    cartsRepository: ICartsRepository,
+    wishlistsRepository: IWishlistsRepository,
+    progressRepository: IProgressRepository,
+    progressService: IProgressService
   ) {
     this.enrollmentsRepository = enrollmentsRepossitory;
     this.coursesRepository = coursesRepository;

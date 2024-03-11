@@ -1,14 +1,13 @@
-import bannersRepositoryInstance, {
-  BannersRepository,
-} from "../repositories/banners.repository.js";
+import IBannersRepository from "../interfaces/repository.interfaces/banners.repository.interface.js";
+import bannersRepositoryInstance from "../repositories/banners.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import { resizeImage } from "../utils/cropper.js";
 import { uploadtoCloudinary } from "../utils/parser.js";
 import { v2 as cloudinary } from "cloudinary";
 
 export class BannersService {
-  private bannersRepository: BannersRepository;
-  constructor(bannersRepository: BannersRepository) {
+  private bannersRepository: IBannersRepository;
+  constructor(bannersRepository: IBannersRepository) {
     this.bannersRepository = bannersRepository;
   }
 

@@ -1,21 +1,19 @@
 import ICategories from "../interfaces/categories.interface.js";
+import ICategoriesRepository from "../interfaces/repository.interfaces/categories.repository.interface.js";
+import ICoursesRepository from "../interfaces/repository.interfaces/courses.repository.interface.js";
 import ICategoryService from "../interfaces/service.interfaces/categories.service.interface.js";
-import categoriesRepositoryInstance, {
-  CategoriesRepository,
-} from "../repositories/categories.repository.js";
-import coursesRepositoryInstance, {
-  CoursesRepository,
-} from "../repositories/courses.repository.js";
+import categoriesRepositoryInstance from "../repositories/categories.repository.js";
+import coursesRepositoryInstance from "../repositories/courses.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import { resizeImage } from "../utils/cropper.js";
 import { uploadtoCloudinary } from "../utils/parser.js";
 
 export class CategoriesService implements ICategoryService {
-  private categoriesRepository: CategoriesRepository;
-  private coursesRepository: CoursesRepository;
+  private categoriesRepository: ICategoriesRepository;
+  private coursesRepository: ICoursesRepository;
   constructor(
-    categoriesRepository: CategoriesRepository,
-    coursesRepository: CoursesRepository
+    categoriesRepository: ICategoriesRepository,
+    coursesRepository: ICoursesRepository
   ) {
     this.categoriesRepository = categoriesRepository;
     this.coursesRepository = coursesRepository;

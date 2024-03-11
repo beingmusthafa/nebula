@@ -1,12 +1,5 @@
-import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken";
-import UsersInterface from "../interfaces/users.interface.js";
-import usersRepositoryInstance, {
-  UsersRepository,
-} from "../repositories/users.repository.js";
-import otpsRepositoryInstance, {
-  OtpsRepository,
-} from "../repositories/otps.repository.js";
+import usersRepositoryInstance from "../repositories/users.repository.js";
+import otpsRepositoryInstance from "../repositories/otps.repository.js";
 import mongoose from "mongoose";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import PaginationResult from "../types/PaginationResult.js";
@@ -15,15 +8,17 @@ import { v2 as cloudinary } from "cloudinary";
 import { uploadtoCloudinary } from "../utils/parser.js";
 import { resizeImage } from "../utils/cropper.js";
 import IUsersService from "../interfaces/service.interfaces/users.service.interface.js";
+import IUsersRepository from "../interfaces/repository.interfaces/users.repository.interface.js";
+import IOtpsRepository from "../interfaces/repository.interfaces/otps.repository.interface.js";
 
 export class UsersService implements IUsersService {
-  private usersRepository: UsersRepository;
-  private otpsRepository: OtpsRepository;
+  private usersRepository: IUsersRepository;
+  private otpsRepository: IOtpsRepository;
   private mailer: Mailer;
 
   constructor(
-    usersRepository: UsersRepository,
-    otpsRepository: OtpsRepository,
+    usersRepository: IUsersRepository,
+    otpsRepository: IOtpsRepository,
     mailer: Mailer
   ) {
     this.usersRepository = usersRepository;
