@@ -31,6 +31,7 @@ export class ReportsService implements IReportsInterface {
         _id: reportId,
       });
       const buffer = await this.pdfGenerator(report, "admin");
+      if (!buffer) throw new Error("Error generating PDF");
       return {
         success: true,
         message: "Report PDF generated successfully",
@@ -50,6 +51,7 @@ export class ReportsService implements IReportsInterface {
         _id: reportId,
       });
       const buffer = await this.pdfGenerator(report, "tutor");
+      if (!buffer) throw new Error("Error generating PDF");
       return {
         success: true,
         message: "Report PDF generated successfully",
