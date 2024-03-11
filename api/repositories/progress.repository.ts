@@ -1,7 +1,8 @@
 import mongoose, { QueryOptions } from "mongoose";
 import progressModel from "../models/progress.model.js";
+import IProgressRepository from "../interfaces/repository.interfaces/progress.repository.interface.js";
 
-export class ProgressRepository {
+export class ProgressRepository implements IProgressRepository {
   private model = progressModel;
 
   async createMany(

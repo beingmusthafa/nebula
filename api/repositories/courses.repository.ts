@@ -3,7 +3,8 @@ import QueryOptionsInterface from "../interfaces/queryOptions.interface.js";
 import CoursesInterface from "../interfaces/courses.interface.js";
 import coursesModel from "../models/courses.model.js";
 import ICourses from "../interfaces/courses.interface.js";
-export class CoursesRepository {
+import ICoursesRepository from "../interfaces/repository.interfaces/courses.repository.interface.js";
+export class CoursesRepository implements ICoursesRepository {
   private model = coursesModel;
   async find(queryFilter: object = {}, options?: QueryOptions) {
     try {

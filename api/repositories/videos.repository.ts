@@ -1,8 +1,9 @@
 import mongoose, { QueryOptions } from "mongoose";
 import videosModel from "../models/videos.model.js";
 import IVideos from "../interfaces/videos.interface.js";
+import IVideosRepository from "../interfaces/repository.interfaces/videos.repository.interface.js";
 
-export class VideosRepository {
+export class VideosRepository implements IVideosRepository {
   private model = videosModel;
   async delete(query: {
     course?: string | mongoose.Types.ObjectId;

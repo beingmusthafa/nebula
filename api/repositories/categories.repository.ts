@@ -1,8 +1,9 @@
-import mongoose, { PopulateOptions, QueryOptions } from "mongoose";
-import QueryOptionsInterface from "../interfaces/queryOptions.interface.js";
+import mongoose, { QueryOptions } from "mongoose";
 import CategoriesInterface from "../interfaces/categories.interface.js";
 import categoriesModel from "../models/categories.model.js";
-export class CategoriesRepository {
+import ICategoriesInterface from "../interfaces/repository.interfaces/categories.repository.interface.js";
+
+export class CategoriesRepository implements ICategoriesInterface {
   private model = categoriesModel;
   async find(queryFilter: object = {}, options?: QueryOptions) {
     try {

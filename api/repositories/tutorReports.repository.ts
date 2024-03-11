@@ -1,7 +1,8 @@
 import mongoose, { QueryOptions } from "mongoose";
 import tutorReportsModel from "../models/tutorReports.model.js";
+import ITutorReportsRepository from "../interfaces/repository.interfaces/tutorReports.repository.interface.js";
 
-export class TutorReportsRepository {
+export class TutorReportsRepository implements ITutorReportsRepository {
   private model = tutorReportsModel;
 
   async create(data: {

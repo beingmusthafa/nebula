@@ -1,7 +1,8 @@
 import { QueryOptions } from "mongoose";
 import adminReportsModel from "../models/adminReports.model.js";
+import IAdminReportsRepository from "../interfaces/repository.interfaces/adminReports.repository.interface.js";
 
-export class AdminReportsRepository {
+export class AdminReportsRepository implements IAdminReportsRepository {
   private model = adminReportsModel;
 
   async create(data: {

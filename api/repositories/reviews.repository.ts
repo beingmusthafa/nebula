@@ -1,7 +1,8 @@
 import mongoose, { QueryOptions } from "mongoose";
 import reviewsModel from "../models/reviews.model.js";
+import IReviewsRepository from "../interfaces/repository.interfaces/reviews.repository.interface.js";
 
-export class ReviewsRepository {
+export class ReviewsRepository implements IReviewsRepository {
   private model = reviewsModel;
 
   async create(data: {

@@ -1,6 +1,7 @@
 import mongoose, { AggregateOptions, QueryOptions, mongo } from "mongoose";
 import enrollmentsModel from "../models/enrollments.model.js";
-export class EnrollmentsRepository {
+import IEnrollmentsRepository from "../interfaces/repository.interfaces/enrollments.repository.interface.js";
+export class EnrollmentsRepository implements IEnrollmentsRepository {
   private model = enrollmentsModel;
 
   async find(filter: object, options?: QueryOptions) {

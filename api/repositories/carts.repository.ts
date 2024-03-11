@@ -1,6 +1,7 @@
 import mongoose, { QueryOptions, mongo } from "mongoose";
 import cartsModel from "../models/carts.model.js";
-export class CartsRepository {
+import ICartsRepository from "../interfaces/repository.interfaces/carts.repository.interface.js";
+export class CartsRepository implements ICartsRepository {
   private model = cartsModel;
   async deleteMany(query: {
     _id?: string | mongoose.Types.ObjectId;

@@ -1,8 +1,4 @@
-import mongoose, {
-  ObjectId,
-  ObtainSchemaGeneric,
-  QueryOptions,
-} from "mongoose";
+import mongoose, { QueryOptions } from "mongoose";
 import exercisesModel from "../models/exercises.model.js";
 import IExercises from "../interfaces/exercises.interface.js";
 export class ExercisesRepository {

@@ -1,6 +1,7 @@
+import IOtpsRepository from "../interfaces/repository.interfaces/otps.repository.interface.js";
 import otpsModel from "../models/otps.model.js";
 
-export class OtpsRepository {
+export class OtpsRepository implements IOtpsRepository {
   private model = otpsModel;
   private async delete(email: string) {
     await this.model.deleteMany({ email });

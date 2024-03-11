@@ -1,7 +1,8 @@
 import mongoose, { QueryOptions } from "mongoose";
 import messagesModel from "../models/messages.model.js";
+import IMessagesRepository from "../interfaces/repository.interfaces/messages.repository.interface.js";
 
-export class MessagesRepository {
+export class MessagesRepository implements IMessagesRepository {
   private model = messagesModel;
 
   async create(data: { user: string; message: string; course: string }) {

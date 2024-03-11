@@ -2,8 +2,9 @@ import mongoose from "mongoose";
 import QueryOptionsInterface from "../interfaces/queryOptions.interface.js";
 import UsersInterface from "../interfaces/users.interface.js";
 import usersModel from "../models/users.model.js";
+import IUsersRepository from "../interfaces/repository.interfaces/users.repository.interface.js";
 
-export class UsersRepository {
+export class UsersRepository implements IUsersRepository {
   private model = usersModel;
   async find(queryFilter: object = {}, options?: QueryOptionsInterface) {
     try {

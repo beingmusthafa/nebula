@@ -1,7 +1,8 @@
 import mongoose, { QueryOptions } from "mongoose";
 import chaptersModel from "../models/chapters.model.js";
 import IChapters from "../interfaces/chapters.interface.js";
-export class ChaptersRepository {
+import IChaptersRepository from "../interfaces/repository.interfaces/chapters.repository.interface.js";
+export class ChaptersRepository implements IChaptersRepository {
   private model = chaptersModel;
 
   async delete(query: {

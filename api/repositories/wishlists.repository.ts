@@ -1,6 +1,7 @@
-import mongoose, { QueryOptions, mongo } from "mongoose";
+import mongoose, { QueryOptions } from "mongoose";
 import wishlistsModel from "../models/wishlists.model.js";
-export class WishlistsRepository {
+import IWishlistsRepository from "../interfaces/repository.interfaces/wishlists.repository.interface.js";
+export class WishlistsRepository implements IWishlistsRepository {
   private model = wishlistsModel;
   async deleteMany(query: {
     _id?: string | mongoose.Types.ObjectId;

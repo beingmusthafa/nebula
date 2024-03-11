@@ -1,6 +1,7 @@
 import mongoose, { QueryOptions } from "mongoose";
 import bannersModel from "../models/banners.model.js";
-export class BannersRepository {
+import IBannersRepository from "../interfaces/repository.interfaces/banners.repository.interface.js";
+export class BannersRepository implements IBannersRepository {
   private model = bannersModel;
 
   async find(filter: object, options?: QueryOptions) {
