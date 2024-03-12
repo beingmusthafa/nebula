@@ -68,7 +68,7 @@ const Header = () => {
   };
 
   const handleLiveSearch = async (signal: AbortSignal) => {
-    console.log("live search ran  " + search);
+    if (!search) return;
     try {
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/live-search/" + search,
@@ -82,7 +82,6 @@ const Header = () => {
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       setResult(res?.result.docs);
-      console.log(res.result.docs);
     } catch (error) {
       console.log(error);
     }
