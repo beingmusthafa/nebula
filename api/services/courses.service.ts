@@ -350,10 +350,10 @@ export class CoursesService implements ICoursesService {
   ): ServiceResponse {
     try {
       const existingDoc = await this.coursesRepository.findById(id);
-      if (existingDoc.tutor.toString() !== userId) {
+      if (existingDoc.tutor.toString() !== userId.toString()) {
         return {
           success: false,
-          message: "You are not authorized to delete this course",
+          message: "You are not authorized to edit this course",
           statusCode: 401,
         };
       }
@@ -447,7 +447,7 @@ export class CoursesService implements ICoursesService {
   ): ServiceResponse {
     try {
       const existingDoc = await this.coursesRepository.findById(courseId);
-      if (existingDoc.tutor.toString() !== userId) {
+      if (existingDoc.tutor.toString() !== userId.toString()) {
         return {
           success: false,
           message: "You are not authorized to delete this course",
@@ -493,7 +493,7 @@ export class CoursesService implements ICoursesService {
   async deleteCourse(id: string, userId: string): ServiceResponse {
     try {
       const existingDoc = await this.coursesRepository.findById(id);
-      if (existingDoc.tutor.toString() !== userId)
+      if (existingDoc.tutor.toString() !== userId.toString())
         return {
           success: false,
           message: "You are not authorized to delete this course",
