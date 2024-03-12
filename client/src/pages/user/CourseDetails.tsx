@@ -33,17 +33,17 @@ const CourseDetails = () => {
 
   const { cartCount, wishlistCount, setCartCount, setWishlistCount } =
     useContext(CartWishlistContext)!;
-  let [course, setCourse] = useState<ICourse | null>(null);
-  let [reviews, setReviews] = useState<IReview[]>([]);
-  let [selectedReview, setSelectedReview] = useState<IReview | null>(null);
-  let [showDeleteReview, setShowDeleteReview] = useState(false);
-  let [showEditReview, setShowEditReview] = useState(false);
-  let [data, setData] = useState<{
+  const [course, setCourse] = useState<ICourse | null>(null);
+  const [reviews, setReviews] = useState<IReview[]>([]);
+  const [selectedReview, setSelectedReview] = useState<IReview | null>(null);
+  const [showDeleteReview, setShowDeleteReview] = useState(false);
+  const [showEditReview, setShowEditReview] = useState(false);
+  const [data, setData] = useState<{
     inCart: Boolean | undefined;
     inWishlist: boolean | undefined;
   }>();
-  let [chapters, setChapters] = useState<IChapter[] | null>(null);
-  let [loading, setLoading] = useState<boolean>(true);
+  const [chapters, setChapters] = useState<IChapter[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   useEffect(() => {
     try {

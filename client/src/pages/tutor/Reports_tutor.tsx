@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import { ITutorReport } from "../../interfaces/reports.interface";
 
 const Reports_tutor = () => {
-  let [reports, setReports] = useState<ITutorReport[]>([]);
-  let [loading, setLoading] = useState(true);
-  let [type, setType] = useState("monthly");
+  const [reports, setReports] = useState<ITutorReport[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [type, setType] = useState("monthly");
   const getReports = async () => {
     setLoading(true);
     try {

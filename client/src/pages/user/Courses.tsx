@@ -30,11 +30,11 @@ const Courses = () => {
   const category = searchParams.get("category") || "";
   const language = searchParams.get("language") || "";
   const sort = searchParams.get("sort") || "";
-  let [courses, setCourses] = useState<ICourse[]>([]);
-  let [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
-  let [currentPage, setCurrentPage] = useState(page);
+  const [courses, setCourses] = useState<ICourse[]>([]);
+  const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
+  const [currentPage, setCurrentPage] = useState(page);
   const skeletons = new Array(10).fill(0);
-  let [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     try {
       async function fetchData() {

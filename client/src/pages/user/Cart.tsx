@@ -16,11 +16,11 @@ interface Bill {
 }
 const Cart = () => {
   const { cartCount, setCartCount } = useContext(CartWishlistContext)!;
-  let [loading, setLoading] = useState<boolean>(true);
-  let [courses, setCourses] = useState<ICourse[]>([]);
-  let [bill, setBill] = useState<Bill | null>(null);
-  let [selected, setSelected] = useState<ICourse | null>(null);
-  let [showConfirm, setShowConfirm] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [courses, setCourses] = useState<ICourse[]>([]);
+  const [bill, setBill] = useState<Bill | null>(null);
+  const [selected, setSelected] = useState<ICourse | null>(null);
+  const [showConfirm, setShowConfirm] = useState(false);
   let skeletons = new Array(7).fill(0);
   const [couponMessage, setCouponMessage] = useState("");
   async function getCartCourses() {

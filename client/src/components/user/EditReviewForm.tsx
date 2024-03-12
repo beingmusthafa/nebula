@@ -16,8 +16,8 @@ interface Props {
   getReviews: () => void;
 }
 const EditReviewForm: React.FC<Props> = ({ review, setShow, getReviews }) => {
-  let [error, setError] = useState("");
-  let [rating, setRating] = useState(review.rating);
+  const [error, setError] = useState("");
+  const [rating, setRating] = useState(review.rating);
   let commentRef = useRef<HTMLTextAreaElement>(null);
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

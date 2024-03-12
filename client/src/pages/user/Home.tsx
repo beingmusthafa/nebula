@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 import ICourse from "../../interfaces/courses.interface";
 
 const Home = () => {
-  let [images, setImages] = useState<{ image: string; link: string }[]>([]);
-  let [lists, setLists] = useState<{ category: string; courses: ICourse[] }[]>(
-    []
-  );
-  let [currentIndex, setCurrentIndex] = useState(0);
+  const [images, setImages] = useState<{ image: string; link: string }[]>([]);
+  const [lists, setLists] = useState<
+    { category: string; courses: ICourse[] }[]
+  >([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   let skeletons = new Array(7).fill(0);
   useEffect(() => {
     async function getSlides() {

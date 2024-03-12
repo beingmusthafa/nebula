@@ -29,19 +29,19 @@ interface Tutor {
 const LearnCourseEntry = () => {
   const { courseId } = useParams();
   const { currentUser } = useSelector((state: any) => state.user);
-  let [course, setCourse] = useState<ICourse | null>(null);
-  let [reviews, setReviews] = useState<IReview[]>([]);
-  let [reviewed, setReviewed] = useState(false);
-  let [selectedReview, setSelectedReview] = useState<IReview | null>(null);
-  let [showDeleteReview, setShowDeleteReview] = useState(false);
-  let [showEditReview, setShowEditReview] = useState(false);
-  let [showChatRoom, setShowChatRoom] = useState(false);
-  let [chapters, setChapters] = useState<IChapter[] | null>(null);
-  let [error, setError] = useState("");
-  let [rating, setRating] = useState(1);
+  const [course, setCourse] = useState<ICourse | null>(null);
+  const [reviews, setReviews] = useState<IReview[]>([]);
+  const [reviewed, setReviewed] = useState(false);
+  const [selectedReview, setSelectedReview] = useState<IReview | null>(null);
+  const [showDeleteReview, setShowDeleteReview] = useState(false);
+  const [showEditReview, setShowEditReview] = useState(false);
+  const [showChatRoom, setShowChatRoom] = useState(false);
+  const [chapters, setChapters] = useState<IChapter[] | null>(null);
+  const [error, setError] = useState("");
+  const [rating, setRating] = useState(1);
+  const [tutor, setTutor] = useState<Tutor | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   let commentRef = useRef<HTMLTextAreaElement>(null);
-  let [tutor, setTutor] = useState<Tutor | null>(null);
-  let [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const getReviews = async () => {
     try {

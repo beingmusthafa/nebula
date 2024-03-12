@@ -10,10 +10,10 @@ import ICourse from "../../interfaces/courses.interface";
 const Wishlist = () => {
   const { cartCount, wishlistCount, setCartCount, setWishlistCount } =
     useContext(CartWishlistContext)!;
-  let [courses, setCourses] = useState<ICourse[]>([]);
-  let [loading, setLoading] = useState<boolean>(true);
-  let [selected, setSelected] = useState<ICourse | null>(null);
-  let [showConfirm, setShowConfirm] = useState(false);
+  const [courses, setCourses] = useState<ICourse[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selected, setSelected] = useState<ICourse | null>(null);
+  const [showConfirm, setShowConfirm] = useState(false);
   let skeletons = new Array(7).fill(0);
   async function getWishlistCourses() {
     setLoading(true);

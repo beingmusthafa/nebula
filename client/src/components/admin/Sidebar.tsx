@@ -8,9 +8,9 @@ import { animate, motion } from "framer-motion";
 const Sidebar = () => {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
-  let [active, setActive] = useState(path);
-  let [showOptions, setShowOptions] = useState(false);
-  let [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [active, setActive] = useState(path);
+  const [showOptions, setShowOptions] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logout = () => {

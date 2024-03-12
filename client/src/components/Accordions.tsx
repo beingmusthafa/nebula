@@ -6,7 +6,7 @@ export interface AccordionProps {
   content: JSX.Element[] | string;
 }
 const Accordion: React.FC<AccordionProps> = ({ title, content }) => {
-  let [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   return (
     <div className="border-2 flex flex-col items-center border-slate-400 h-fit w-11/12 md:w-2/3 p-2">
       <div className="flex justify-between w-full items-center font-semibold">

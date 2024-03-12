@@ -4,8 +4,8 @@ import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 import ICourse from "../../interfaces/courses.interface";
 
 const MyCourses = () => {
-  let [courses, setCourses] = useState<ICourse[]>([]);
-  let [loading, setLoading] = useState(true);
+  const [courses, setCourses] = useState<ICourse[]>([]);
+  const [loading, setLoading] = useState(true);
   let skeletons = new Array(10).fill(0);
   const getCourses = async () => {
     try {

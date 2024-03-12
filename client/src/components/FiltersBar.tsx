@@ -18,12 +18,12 @@ interface Props {
 const FiltersBar: React.FC<Props> = ({ page, search, filters }) => {
   console.log("child");
   console.log({ filters });
-  let [categories, setCategories] = useState<{ name: string; image: string }[]>(
-    []
-  );
-  let [showPriceInput, setShowPriceInput] = React.useState(false);
-  let [minPrice, setMinPrice] = useState<number>(filters.minPrice);
-  let [maxPrice, setMaxPrice] = useState<number>(filters.maxPrice);
+  const [categories, setCategories] = useState<
+    { name: string; image: string }[]
+  >([]);
+  const [showPriceInput, setShowPriceInput] = React.useState(false);
+  const [minPrice, setMinPrice] = useState<number>(filters.minPrice);
+  const [maxPrice, setMaxPrice] = useState<number>(filters.maxPrice);
   console.log({ minPrice, maxPrice });
   let minInputRef = useRef<HTMLInputElement | null>(null);
   let maxInputRef = useRef<HTMLInputElement | null>(null);

@@ -11,8 +11,8 @@ interface Category {
 
 const Interests = () => {
   const { currentUser } = useSelector((state: any) => state.user);
-  let [categories, setCategories] = useState<Category[]>([]);
-  let [interests, setInterests] = useState<Set<string>>(new Set());
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [interests, setInterests] = useState<Set<string>>(new Set());
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const getCategories = async () => {

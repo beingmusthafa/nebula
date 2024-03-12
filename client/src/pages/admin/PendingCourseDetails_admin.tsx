@@ -19,17 +19,17 @@ import IChapter from "../../interfaces/chapters.interface";
 const PendingCourseDetails_admin = () => {
   const { courseId } = useParams();
   const { currentUser } = useSelector((state: any) => state.user);
-  let [course, setCourse] = useState<ICourse | null>(null);
-  let [showVideoPreview, setShowVideoPreview] = useState(false);
-  let [showExercisePreview, setShowExercisePreview] = useState(false);
-  let [selectedVideo, setSelectedVideo] = useState<IVideo | null>(null);
-  let [selectedExercise, setSelectedExercise] = useState<IExercise | null>(
+  const [course, setCourse] = useState<ICourse | null>(null);
+  const [showVideoPreview, setShowVideoPreview] = useState(false);
+  const [showExercisePreview, setShowExercisePreview] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<IVideo | null>(null);
+  const [selectedExercise, setSelectedExercise] = useState<IExercise | null>(
     null
   );
-  let [chapters, setChapters] = useState<IChapter[] | null>(null);
-  let [loading, setLoading] = useState<boolean>(true);
-  let [showApproveConfirm, setShowApproveConfirm] = useState(false);
-  let [showRejectConfirm, setShowRejectConfirm] = useState(false);
+  const [chapters, setChapters] = useState<IChapter[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [showApproveConfirm, setShowApproveConfirm] = useState(false);
+  const [showRejectConfirm, setShowRejectConfirm] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     try {

@@ -5,25 +5,25 @@ import { useNavigate } from "react-router-dom";
 import languages from "../../data/languages";
 
 const AddCourse = () => {
-  let [categories, setCategories] = useState<
+  const [categories, setCategories] = useState<
     { name: string; _id: string; image: string }[]
   >([]);
-  let [imageError, setImageError] = useState("");
-  let [titleError, setTitleError] = useState("");
-  let [descriptionError, setDescriptionError] = useState("");
-  let [priceError, setPriceError] = useState("");
-  let [discountError, setDiscountError] = useState("");
-  let [languageError, setLanguageError] = useState("");
-  let [categoryError, setCategoryError] = useState("");
-  let [image, setImage] = useState<File | null>(null);
-  let [title, setTitle] = useState<string>("");
-  let [description, setDescription] = useState<string>("");
-  let [category, setCategory] = useState<string>("");
-  let [language, setLanguage] = useState<string>("English");
-  let [price, setPrice] = useState<number>(0);
-  let [discount, setDiscount] = useState<number>(0);
-  let [requirements, setRequirements] = useState<Set<string>>(new Set());
-  let [benefits, setBenefits] = useState<Set<string>>(new Set());
+  const [imageError, setImageError] = useState("");
+  const [titleError, setTitleError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+  const [priceError, setPriceError] = useState("");
+  const [discountError, setDiscountError] = useState("");
+  const [languageError, setLanguageError] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [image, setImage] = useState<File | null>(null);
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
+  const [language, setLanguage] = useState<string>("English");
+  const [price, setPrice] = useState<number>(0);
+  const [discount, setDiscount] = useState<number>(0);
+  const [requirements, setRequirements] = useState<Set<string>>(new Set());
+  const [benefits, setBenefits] = useState<Set<string>>(new Set());
   let reqInputRef = useRef<HTMLInputElement | null>(null);
   let benInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();

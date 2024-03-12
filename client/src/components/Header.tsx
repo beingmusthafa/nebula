@@ -17,15 +17,17 @@ const Header = () => {
     : "";
   const { cartCount, wishlistCount, setCartCount, setWishlistCount } =
     useContext(CartWishlistContext)!;
-  let [activeRequest, setActiveRequest] = useState<AbortController | null>(
+  const [activeRequest, setActiveRequest] = useState<AbortController | null>(
     null
   );
-  let [activeTimeout, setActiveTimeout] = useState<NodeJS.Timeout | null>(null);
-  let [showOptions, setShowOptions] = useState(false);
-  let [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-  let searchInputRef = useRef<HTMLInputElement | null>(null);
-  let [search, setSearch] = useState<string>("");
-  let [result, setResult] = useState<ICourse[]>([]);
+  const [activeTimeout, setActiveTimeout] = useState<NodeJS.Timeout | null>(
+    null
+  );
+  const [showOptions, setShowOptions] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const [search, setSearch] = useState<string>("");
+  const [result, setResult] = useState<ICourse[]>([]);
   const [showResult, setShowResult] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();

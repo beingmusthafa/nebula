@@ -27,27 +27,28 @@ let monthNames = [
 const TutorDashboard = () => {
   let skeletons = new Array(4).fill(0);
   const navigate = useNavigate();
-  let [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  let [showMakePublishConfirm, setShowMakePublishConfirm] = useState(false);
-  let [showCancelPublishConfirm, setShowCancelPublishConfirm] = useState(false);
-  let [showEditPricingForm, setShowEditPricingForm] = useState(false);
-  let [selectedCourse, setSelectedCourse] = useState<ICourse | null>(null);
-  let [creatingCourses, setCreatingCourses] = useState<ICourse[]>([]);
-  let [pendingCourses, setPendingCourses] = useState<ICourse[]>([]);
-  let [publishedCourses, setPublishedCourses] = useState<ICourse[]>([]);
-  let [creatingLoading, setCreatingLoading] = useState(false);
-  let [pendingLoading, setPendingLoading] = useState(false);
-  let [publishedLoading, setPublishedLoading] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showMakePublishConfirm, setShowMakePublishConfirm] = useState(false);
+  const [showCancelPublishConfirm, setShowCancelPublishConfirm] =
+    useState(false);
+  const [showEditPricingForm, setShowEditPricingForm] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<ICourse | null>(null);
+  const [creatingCourses, setCreatingCourses] = useState<ICourse[]>([]);
+  const [pendingCourses, setPendingCourses] = useState<ICourse[]>([]);
+  const [publishedCourses, setPublishedCourses] = useState<ICourse[]>([]);
+  const [creatingLoading, setCreatingLoading] = useState(false);
+  const [pendingLoading, setPendingLoading] = useState(false);
+  const [publishedLoading, setPublishedLoading] = useState(false);
   //stats related states
   const currentMonth = new Date().getMonth() + 1;
-  let [currentEnrollments, setCurrentEnrollments] = useState(0);
-  let [currentRevenue, setCurrentRevenue] = useState(0);
-  let [loading, setLoading] = useState(true);
-  let [enrollments, setEnrollments] = useState<number[]>([]);
-  let [revenue, setRevenue] = useState<number[]>([]);
-  let [months, setMonths] = useState<string[]>([]);
-  let [topLoading, setTopLoading] = useState(true);
-  let [topCourses, setTopCourses] = useState<
+  const [currentEnrollments, setCurrentEnrollments] = useState(0);
+  const [currentRevenue, setCurrentRevenue] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [enrollments, setEnrollments] = useState<number[]>([]);
+  const [revenue, setRevenue] = useState<number[]>([]);
+  const [months, setMonths] = useState<string[]>([]);
+  const [topLoading, setTopLoading] = useState(true);
+  const [topCourses, setTopCourses] = useState<
     { data: ICourse; count: number }[]
   >([]);
   const fetchTopCourses = async () => {

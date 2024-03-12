@@ -15,8 +15,8 @@ interface Props {
   children: React.ReactNode;
 }
 const CartWishlistContextComponent: React.FC<Props> = ({ children }) => {
-  let [cartCount, setCartCount] = useState(0);
-  let [wishlistCount, setWishlistCount] = useState(0);
+  const [cartCount, setCartCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
   return (
     <CartWishlistContext.Provider
       value={{ cartCount, setCartCount, wishlistCount, setWishlistCount }}

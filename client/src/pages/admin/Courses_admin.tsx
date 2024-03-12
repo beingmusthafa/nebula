@@ -6,10 +6,10 @@ import { toast } from "react-toastify";
 import ICourse from "../../interfaces/courses.interface";
 
 const Courses_admin = () => {
-  let [pendingLoading, setPendingLoading] = useState(true);
-  let [pendingCourses, setPendingCourses] = useState<ICourse[]>([]);
-  let [publishedLoading, setPublishedLoading] = useState(true);
-  let [publishedCourses, setPublishedCourses] = useState<ICourse[]>([]);
+  const [pendingLoading, setPendingLoading] = useState(true);
+  const [pendingCourses, setPendingCourses] = useState<ICourse[]>([]);
+  const [publishedLoading, setPublishedLoading] = useState(true);
+  const [publishedCourses, setPublishedCourses] = useState<ICourse[]>([]);
   const skeletons = new Array(5).fill(0);
   const fetchPendingCourses = async () => {
     try {

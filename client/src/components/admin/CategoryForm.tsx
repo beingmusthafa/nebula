@@ -17,8 +17,8 @@ const CategoryForm: React.FC<Props> = ({
   id,
   onComplete,
 }) => {
-  let [imageFile, setImageFile] = useState<File | null>(null);
-  let [error, setError] = useState<string>("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [error, setError] = useState<string>("");
   let nameRef = useRef<HTMLInputElement | null>(null);
   const onAddSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

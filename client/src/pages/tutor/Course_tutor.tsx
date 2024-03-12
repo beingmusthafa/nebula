@@ -9,9 +9,9 @@ import ICourse from "../../interfaces/courses.interface";
 import IChapter from "../../interfaces/chapters.interface";
 const Course_tutor = () => {
   const { id } = useParams();
-  let [course, setCourse] = useState<ICourse | null>(null);
-  let [loading, setLoading] = useState(true);
-  let [chapters, setChapters] = useState<IChapter[] | null>(null);
+  const [course, setCourse] = useState<ICourse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [chapters, setChapters] = useState<IChapter[] | null>(null);
   const navigate = useNavigate();
   useEffect(() => {
     try {

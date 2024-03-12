@@ -10,9 +10,9 @@ interface NextData {
 }
 const CourseVideo = () => {
   const { courseId, chapterId, videoOrder } = useParams();
-  let [video, setVideo] = useState<IVideo | null>(null);
-  let [nextData, setNextData] = useState<NextData | null>(null);
-  let [loading, setLoading] = useState<boolean>(true);
+  const [video, setVideo] = useState<IVideo | null>(null);
+  const [nextData, setNextData] = useState<NextData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const getData = async () => {
     try {

@@ -19,24 +19,24 @@ import IExercise from "../../interfaces/exercises.interface";
 
 const ManageContent = () => {
   const { id } = useParams();
-  let [course, setCourse] = useState<ICourse | null>(null);
-  let [chapters, setChapters] = useState<IChapter[]>([]);
-  let [selectedChapter, setSelectedChapter] = useState<IChapter | null>(null);
-  let [selectedVideo, setSelectedVideo] = useState<IVideo | null>(null);
-  let [selectedExercise, setSelectedExercise] = useState<IExercise | null>(
+  const [course, setCourse] = useState<ICourse | null>(null);
+  const [chapters, setChapters] = useState<IChapter[]>([]);
+  const [selectedChapter, setSelectedChapter] = useState<IChapter | null>(null);
+  const [selectedVideo, setSelectedVideo] = useState<IVideo | null>(null);
+  const [selectedExercise, setSelectedExercise] = useState<IExercise | null>(
     null
   );
-  let [showAddChapterForm, setShowAddChapterForm] = useState(false);
-  let [showEditChapterForm, setShowEditChapterForm] = useState(false);
-  let [showAddVideoForm, setShowAddVideoForm] = useState(false);
-  let [showEditVideoForm, setShowEditVideoForm] = useState(false);
-  let [showAddExerciseForm, setShowAddExerciseForm] = useState(false);
-  let [showEditExerciseForm, setShowEditExerciseForm] = useState(false);
-  let [deleteItem, setDeleteItem] = useState<
+  const [showAddChapterForm, setShowAddChapterForm] = useState(false);
+  const [showEditChapterForm, setShowEditChapterForm] = useState(false);
+  const [showAddVideoForm, setShowAddVideoForm] = useState(false);
+  const [showEditVideoForm, setShowEditVideoForm] = useState(false);
+  const [showAddExerciseForm, setShowAddExerciseForm] = useState(false);
+  const [showEditExerciseForm, setShowEditExerciseForm] = useState(false);
+  const [deleteItem, setDeleteItem] = useState<
     "chapter" | "video" | "exercise" | null
   >(null);
-  let [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  let [loading, setLoading] = useState(true);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [loading, setLoading] = useState(true);
   const getData = async () => {
     const res = await fetch(
       import.meta.env.VITE_API_BASE_URL + `/api/get-course-details/${id}`,

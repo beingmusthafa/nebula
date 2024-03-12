@@ -19,7 +19,7 @@ const CourseCard: React.FC<Props> = ({
   redirectTo,
   showPrice = true,
 }) => {
-  let [showExtraElements, setShowExtraElements] = useState(false);
+  const [showExtraElements, setShowExtraElements] = useState(false);
   const navigate = useNavigate();
   return (
     <div

@@ -8,9 +8,9 @@ interface Report {
   endDate: Date;
 }
 const Reports_admin = () => {
-  let [reports, setReports] = useState<Report[]>([]);
-  let [loading, setLoading] = useState(true);
-  let [type, setType] = useState("monthly");
+  const [reports, setReports] = useState<Report[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [type, setType] = useState("monthly");
   const getReports = async () => {
     setLoading(true);
     try {

@@ -6,8 +6,8 @@ import { ITutorReport } from "../../interfaces/reports.interface";
 
 const ViewReport_admin = () => {
   const { reportId } = useParams();
-  let [report, setReport] = useState<ITutorReport | null>(null);
-  let [loading, setLoading] = useState(true);
+  const [report, setReport] = useState<ITutorReport | null>(null);
+  const [loading, setLoading] = useState(true);
   const getReport = async () => {
     try {
       const res = await fetch(

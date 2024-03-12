@@ -13,15 +13,15 @@ interface Enrollment {
 }
 const Profile = () => {
   const { currentUser } = useSelector((state: any) => state.user);
-  let [loading, setLoading] = useState(false);
-  let [email, setEmail] = useState<string>(currentUser.email);
-  let [code, setCode] = useState<string>(currentUser.email);
-  let [showVerification, setShowVerification] = useState(false);
-  let [error, setError] = useState("");
-  let [editing, setEditing] = useState(false);
-  let [verificationComplete, setVerificationComplete] = useState(false);
-  let [image, setImage] = useState<File | null>(null);
-  let [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState<string>(currentUser.email);
+  const [code, setCode] = useState<string>(currentUser.email);
+  const [showVerification, setShowVerification] = useState(false);
+  const [error, setError] = useState("");
+  const [editing, setEditing] = useState(false);
+  const [verificationComplete, setVerificationComplete] = useState(false);
+  const [image, setImage] = useState<File | null>(null);
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   let nameRef = useRef<HTMLInputElement>(null);
   let emailRef = useRef<HTMLInputElement>(null);
   let bioRef = useRef<HTMLTextAreaElement>(null);

@@ -10,10 +10,10 @@ interface Props {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const VideoEditForm: React.FC<Props> = ({ data, course, chapter, setShow }) => {
-  let [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  let [video, setVideo] = useState<File | null>(null);
-  let [orders, setOrders] = useState<number[]>([]);
+  const [video, setVideo] = useState<File | null>(null);
+  const [orders, setOrders] = useState<number[]>([]);
   let titleRef = useRef<HTMLInputElement>(null);
   let orderRef = useRef<HTMLSelectElement>(null);
   const getData = async () => {

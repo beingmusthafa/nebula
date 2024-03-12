@@ -8,8 +8,8 @@ interface Props {
   fetchData: () => void;
 }
 const EditPriceDiscount: React.FC<Props> = ({ course, setShow, fetchData }) => {
-  let [loading, setLoading] = useState(false);
-  let [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   let priceRef = useRef<HTMLInputElement>(null);
   let discountRef = useRef<HTMLInputElement>(null);
   const handleEdit = async (e: React.FormEvent) => {

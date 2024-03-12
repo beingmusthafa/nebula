@@ -8,8 +8,8 @@ interface Props {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const BannerEditForm: React.FC<Props> = ({ setShow, data, getData }) => {
-  let [error, setError] = useState("");
-  let [image, setImage] = useState<File | null>(null);
+  const [error, setError] = useState("");
+  const [image, setImage] = useState<File | null>(null);
   let linkRef = useRef<HTMLInputElement>(null);
   const handleEdit = async (e: React.FormEvent) => {
     e.preventDefault();

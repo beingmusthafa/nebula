@@ -11,10 +11,10 @@ interface User {
   image: string;
 }
 const Users_admin = () => {
-  let [users, setUsers] = useState<User[]>([]);
-  let [page, setPage] = useState<number>(1);
-  let [hasNext, setHasNext] = useState<boolean>(true);
-  let [loading, setLoading] = useState<boolean>(false);
+  const [users, setUsers] = useState<User[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [hasNext, setHasNext] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   async function fetchUsers() {
     setLoading(true);
     const res = await fetch(

@@ -19,8 +19,8 @@ interface Message {
 }
 const ChatRoom: React.FC<Props> = ({ courseId, setShow }) => {
   const { currentUser } = useSelector((state: any) => state.user);
-  let [messages, setMessages] = useState<Message[]>([]);
-  let [loading, setLoading] = useState(true);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(true);
   const formatDate = (date: Date) => {
     const myDate = new Date();
     const day = myDate.getDate();

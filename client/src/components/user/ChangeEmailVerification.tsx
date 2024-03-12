@@ -5,9 +5,9 @@ interface Props {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ChangeEmailVerification: React.FC<Props> = ({ setShow }) => {
-  let [loading, setLoading] = useState(false);
-  let [error, setError] = useState("");
-  let [processing, setProcessing] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [processing, setProcessing] = useState(false);
   const handleSubmit = () => {};
   return loading ? (
     <Loading />

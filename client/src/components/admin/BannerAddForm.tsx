@@ -6,9 +6,9 @@ interface Props {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const BannerAddForm: React.FC<Props> = ({ setShow, getData }) => {
-  let [loading, setLoading] = useState(true);
-  let [error, setError] = useState("");
-  let [image, setImage] = useState<File | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [image, setImage] = useState<File | null>(null);
   let linkRef = useRef<HTMLInputElement>(null);
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();

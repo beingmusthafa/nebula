@@ -15,8 +15,8 @@ interface User {
 }
 const UserDetails_admin: React.FC = () => {
   const { id } = useParams();
-  let [user, setUser] = useState<User | null>(null);
-  let [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   async function changeBlockStatus(blockStatus: boolean) {
     const res = await fetch(

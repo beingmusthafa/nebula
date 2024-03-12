@@ -7,13 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { signIn } from "../redux/user/userSlice";
 
 const ForgotPassword = () => {
-  let [error, setError] = useState<string | null>(null);
-  let [email, setEmail] = useState<string>("");
-  let [password, setPassword] = useState<string>("");
-  let [confirmPassword, setCofirmPassword] = useState<string>("");
-  let [code, setCode] = useState<number | null>(null);
-  let [verificationStarted, setVerificationStarted] = useState<boolean>(false);
-  let [processing, setProcessing] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setCofirmPassword] = useState<string>("");
+  const [code, setCode] = useState<number | null>(null);
+  const [verificationStarted, setVerificationStarted] =
+    useState<boolean>(false);
+  const [processing, setProcessing] = useState<boolean>(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   async function handleEmailSubmit(e: React.ChangeEvent<HTMLFormElement>) {

@@ -14,12 +14,12 @@ export interface Banner {
   link: string;
 }
 const Banners_admin = () => {
-  let [showAddForm, setShowAddForm] = useState(false);
-  let [showEditForm, setShowEditForm] = useState(false);
-  let [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  let [loading, setLoading] = useState(true);
-  let [banners, setBanners] = useState<Banner[]>([]);
-  let [selectedBanner, setSelectedBanner] = useState<Banner | null>(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [banners, setBanners] = useState<Banner[]>([]);
+  const [selectedBanner, setSelectedBanner] = useState<Banner | null>(null);
   let skeletons = new Array(7).fill(0);
   const getBanners = async () => {
     try {

@@ -22,14 +22,14 @@ let monthNames = [
 ];
 const Stats = () => {
   const currentMonth = new Date().getMonth() + 1;
-  let [currentEnrollments, setCurrentEnrollments] = useState(0);
-  let [currentRevenue, setCurrentRevenue] = useState(0);
-  let [loading, setLoading] = useState(true);
-  let [enrollments, setEnrollments] = useState<number[]>([]);
-  let [revenue, setRevenue] = useState<number[]>([]);
-  let [months, setMonths] = useState<string[]>([]);
-  let [topLoading, setTopLoading] = useState(true);
-  let [topCourses, setTopCourses] = useState<
+  const [currentEnrollments, setCurrentEnrollments] = useState(0);
+  const [currentRevenue, setCurrentRevenue] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [enrollments, setEnrollments] = useState<number[]>([]);
+  const [revenue, setRevenue] = useState<number[]>([]);
+  const [months, setMonths] = useState<string[]>([]);
+  const [topLoading, setTopLoading] = useState(true);
+  const [topCourses, setTopCourses] = useState<
     { data: ICourse; count: number }[]
   >([]);
   const skeletons = new Array(5).fill(0);

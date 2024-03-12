@@ -8,9 +8,9 @@ interface Props {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const EditChapterForm: React.FC<Props> = ({ course, data, setShow }) => {
-  let [error, setError] = useState("");
-  let [loading, setLoading] = useState(true);
-  let [orders, setOrders] = useState<number[]>([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState<number[]>([]);
   const titleRef = useRef<HTMLInputElement>(null);
   const orderRef = useRef<HTMLSelectElement>(null);
   const handleEdit = async (e: React.FormEvent) => {

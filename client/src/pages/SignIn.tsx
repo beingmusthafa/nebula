@@ -8,9 +8,9 @@ import { signIn } from "../redux/user/userSlice";
 import GoogleAuth from "../components/auth/GoogleAuth";
 
 const SignIn = () => {
-  let [error, setError] = useState<string | null>(null);
-  let [email, setEmail] = useState<string>("");
-  let [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

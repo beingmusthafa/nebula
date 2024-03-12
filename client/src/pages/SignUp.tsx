@@ -9,21 +9,22 @@ import GoogleAuth from "../components/auth/GoogleAuth";
 import Timer from "../components/Timer";
 
 const SignUp = () => {
-  let [error, setError] = useState<string | null>(null);
-  let [nameError, setNameError] = useState<string | null>(null);
-  let [emailError, setEmailError] = useState<string | null>(null);
-  let [passwordError, setPasswordError] = useState<string | null>(null);
-  let [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(
-    null
-  );
-  let [verificationStarted, setVerificationStarted] = useState<boolean>(false);
-  let [verificationCode, setVerificationCode] = useState<number | null>(null);
-  let [email, setEmail] = useState<string>("");
-  let [password, setPassword] = useState<string>("");
-  let [confirmPassword, setConfirmPassword] = useState<string>("");
-  let [name, setName] = useState<string>("");
-  let [timerComplete, setTimerComplete] = useState(false);
-  let [processing, setProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [nameError, setNameError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<
+    string | null
+  >(null);
+  const [verificationStarted, setVerificationStarted] =
+    useState<boolean>(false);
+  const [verificationCode, setVerificationCode] = useState<number | null>(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [timerComplete, setTimerComplete] = useState(false);
+  const [processing, setProcessing] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   async function handleSignUp(e: React.FormEvent<HTMLFormElement>) {

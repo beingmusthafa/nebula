@@ -6,7 +6,7 @@ interface Props {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const AddChapterForm: React.FC<Props> = ({ course, setShow }) => {
-  let [error, setError] = useState("");
+  const [error, setError] = useState("");
   const titleRef = useRef<HTMLInputElement>(null);
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();

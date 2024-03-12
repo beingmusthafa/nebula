@@ -11,9 +11,9 @@ interface Props {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ExerciseForm: React.FC<Props> = ({ data, course, chapter, setShow }) => {
-  let [error, setError] = useState("");
-  let [loading, setLoading] = useState(true);
-  let [orders, setOrders] = useState<number[]>([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState<number[]>([]);
   let questionRef = useRef<HTMLInputElement>(null);
   let optionARef = useRef<HTMLInputElement>(null);
   let optionBRef = useRef<HTMLInputElement>(null);

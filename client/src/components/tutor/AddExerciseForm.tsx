@@ -10,9 +10,9 @@ interface Props {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const AddExerciseForm: React.FC<Props> = ({ course, chapter, setShow }) => {
-  let [chapters, setChapters] = useState<IChapter[]>([]);
-  let [loading, setLoading] = useState(true);
-  let [error, setError] = useState("");
+  const [chapters, setChapters] = useState<IChapter[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   let questionRef = useRef<HTMLInputElement>(null);
   let optionARef = useRef<HTMLInputElement>(null);
   let optionBRef = useRef<HTMLInputElement>(null);

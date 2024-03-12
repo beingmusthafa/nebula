@@ -15,11 +15,11 @@ interface NextData {
 }
 const CourseExercise = () => {
   const { courseId, chapterId, exerciseOrder } = useParams();
-  let [exercise, setExercise] = useState<Exercise | null>(null);
-  let [nextData, setNextData] = useState<NextData | null>(null);
-  let [loading, setLoading] = useState<boolean>(true);
-  let [selected, setSelected] = useState<number | null>(0);
-  let [showAnswer, setShowAnswer] = useState<boolean>(false);
+  const [exercise, setExercise] = useState<Exercise | null>(null);
+  const [nextData, setNextData] = useState<NextData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selected, setSelected] = useState<number | null>(0);
+  const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const navigate = useNavigate();
   const getData = async () => {
     try {

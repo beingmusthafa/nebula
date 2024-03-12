@@ -10,13 +10,15 @@ interface Category {
   image: string;
 }
 const Categories_admin = () => {
-  let [showAddForm, setShowAddForm] = useState(false);
-  let [showDelete, setShowDelete] = useState(false);
-  let [showEditForm, setShowEditForm] = useState(false);
-  let [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
-  let [categories, setCategories] = useState<Category[] | null>([]);
-  let [targetCategory, setTargetCategory] = useState("");
-  let [loading, setLoading] = useState(true);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
+  const [categories, setCategories] = useState<Category[] | null>([]);
+  const [targetCategory, setTargetCategory] = useState("");
+  const [loading, setLoading] = useState(true);
   const fetchCategories = async () => {
     setLoading(true);
     const res = await fetch(

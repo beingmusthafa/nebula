@@ -7,27 +7,27 @@ import languages from "../../data/languages";
 
 const EditCourse = () => {
   const { id } = useParams();
-  let [categories, setCategories] = useState<
+  const [categories, setCategories] = useState<
     { name: string; _id: string; image: string }[]
   >([]);
-  let [loading, setLoading] = useState(true);
-  let [imageError, setImageError] = useState("");
-  let [titleError, setTitleError] = useState("");
-  let [descriptionError, setDescriptionError] = useState("");
-  let [priceError, setPriceError] = useState("");
-  let [discountError, setDiscountError] = useState("");
-  let [languageError, setLanguageError] = useState("");
-  let [categoryError, setCategoryError] = useState("");
-  let [image, setImage] = useState<File | null>(null);
-  let [imageUrl, setImageUrl] = useState("");
-  let [title, setTitle] = useState<string>("");
-  let [description, setDescription] = useState<string>("");
-  let [category, setCategory] = useState<string>("");
-  let [language, setLanguage] = useState<string>("");
-  let [price, setPrice] = useState<number>(0);
-  let [discount, setDiscount] = useState<number>(0);
-  let [requirements, setRequirements] = useState<Set<string>>(new Set());
-  let [benefits, setBenefits] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(true);
+  const [imageError, setImageError] = useState("");
+  const [titleError, setTitleError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+  const [priceError, setPriceError] = useState("");
+  const [discountError, setDiscountError] = useState("");
+  const [languageError, setLanguageError] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [image, setImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
+  const [language, setLanguage] = useState<string>("");
+  const [price, setPrice] = useState<number>(0);
+  const [discount, setDiscount] = useState<number>(0);
+  const [requirements, setRequirements] = useState<Set<string>>(new Set());
+  const [benefits, setBenefits] = useState<Set<string>>(new Set());
   let reqInputRef = useRef<HTMLInputElement | null>(null);
   let benInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
