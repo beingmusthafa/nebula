@@ -20,7 +20,8 @@ export default interface ICoursesService {
       category?: string;
       language?: string;
       sort?: string;
-    }
+    },
+    limit?: number
   ): ServiceResponse<PaginationResult>;
 
   findById(

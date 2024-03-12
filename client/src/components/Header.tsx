@@ -1,11 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import lightLogo from "../assets/nebula_light.png";
-import {
-  Link,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { signIn, signOut } from "../redux/user/userSlice";
@@ -13,6 +8,7 @@ import { motion } from "framer-motion";
 import ConfirmationPopup from "./ConfirmationPopup";
 import { toast } from "react-toastify";
 import { CartWishlistContext } from "./context/CartWishlistContext";
+import ICourse from "../interfaces/courses.interface";
 
 const Header = () => {
   let { currentUser } = useSelector((state: any) => state.user);
@@ -21,9 +17,16 @@ const Header = () => {
     : "";
   const { cartCount, wishlistCount, setCartCount, setWishlistCount } =
     useContext(CartWishlistContext)!;
+  let [activeRequest, setActiveRequest] = useState<AbortController | null>(
+    null
+  );
+  let [activeTimeout, setActiveTimeout] = useState<NodeJS.Timeout | null>(null);
   let [showOptions, setShowOptions] = useState(false);
   let [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   let searchInputRef = useRef<HTMLInputElement | null>(null);
+  let [search, setSearch] = useState<string>("");
+  let [result, setResult] = useState<ICourse[]>([]);
+  const [showResult, setShowResult] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logout = async () => {
@@ -54,11 +57,43 @@ const Header = () => {
     setShowOptions(false);
     navigate(route);
   };
-  const search = (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent) => {
+    setSearch("");
+    setResult([]);
     e.preventDefault();
     if (!searchInputRef.current?.value) return searchInputRef.current?.focus();
     navigate(`/courses?search=${searchInputRef.current?.value}`);
   };
+
+  const handleLiveSearch = async (signal: AbortSignal) => {
+    console.log("live search ran  " + search);
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/live-search/" + search,
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+          signal: signal,
+        }
+      ).then((res) => res.json());
+      if (!res.success) throw new Error(res.message);
+      setResult(res?.result.docs);
+      console.log(res.result.docs);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    handleLiveSearch(abortController.signal);
+    if (activeRequest) activeRequest.abort();
+    setActiveRequest(abortController);
+    return () => activeRequest?.abort();
+  }, [search]);
+
   const getCartAndWishlistCount = async () => {
     try {
       if (!currentUser) return;
@@ -91,6 +126,7 @@ const Header = () => {
   useEffect(() => {
     getCartAndWishlistCount();
   }, []);
+
   return (
     !location.pathname.startsWith("/admin") && (
       <div className="flex justify-between items-center h-14 sticky top-0 left-0 w-full px-4 border-b-4 _border-blue-black-gradient2 bg-white z-10">
@@ -107,17 +143,56 @@ const Header = () => {
           </h1>
         </Link>
         <form
-          onSubmit={search}
+          onSubmit={handleSearch}
           action=""
-          className="flex justify-center border border-black py-1 px-4 rounded-full"
+          className="flex justify-center border border-black py-1 px-4 rounded-full relative"
         >
+          {showResult && result?.length > 0 && (
+            <div className="absolute w-[90vw] md:w-[40vw] flex flex-col top-12 gap-4 _bg-light p-4">
+              {result.map((course) => (
+                <div
+                  key={course._id}
+                  onClick={() => {
+                    console.log("clicked");
+                    setResult([]);
+                    setSearch("");
+                    location.href = "/course-details/" + course._id;
+                  }}
+                  className="flex gap-4 items-center justify-center cursor-pointer border border-black bg-white"
+                >
+                  <img src={course.thumbnail} className="h-16" alt="" />
+                  <p className="font-medium w-full overflow-hidden whitespace-nowrap  text-ellipsis ">
+                    {course.title}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
           <input
             ref={searchInputRef}
             defaultValue={searchText || ""}
             type="text"
+            onFocus={() => setShowResult(true)}
+            onBlur={() => {
+              setTimeout(() => {
+                setShowResult(false);
+              }, 100);
+            }}
+            onChange={(e) => {
+              if (!e.target.value) {
+                setResult([]);
+                return;
+              }
+              const timeout = setTimeout(() => {
+                setSearch(e.target.value);
+              }, 300);
+              if (activeTimeout) clearTimeout(activeTimeout);
+              setActiveTimeout(timeout);
+            }}
             placeholder="Search for courses"
             className=" pl-4 w-44 md:w-80 border-0"
           />
+
           <button className="ml-2">
             <i className="bx bx-search-alt-2 text-lg"></i>
           </button>

@@ -81,6 +81,14 @@ router.get(
 );
 
 router.get(
+  "/live-search/:searchQuery",
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userIdentify(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userCoursesController.liveSearch(req, res, next)
+);
+
+router.get(
   "/get-purchased-courses",
   (req: Request, res: Response, next: NextFunction) =>
     authMiddleware.userAuth(req, res, next),

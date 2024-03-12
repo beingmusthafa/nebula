@@ -131,7 +131,8 @@ export class CoursesService implements ICoursesService {
       category?: string;
       language?: string;
       sort?: string;
-    }
+    },
+    limit: number = 8
   ): ServiceResponse<PaginationResult> {
     try {
       let options = {};
@@ -195,8 +196,8 @@ export class CoursesService implements ICoursesService {
       const docs = await this.coursesRepository.find(query, {
         ...options,
         populate: { path: "tutor", select: "name image" },
-        limit: 8,
-        skip: (page - 1) * 8,
+        limit: limit,
+        skip: (page - 1) * limit,
       });
       const totalCount = await this.coursesRepository.count(query);
       return {
@@ -206,10 +207,10 @@ export class CoursesService implements ICoursesService {
         result: {
           docs,
           total: totalCount,
-          limit: 8,
+          limit: limit,
           page,
-          pages: Math.ceil(totalCount / 8),
-          hasNextPage: page < Math.ceil(totalCount / 8),
+          pages: Math.ceil(totalCount / limit),
+          hasNextPage: page < Math.ceil(totalCount / limit),
           hasPrevPage: page > 1,
           nextPage: page + 1,
           prevPage: page - 1,

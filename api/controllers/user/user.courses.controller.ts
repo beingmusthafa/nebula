@@ -67,6 +67,28 @@ class UserCoursesController {
     }
   }
 
+  async liveSearch(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { searchQuery } = req.params;
+      const response = await this.coursesService.findPaginate(
+        1,
+        req.session.user?._id,
+        {
+          search: searchQuery as string,
+          minPrice: 0,
+          maxPrice: Infinity,
+          category: "",
+          language: "",
+          sort: "",
+        },
+        3
+      );
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      next(customError(500, error.message));
+    }
+  }
+
   async getCourseById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
