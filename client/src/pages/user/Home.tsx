@@ -47,10 +47,7 @@ const Home = () => {
         <Link to={images[currentIndex]?.link}>
           <img
             className="w-full object-cover"
-            src={
-              images[currentIndex]?.image ||
-              "https://htmlcolorcodes.com/assets/images/colors/white-color-solid-background-1920x1080.png"
-            }
+            src={images[currentIndex]?.image}
             alt="Banner"
           />
         </Link>
