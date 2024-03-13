@@ -20,14 +20,14 @@ const app = express();
 connectDb();
 scheduleReportGeneration();
 
-app.use(
-  cors({
-    origin: [process.env.CLIENT_BASE_URL, "https://dashboard.stripe.com/"],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+// app.use
+// cors({
+//   origin: [process.env.CLIENT_BASE_URL, "https://dashboard.stripe.com/"],
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+// })
+// ();
 
 app.use(cookieParser());
 app.use(
