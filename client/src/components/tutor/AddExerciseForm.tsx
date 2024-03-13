@@ -42,20 +42,23 @@ const AddExerciseForm: React.FC<Props> = ({ course, chapter, setShow }) => {
   }, []);
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
+    setLoading(true);
+    if (
+      !(
+        questionRef.current?.value.trim() &&
+        optionARef.current?.value.trim() &&
+        optionBRef.current?.value.trim() &&
+        optionCRef.current?.value.trim() &&
+        optionDRef.current?.value.trim() &&
+        answerRef.current?.value
+      )
+    ) {
+      setLoading(false);
+      return setError("All fields are required");
+    } else setError("");
+    const toastId = toast.loading("Adding exercise...");
     try {
-      if (
-        !(
-          questionRef.current?.value.trim() &&
-          optionARef.current?.value.trim() &&
-          optionBRef.current?.value.trim() &&
-          optionCRef.current?.value.trim() &&
-          optionDRef.current?.value.trim() &&
-          answerRef.current?.value
-        )
-      ) {
-        return setError("All fields are required");
-      } else setError("");
-      const toastId = toast.loading("Adding exercise...");
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/tutor/add-exercise",
         {
@@ -78,12 +81,15 @@ const AddExerciseForm: React.FC<Props> = ({ course, chapter, setShow }) => {
           }),
         }
       ).then((res) => res.json());
-      if (!res.success) return toast.error(res.message);
+      if (!res.success) return new Error(res.message);
       toast.dismiss(toastId);
       toast.success("Exercise added successfully");
       setShow(false);
       location.reload();
     } catch (error) {
+      toast.dismiss(toastId);
+      toast.error(error as string);
+      setLoading(false);
       console.log(error);
     }
   };

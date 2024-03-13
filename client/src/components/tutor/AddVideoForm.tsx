@@ -37,16 +37,19 @@ const VideoForm: React.FC<Props> = ({ course, chapter, setShow }) => {
   }, []);
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
+    setLoading(true);
+    const toastId = toast.loading("Adding video...");
     try {
       if (!(video && titleRef.current?.value)) {
+        setLoading(false);
+        toast.dismiss(toastId);
         return setError("All fields are required");
       } else setError("");
       const formData = new FormData();
       formData.append("video", video!);
       formData.append("title", titleRef.current?.value!);
       formData.append("chapter", chapter);
-      // return console.log({ title: titleRef.current.value, video, chapter });
-      const toastId = toast.loading("Adding video...");
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/tutor/add-video",
         {
@@ -57,12 +60,15 @@ const VideoForm: React.FC<Props> = ({ course, chapter, setShow }) => {
           body: formData,
         }
       ).then((res) => res.json());
-      if (!res.success) return toast.error(res.message);
+      if (!res.success) return new Error(res.message);
       toast.dismiss(toastId);
       toast.success("Video added successfully");
       setShow(false);
       location.reload();
     } catch (error) {
+      setLoading(false);
+      toast.dismiss(toastId);
+      toast.error(error as string);
       console.log(error);
     }
   };

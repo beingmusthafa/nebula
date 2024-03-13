@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { toast } from "react-toastify";
+import Loading from "../Loading";
 
 interface Props {
   course: string;
@@ -7,34 +8,50 @@ interface Props {
 }
 const AddChapterForm: React.FC<Props> = ({ course, setShow }) => {
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const titleRef = useRef<HTMLInputElement>(null);
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
+    setLoading(true);
     const title = titleRef.current?.value;
-    if (!title?.trim()) return setError("Title is required!");
-    const toastId = toast.loading("Adding chapter");
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/tutor/add-chapter",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + localStorage.getItem("token"),
-        },
-        body: JSON.stringify({ title, course }),
-      }
-    ).then((res) => res.json());
-    toast.dismiss(toastId);
-    if (!res.success) {
-      setError(res.message);
+    if (!title?.trim()) {
+      setLoading(false);
+      setError("Title is required!");
       return;
     }
-    toast.success(res.message);
-    setShow(false);
-    location.reload();
+    const toastId = toast.loading("Adding chapter");
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/tutor/add-chapter",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({ title, course }),
+        }
+      ).then((res) => res.json());
+      toast.dismiss(toastId);
+      if (!res.success) {
+        setError(res.message);
+        setLoading(false);
+        return;
+      }
+      setLoading(false);
+      toast.success(res.message);
+      setShow(false);
+      location.reload();
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
   };
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <div className="flex w-full justify-center">
       <form
         className="_screen-center flex flex-col _no-scrollbar bg-white border-4 _border-blue-black-gradient gap-4 p-8 min-w-72"
