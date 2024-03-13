@@ -24,6 +24,8 @@ app.use(
   cors({
     origin: [process.env.CLIENT_BASE_URL, "https://dashboard.stripe.com/"],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
