@@ -323,7 +323,13 @@ const ManageContent = () => {
           Add chapter
         </button>
       </div>
-      <Accordions data={accordionData} />
+      {chapters.length > 0 ? (
+        <Accordions data={accordionData} />
+      ) : (
+        <p className="_font-dm-display my-32 text-xl text-center text-slate-500">
+          No content added
+        </p>
+      )}
     </>
   ) : (
     <Loading />
