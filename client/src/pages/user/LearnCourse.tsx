@@ -53,7 +53,8 @@ const LearnCourseEntry = () => {
   const getProgress = async () => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + `/api/get-progress/${courseId}`,
+        import.meta.env.VITE_API_BASE_URL +
+          `/api/get-course-progress/${courseId}`,
         {
           headers: {
             "Content-Type": "application/json",
