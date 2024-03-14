@@ -125,7 +125,7 @@ export class ChaptersService implements IChaptersService {
       const doc = await this.chaptersRepository.findOne({ _id: id });
       const nameExists = await this.chaptersRepository.findOne({
         title: doc.title,
-        course: doc.course,
+        course: { $ne: doc.course },
       });
       if (nameExists)
         return {
