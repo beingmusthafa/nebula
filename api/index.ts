@@ -67,11 +67,14 @@ const server = app.listen(3000, () => {
   console.log("Server started");
 });
 
-const io = new Server(server, {
-  cors: {
-    origin: process.env.CLIENT_BASE_URL,
-  },
-});
+const io =
+  process.env.NODE_ENV === "production"
+    ? new Server(server)
+    : new Server(server, {
+        cors: {
+          origin: process.env.CLIENT_BASE_URL,
+        },
+      });
 
 io.on("connection", (socket) => {
   console.log("new socket connection : ", socket.id);
