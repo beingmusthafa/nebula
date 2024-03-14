@@ -114,7 +114,7 @@ export class VideosService implements IVideosService {
       const course = await this.coursesRepository.findById(
         oldDoc.course as string
       );
-      if (course.tutor.toString() !== userId) {
+      if (course.tutor.toString() !== userId.toString()) {
         return {
           success: false,
           message: "You are not authorised to delete this course",
@@ -162,7 +162,7 @@ export class VideosService implements IVideosService {
       const course = await this.coursesRepository.findById(
         doc.course as string
       );
-      if (course.tutor.toString() !== userId) {
+      if (course.tutor.toString() !== userId.toString()) {
         return {
           success: false,
           message: "You are not authorised to delete this course",
