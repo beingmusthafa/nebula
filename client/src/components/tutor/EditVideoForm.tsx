@@ -70,7 +70,6 @@ const VideoEditForm: React.FC<Props> = ({ data, course, chapter, setShow }) => {
         return setError(res.message);
       }
       toast.dismiss(toastId);
-      toast.success("Video edited successfully");
       setShow(false);
       location.reload();
     } catch (error) {

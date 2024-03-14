@@ -62,7 +62,6 @@ const VideoForm: React.FC<Props> = ({ course, chapter, setShow }) => {
       ).then((res) => res.json());
       if (!res.success) return new Error(res.message);
       toast.dismiss(toastId);
-      toast.success("Video added successfully");
       setShow(false);
       location.reload();
     } catch (error) {

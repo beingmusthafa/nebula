@@ -83,7 +83,6 @@ const AddExerciseForm: React.FC<Props> = ({ course, chapter, setShow }) => {
       ).then((res) => res.json());
       if (!res.success) return new Error(res.message);
       toast.dismiss(toastId);
-      toast.success("Exercise added successfully");
       setShow(false);
       location.reload();
     } catch (error) {

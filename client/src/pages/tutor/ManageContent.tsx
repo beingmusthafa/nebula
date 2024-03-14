@@ -196,7 +196,6 @@ const ManageContent = () => {
       ).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) return toast.error(res.message);
-      toast.success("deleted item successfullly");
     } catch (error) {
       console.log(error);
       toast.dismiss(toastId);

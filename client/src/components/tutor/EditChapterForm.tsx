@@ -38,7 +38,6 @@ const EditChapterForm: React.FC<Props> = ({ course, data, setShow }) => {
       setError(res.message);
       return;
     }
-    toast.success(res.message);
     setShow(false);
     location.reload();
   };

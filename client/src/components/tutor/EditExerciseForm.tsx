@@ -90,7 +90,6 @@ const ExerciseForm: React.FC<Props> = ({ data, course, chapter, setShow }) => {
       ).then((res) => res.json());
       if (!res.success) return setError(res.message);
       toast.dismiss(toastId);
-      toast.success("Exercise edited successfully");
       setShow(false);
       location.reload();
     } catch (error) {

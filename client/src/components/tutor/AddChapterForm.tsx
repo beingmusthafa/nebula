@@ -40,7 +40,6 @@ const AddChapterForm: React.FC<Props> = ({ course, setShow }) => {
         return;
       }
       setLoading(false);
-      toast.success(res.message);
       setShow(false);
       location.reload();
     } catch (error) {
