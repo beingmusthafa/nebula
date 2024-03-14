@@ -41,6 +41,11 @@ app.use(
     store: new MongoStore({ mongoUrl: process.env.MONGO_URL }),
   })
 );
+
+app.options("*", (req: Request, res: Response, next: NextFunction) => {
+  res.end();
+});
+
 app.post(
   "/stripe-webhook",
   express.raw({ type: "application/json" }),
