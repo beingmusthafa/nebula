@@ -11,13 +11,13 @@ export default interface IProgressRepository {
 
   pushToField(
     filter: object,
-    field: string,
+    field: "videos" | "exercises",
     value: string | mongoose.Types.ObjectId
   );
 
   pullFromField(
     filter: object,
-    field: string,
+    field: "videos" | "exercises",
     value: string | mongoose.Types.ObjectId
   );
 

@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
-import coursesRepositoryInstance, {
-  CoursesRepository,
-} from "../repositories/courses.repository.js";
+import coursesRepositoryInstance from "../repositories/courses.repository.js";
+import progressRepositoryInstance from "../repositories/progress.repository.js";
 import ICourses from "../interfaces/courses.interface.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import PaginationResult from "../types/PaginationResult.js";
@@ -21,6 +20,7 @@ import IChaptersRepository from "../interfaces/repository.interfaces/chapters.re
 import IVideosRepository from "../interfaces/repository.interfaces/videos.repository.interface.js";
 import IExercisesRepository from "../interfaces/repository.interfaces/exercises.repository.interface.js";
 import IEnrollmentsRepository from "../interfaces/repository.interfaces/enrollments.repository.interface.js";
+import IProgressRepository from "../interfaces/repository.interfaces/progress.repository.interface.js";
 
 export class CoursesService implements ICoursesService {
   private coursesRepository: ICoursesRepository;
@@ -29,13 +29,15 @@ export class CoursesService implements ICoursesService {
   private videosRepository: IVideosRepository;
   private exercisesRepository: IExercisesRepository;
   private enrollmentsRepository: IEnrollmentsRepository;
+  private progressRepository: IProgressRepository;
   constructor(
     coursesRepository: ICoursesRepository,
     categoriesRepository: ICategoriesRepository,
     chaptersRepository: IChaptersRepository,
     videosRepository: IVideosRepository,
     exercisesRepository: IExercisesRepository,
-    enrollmentsRepository: IEnrollmentsRepository
+    enrollmentsRepository: IEnrollmentsRepository,
+    progressRepository: IProgressRepository
   ) {
     this.coursesRepository = coursesRepository;
     this.categoriesRepository = categoriesRepository;
@@ -43,6 +45,7 @@ export class CoursesService implements ICoursesService {
     this.videosRepository = videosRepository;
     this.exercisesRepository = exercisesRepository;
     this.enrollmentsRepository = enrollmentsRepository;
+    this.progressRepository = progressRepository;
   }
 
   async findByMultipleCategories(
@@ -649,6 +652,11 @@ export class CoursesService implements ICoursesService {
           statusCode: 404,
         };
       }
+      await this.progressRepository.pushToField(
+        { user: userId, course: courseId },
+        "videos",
+        video._id
+      );
       const nextVideo = await this.videosRepository.findOne({
         course: courseId,
         chapter: chapterId,
@@ -739,6 +747,11 @@ export class CoursesService implements ICoursesService {
           statusCode: 404,
         };
       }
+      await this.progressRepository.pushToField(
+        { user: userId, course: courseId },
+        "exercises",
+        exercise._id
+      );
       const nextExercise = await this.exercisesRepository.findOne({
         course: courseId,
         chapter: chapterId,
@@ -1024,5 +1037,6 @@ export default new CoursesService(
   chaptersRepositoryInstance,
   videosRepositoryInstance,
   exercisesRepositoryInstance,
-  enrollmentsRepositoryInstance
+  enrollmentsRepositoryInstance,
+  progressRepositoryInstance
 );

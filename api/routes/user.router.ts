@@ -105,6 +105,14 @@ router.get(
 );
 
 router.get(
+  "/get-progress/:courseId",
+  (req: Request, res: Response, next: NextFunction) =>
+    authMiddleware.userAuth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userProgressController.getCourseProgress(req, res, next)
+);
+
+router.get(
   "/get-cart-count",
   (req: Request, res: Response, next: NextFunction) =>
     authMiddleware.userAuth(req, res, next),

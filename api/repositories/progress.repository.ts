@@ -23,7 +23,7 @@ export class ProgressRepository implements IProgressRepository {
 
   async pushToField(
     filter: object,
-    field: string,
+    field: "videos" | "exercises",
     value: string | mongoose.Types.ObjectId
   ) {
     try {
@@ -39,7 +39,7 @@ export class ProgressRepository implements IProgressRepository {
 
   async pullFromField(
     filter: object,
-    field: string,
+    field: "videos" | "exercises",
     value: string | mongoose.Types.ObjectId
   ) {
     try {

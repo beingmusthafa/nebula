@@ -25,11 +25,18 @@ interface Tutor {
   inWishlist?: boolean;
   inCart?: boolean;
 }
+interface Progress {
+  chapter: string;
+  target: number;
+  videos: Set<string>;
+  exercises: Set<string>;
+}
 
 const LearnCourseEntry = () => {
   const { courseId } = useParams();
   const { currentUser } = useSelector((state: any) => state.user);
   const [course, setCourse] = useState<ICourse | null>(null);
+  const [progress, setProgress] = useState<Progress | null>(null);
   const [reviews, setReviews] = useState<IReview[]>([]);
   const [reviewed, setReviewed] = useState(false);
   const [selectedReview, setSelectedReview] = useState<IReview | null>(null);
@@ -39,10 +46,31 @@ const LearnCourseEntry = () => {
   const [chapters, setChapters] = useState<IChapter[] | null>(null);
   const [error, setError] = useState("");
   const [rating, setRating] = useState(1);
-  const [tutor, setTutor] = useState<Tutor | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   let commentRef = useRef<HTMLTextAreaElement>(null);
   const navigate = useNavigate();
+  console.log("progress", progress);
+  const getProgress = async () => {
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + `/api/get-progress/${courseId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      ).then((res) => res.json());
+      if (!res.success) throw new Error(res.message);
+      setProgress({
+        ...res.progress,
+        videos: new Set(res.progress.videos),
+        exercises: new Set(res.progress.exercises),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const getReviews = async () => {
     try {
       const res = await fetch(
@@ -89,7 +117,7 @@ const LearnCourseEntry = () => {
   }
   const getData = async () => {
     setLoading(true);
-    await Promise.all([getCourse(), getReviews()]);
+    await Promise.all([getCourse(), getReviews(), getProgress()]);
     setLoading(false);
   };
   useEffect(() => {
@@ -105,12 +133,15 @@ const LearnCourseEntry = () => {
   if (chapters) {
     chapters.forEach((chapter, i) => {
       let content: JSX.Element[] = [];
+      let isChapterCompleted: boolean = true;
       chapter.videos.forEach((video, i) => {
         const mins = Math.floor(video.duration / 60);
         const seconds = Math.floor(video.duration % 60);
         // const duration = `${mins > 9 ? mins : "0" + mins} : ${
         //   seconds > 9 ? seconds : "0" + seconds
         // }`;
+        const isVideoCompleted = progress?.videos.has(video._id) || false;
+        isChapterCompleted = isChapterCompleted && isVideoCompleted;
         content.push(
           <motion.div
             initial={{ opacity: 0 }}
@@ -122,12 +153,18 @@ const LearnCourseEntry = () => {
             <div className="flex items-center _transition-0-3 hover:text-sky-600 hover:font-bold cursor-pointer">
               <i className="bx bx-video text-xl text-slate-500 mr-2"></i>
               {video.title}
+              {isVideoCompleted && (
+                <i className="bx bx-check-circle text-xl text-green-500 ml-2"></i>
+              )}
             </div>
-            <p>{`${mins}m ${seconds}s`}</p>
+            <p className="text-slate-500">{`${mins}m ${seconds}s`}</p>
           </motion.div>
         );
       });
       chapter.exercises.forEach((exercise, i) => {
+        const isExerciseCompleted =
+          progress?.exercises.has(exercise._id) || false;
+        isChapterCompleted = isChapterCompleted && isExerciseCompleted;
         content.push(
           <motion.div
             initial={{ opacity: 0 }}
@@ -139,6 +176,9 @@ const LearnCourseEntry = () => {
             <div className="flex items-center _transition-0-3 hover:text-sky-600 hover:font-bold cursor-pointer">
               <i className="bx bx-notepad text-xl text-slate-500 mr-2"></i>
               {`Exercise - ${i + 1}`}
+              {isExerciseCompleted && (
+                <i className="bx bx-check-circle text-xl text-green-500 ml-2"></i>
+              )}
             </div>
           </motion.div>
         );
@@ -147,7 +187,10 @@ const LearnCourseEntry = () => {
         title: (
           <div className="flex w-full justify-between items-center">
             <p className="text-base">
-              {chapter.order} : {chapter.title}
+              {chapter.order} : {chapter.title}{" "}
+              {isChapterCompleted && (
+                <i className="bx bx-check-circle text-xl text-green-500 ml-2"></i>
+              )}
             </p>
             <Link
               to={`/my-courses/learn/${courseId}/${chapter._id}`}
@@ -260,6 +303,13 @@ const LearnCourseEntry = () => {
                 <i className="bx bx-user-voice text-xl"></i>
                 {course.language}
               </div>
+              {progress?.videos.size! + progress?.exercises.size! ===
+                progress?.target && (
+                <div className="flex items-center text-base gap-2 font-bold text-white justify-center bg-green-500 p-2">
+                  COMPLETED
+                  <i className="bx bx-check-circle text-xl "></i>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col order-1 md:order-2 md:top-40">
