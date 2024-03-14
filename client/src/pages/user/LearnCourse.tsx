@@ -15,6 +15,7 @@ import Loading from "../../components/Loading";
 import ICourse from "../../interfaces/courses.interface";
 import IChapter from "../../interfaces/chapters.interface";
 import IReview from "../../interfaces/reviews.interface";
+import IProgress from "../../interfaces/progress.interface";
 interface Tutor {
   image: string;
   name: string;
@@ -25,18 +26,12 @@ interface Tutor {
   inWishlist?: boolean;
   inCart?: boolean;
 }
-interface Progress {
-  chapter: string;
-  target: number;
-  videos: Set<string>;
-  exercises: Set<string>;
-}
 
 const LearnCourseEntry = () => {
   const { courseId } = useParams();
   const { currentUser } = useSelector((state: any) => state.user);
   const [course, setCourse] = useState<ICourse | null>(null);
-  const [progress, setProgress] = useState<Progress | null>(null);
+  const [progress, setProgress] = useState<IProgress | null>(null);
   const [reviews, setReviews] = useState<IReview[]>([]);
   const [reviewed, setReviewed] = useState(false);
   const [selectedReview, setSelectedReview] = useState<IReview | null>(null);
