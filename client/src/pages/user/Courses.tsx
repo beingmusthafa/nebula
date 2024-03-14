@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import FiltersBar from "../../components/FiltersBar";
-import { useLocation, useParams, useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import Loading from "../../components/Loading";
 import CourseCard from "../../components/CourseCard";
 import CourseSkeleton from "../../components/skeletons/CourseSkeleton";
 import ICourse from "../../interfaces/courses.interface";
