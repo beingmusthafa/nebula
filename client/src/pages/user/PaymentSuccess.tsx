@@ -39,7 +39,7 @@ const PaymentSuccess = () => {
   };
   getCartAndWishlistCount();
   setTimeout(() => {
-    navigate("/");
+    navigate("/my-courses");
   }, 3000);
   return (
     <div className="fixed h-full w-full flex flex-col  items-center pt-64 md:pt-32">
