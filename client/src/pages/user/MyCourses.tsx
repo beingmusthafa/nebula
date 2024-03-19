@@ -83,16 +83,15 @@ const MyCourses = () => {
           courses.map((course) => {
             const completed =
               course.progress.videos.length + course.progress.exercises.length;
-            const completedPercentage = Math.round(
-              (completed / course.progress.target) * 100
-            );
+            const completedPercentage =
+              Math.round((completed / course.progress.target) * 100) || 0;
             let color;
             if (completedPercentage >= 0 && completedPercentage <= 25) {
               color = "bg-red-300";
             } else if (completedPercentage > 25 && completedPercentage <= 50) {
-              color = "bg-yellow-400";
+              color = "bg-orange-400";
             } else if (completedPercentage > 50 && completedPercentage < 75) {
-              color = "bg-green-400";
+              color = "bg-yellow-400";
             } else {
               color = "bg-green-500";
             }
@@ -105,7 +104,11 @@ const MyCourses = () => {
                   redirectTo={`/my-courses/learn/${course._id}`}
                 />
                 <p className="text-slate-400 font-semibold mr-auto mb-2">
-                  {completedPercentage}% COMPLETED
+                  {completedPercentage === 100
+                    ? "COMPLETED"
+                    : completedPercentage > 0
+                    ? `${completedPercentage}% COMPLETED`
+                    : "NOT STARTED"}
                 </p>
                 <div
                   style={{ width: `${completedPercentage}%` }}
