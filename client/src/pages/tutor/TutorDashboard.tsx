@@ -55,7 +55,7 @@ const TutorDashboard = () => {
     try {
       setTopLoading(true);
       const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/admin/get-top-courses",
+        import.meta.env.VITE_API_BASE_URL + "/api/get-top-courses",
         {
           headers: {
             "Authorization": "Bearer " + localStorage.getItem("token"),
