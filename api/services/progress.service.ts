@@ -1,7 +1,8 @@
 import { error } from "console";
 import progressRepositoryInstance from "../repositories/progress.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
-import mongoose from "mongoose";
+import DatabaseId from "../types/databaseId.type.js";
+
 import videosRepositoryInstance from "../repositories/videos.repository.js";
 import exercisesRepositoryInstance from "../repositories/exercises.repository.js";
 import IProgressService from "../interfaces/service.interfaces/progress.service.interface.js";
@@ -24,7 +25,7 @@ export class ProgressService implements IProgressService {
   }
 
   async getAllProgress(
-    userId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId
   ): ServiceResponse<{ progressList: object[] }> {
     try {
       const progressList = await this.progressRepository.find({ user: userId });
@@ -41,8 +42,8 @@ export class ProgressService implements IProgressService {
   }
 
   async createMultipleCourseProgress(
-    userId: string | mongoose.Types.ObjectId,
-    courseIds: string[] | mongoose.Types.ObjectId[]
+    userId: string | DatabaseId,
+    courseIds: string[] | DatabaseId[]
   ): ServiceResponse {
     try {
       const progressData = await Promise.all(
@@ -78,8 +79,8 @@ export class ProgressService implements IProgressService {
   }
 
   async getCourseProgress(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId,
+    courseId: string | DatabaseId
   ): ServiceResponse<{ progress: object }> {
     try {
       const progress = await this.progressRepository.findOne({
@@ -98,9 +99,9 @@ export class ProgressService implements IProgressService {
   }
 
   async addVideoProgress(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId,
-    videoId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId,
+    courseId: string | DatabaseId,
+    videoId: string | DatabaseId
   ) {
     try {
       const validVideo = await this.videosRepository.findOne({
@@ -131,9 +132,9 @@ export class ProgressService implements IProgressService {
     }
   }
   async addExerciseProgress(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId,
-    exerciseId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId,
+    courseId: string | DatabaseId,
+    exerciseId: string | DatabaseId
   ) {
     try {
       const validExercise = await this.exercisesRepository.findOne({

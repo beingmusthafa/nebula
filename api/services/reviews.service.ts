@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import DatabaseId from "../types/databaseId.type.js";
+
 import reviewsRepositoryInstance from "../repositories/reviews.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import coursesRepositoryInstance from "../repositories/courses.repository.js";
@@ -17,7 +18,7 @@ export class ReviewsService implements IReviewsService {
     this.coursesRepository = coursesRepository;
   }
 
-  private async updateAvgReview(courseId: string | mongoose.Types.ObjectId) {
+  private async updateAvgReview(courseId: string | DatabaseId) {
     try {
       const reviews = await this.reviewsRepository.find(
         {
@@ -40,8 +41,8 @@ export class ReviewsService implements IReviewsService {
   }
 
   async addReview(review: {
-    user: mongoose.Types.ObjectId | string;
-    course: string | mongoose.Types.ObjectId;
+    user: DatabaseId | string;
+    course: string | DatabaseId;
     rating: number;
     comment?: string;
   }): ServiceResponse {

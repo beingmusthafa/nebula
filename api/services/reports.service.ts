@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import DatabaseId from "../types/databaseId.type.js";
+
 import adminReportsRepositoryInstance from "../repositories/adminReports.repository.js";
 import tutorReportsRepositoryInstance from "../repositories/tutorReports.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
@@ -24,7 +25,7 @@ export class ReportsService implements IReportsInterface {
   }
 
   async getAdminPdfBuffer(
-    reportId: string | mongoose.Types.ObjectId
+    reportId: string | DatabaseId
   ): ServiceResponse<{ pdfBuffer: string }> {
     try {
       const report = await this.adminReportsRepository.findOne({
@@ -44,7 +45,7 @@ export class ReportsService implements IReportsInterface {
     }
   }
   async getTutorPdfBuffer(
-    reportId: string | mongoose.Types.ObjectId
+    reportId: string | DatabaseId
   ): ServiceResponse<{ pdfBuffer: string }> {
     try {
       const report = await this.tutorReportsRepository.findOne({
@@ -65,7 +66,7 @@ export class ReportsService implements IReportsInterface {
   }
 
   async findAdminReport(
-    reportId: string | mongoose.Types.ObjectId
+    reportId: string | DatabaseId
   ): ServiceResponse<{ report: object }> {
     try {
       const report = await this.adminReportsRepository.findOne({
@@ -84,8 +85,8 @@ export class ReportsService implements IReportsInterface {
   }
 
   async findTutorReport(
-    reportId: string | mongoose.Types.ObjectId,
-    tutorId: string | mongoose.Types.ObjectId
+    reportId: string | DatabaseId,
+    tutorId: string | DatabaseId
   ): ServiceResponse<{ report: object }> {
     try {
       const report = await this.tutorReportsRepository.findOne({
@@ -123,7 +124,7 @@ export class ReportsService implements IReportsInterface {
 
   async getTutorReports(
     type: "weekly" | "monthly" | "yearly",
-    tutorId: string | mongoose.Types.ObjectId
+    tutorId: string | DatabaseId
   ): ServiceResponse<{ reports: object[] }> {
     try {
       const reports = await this.tutorReportsRepository.find({

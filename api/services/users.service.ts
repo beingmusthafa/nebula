@@ -1,6 +1,7 @@
 import usersRepositoryInstance from "../repositories/users.repository.js";
 import otpsRepositoryInstance from "../repositories/otps.repository.js";
-import mongoose from "mongoose";
+import DatabaseId from "../types/databaseId.type.js";
+
 import ServiceResponse from "../types/serviceresponse.type.js";
 import PaginationResult from "../types/PaginationResult.js";
 import mailer, { Mailer } from "../utils/mailer.js";
@@ -60,9 +61,7 @@ export class UsersService implements IUsersService {
     }
   }
 
-  async findById(
-    id: string | mongoose.Types.ObjectId
-  ): ServiceResponse<{ user?: object }> {
+  async findById(id: string | DatabaseId): ServiceResponse<{ user?: object }> {
     const doc = await this.usersRepository.findById(id, { password: 0 });
     if (!doc) {
       return {
@@ -100,7 +99,7 @@ export class UsersService implements IUsersService {
   }
 
   async addInterests(
-    _id: string | mongoose.Types.ObjectId,
+    _id: string | DatabaseId,
     interests: string[]
   ): ServiceResponse<{ user: object }> {
     try {
@@ -154,7 +153,7 @@ export class UsersService implements IUsersService {
   }
 
   async editProfile(
-    userId: string | mongoose.Types.ObjectId,
+    userId: string | DatabaseId,
     data: { email: string; code?: number; name: string; bio: string }
   ): ServiceResponse {
     try {
@@ -189,7 +188,7 @@ export class UsersService implements IUsersService {
   }
 
   async changeProfileImage(
-    userId: string | mongoose.Types.ObjectId,
+    userId: string | DatabaseId,
     image: Buffer
   ): ServiceResponse {
     let newImagePublicId: string;

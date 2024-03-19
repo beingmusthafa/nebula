@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import DatabaseId from "../types/databaseId.type.js";
+
 import chaptersRepositoryInstance from "../repositories/chapters.repository.js";
 import videosRepositoryInstance from "../repositories/videos.repository.js";
 import coursesRepositoryInstance from "../repositories/courses.repository.js";
@@ -81,7 +82,7 @@ export class VideosService implements IVideosService {
   }
 
   async count(
-    chapter: string | mongoose.Types.ObjectId
+    chapter: string | DatabaseId
   ): ServiceResponse<{ count: number }> {
     try {
       const count = await this.videosRepository.count({ chapter });
@@ -99,7 +100,7 @@ export class VideosService implements IVideosService {
 
   async edit(
     id: string,
-    userId: string | mongoose.Types.ObjectId,
+    userId: string | DatabaseId,
     data: { video: Buffer; title: string; order: number }
   ): ServiceResponse {
     try {
@@ -155,7 +156,7 @@ export class VideosService implements IVideosService {
 
   async deleteVideo(
     videoId: string,
-    userId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId
   ): ServiceResponse {
     try {
       const doc = await this.videosRepository.findOne({ _id: videoId });

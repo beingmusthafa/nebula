@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import DatabaseId from "../types/databaseId.type.js";
+
 import coursesRepositoryInstance from "../repositories/courses.repository.js";
 import progressRepositoryInstance from "../repositories/progress.repository.js";
 import ICourses from "../interfaces/courses.interface.js";
@@ -126,7 +127,7 @@ export class CoursesService implements ICoursesService {
 
   async findPaginate(
     page: number,
-    userId: string | mongoose.Types.ObjectId,
+    userId: string | DatabaseId,
     filter?: {
       search?: string;
       minPrice: number;
@@ -225,9 +226,7 @@ export class CoursesService implements ICoursesService {
     }
   }
 
-  async findById(
-    id: string | mongoose.Types.ObjectId
-  ): ServiceResponse<{ doc?: object }> {
+  async findById(id: string | DatabaseId): ServiceResponse<{ doc?: object }> {
     try {
       const doc = await this.coursesRepository.findById(id, {
         populate: { path: "tutor", select: "name image bio" },
@@ -257,8 +256,8 @@ export class CoursesService implements ICoursesService {
       description: string;
       price: number;
       discount: number;
-      category: mongoose.Types.ObjectId | string;
-      tutor: mongoose.Types.ObjectId | string;
+      category: DatabaseId | string;
+      tutor: DatabaseId | string;
       requirements: string[];
       benefits: string[];
       language: string;
@@ -342,14 +341,14 @@ export class CoursesService implements ICoursesService {
       price: number;
       discount: number;
       thumbnail: string;
-      category: mongoose.Types.ObjectId | string;
-      tutor: mongoose.Types.ObjectId | string;
+      category: DatabaseId | string;
+      tutor: DatabaseId | string;
       requirements: string[];
       benefits: string[];
       language: string;
     },
     image: Buffer | undefined,
-    userId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId
   ): ServiceResponse {
     try {
       const existingDoc = await this.coursesRepository.findById(id);
@@ -444,7 +443,7 @@ export class CoursesService implements ICoursesService {
   }
 
   async editPriceDiscount(
-    userId: string | mongoose.Types.ObjectId,
+    userId: string | DatabaseId,
     courseId: string,
     data: { price: number; discount: number }
   ): ServiceResponse {
@@ -531,7 +530,7 @@ export class CoursesService implements ICoursesService {
   }
 
   async getPurchasedCourses(
-    userId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId
   ): ServiceResponse<{ courses: object[] }> {
     try {
       const purchasedCourses = await this.enrollmentsRepository.find(
@@ -557,9 +556,9 @@ export class CoursesService implements ICoursesService {
   }
 
   async getChapterRedirectInfo(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId,
-    chapterId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId,
+    courseId: string | DatabaseId,
+    chapterId: string | DatabaseId
   ): ServiceResponse<{ nextResource?: string }> {
     try {
       const enrolled = await this.enrollmentsRepository.findOne({
@@ -618,23 +617,23 @@ export class CoursesService implements ICoursesService {
   }
 
   async getVideoDetails(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId,
-    chapterId: string | mongoose.Types.ObjectId,
+    userId: string | DatabaseId,
+    courseId: string | DatabaseId,
+    chapterId: string | DatabaseId,
     videoOrder: number
   ): ServiceResponse<{
     video?: object;
     nextData?: {
       nextVideo?: boolean;
       nextExercise?: Boolean;
-      nextChapter?: boolean | string | mongoose.Types.ObjectId;
+      nextChapter?: boolean | string | DatabaseId;
     };
   }> {
     try {
       let nextData: {
         nextVideo?: boolean;
         nextExercise?: Boolean;
-        nextChapter?: boolean | string | mongoose.Types.ObjectId;
+        nextChapter?: boolean | string | DatabaseId;
       } = {
         nextVideo: false,
         nextExercise: false,
@@ -716,21 +715,21 @@ export class CoursesService implements ICoursesService {
     }
   }
   async getExerciseDetails(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId,
-    chapterId: string | mongoose.Types.ObjectId,
+    userId: string | DatabaseId,
+    courseId: string | DatabaseId,
+    chapterId: string | DatabaseId,
     exerciseOrder: number
   ): ServiceResponse<{
     exercise?: object;
     nextData?: {
       nextExercise?: boolean;
-      nextChapter?: boolean | string | mongoose.Types.ObjectId;
+      nextChapter?: boolean | string | DatabaseId;
     };
   }> {
     try {
       let nextData: {
         nextExercise: boolean;
-        nextChapter: false | mongoose.Types.ObjectId;
+        nextChapter: false | DatabaseId;
       } = {
         nextExercise: false,
         nextChapter: false,
@@ -798,7 +797,7 @@ export class CoursesService implements ICoursesService {
   }
 
   async getCreating(
-    userId?: string | mongoose.Types.ObjectId
+    userId?: string | DatabaseId
   ): ServiceResponse<{ courses: object[] }> {
     try {
       let filter: {
@@ -822,7 +821,7 @@ export class CoursesService implements ICoursesService {
   }
 
   async getPending(
-    userId?: string | mongoose.Types.ObjectId
+    userId?: string | DatabaseId
   ): ServiceResponse<{ courses: object[] }> {
     try {
       let filter: {
@@ -846,7 +845,7 @@ export class CoursesService implements ICoursesService {
   }
 
   async getPublished(
-    userId?: string | mongoose.Types.ObjectId
+    userId?: string | DatabaseId
   ): ServiceResponse<{ courses: object[] }> {
     try {
       let filter: {
@@ -870,8 +869,8 @@ export class CoursesService implements ICoursesService {
   }
 
   async makePublishRequest(
-    courseId: string | mongoose.Types.ObjectId,
-    userId: string | mongoose.Types.ObjectId
+    courseId: string | DatabaseId,
+    userId: string | DatabaseId
   ): ServiceResponse {
     try {
       const course = await this.coursesRepository.findById(courseId);
@@ -905,8 +904,8 @@ export class CoursesService implements ICoursesService {
   }
 
   async cancelPublishRequest(
-    courseId: string | mongoose.Types.ObjectId,
-    userId: string | mongoose.Types.ObjectId
+    courseId: string | DatabaseId,
+    userId: string | DatabaseId
   ): ServiceResponse {
     try {
       const course = await this.coursesRepository.findById(courseId);
@@ -939,9 +938,7 @@ export class CoursesService implements ICoursesService {
     }
   }
 
-  async approveCourse(
-    courseId: string | mongoose.Types.ObjectId
-  ): ServiceResponse {
+  async approveCourse(courseId: string | DatabaseId): ServiceResponse {
     try {
       const course = await this.coursesRepository.findById(courseId);
       if (course.status !== "pending") {
@@ -966,9 +963,7 @@ export class CoursesService implements ICoursesService {
     }
   }
 
-  async rejectCourse(
-    courseId: string | mongoose.Types.ObjectId
-  ): ServiceResponse {
+  async rejectCourse(courseId: string | DatabaseId): ServiceResponse {
     try {
       const course = await this.coursesRepository.findById(courseId);
       if (course.status !== "pending") {
@@ -993,9 +988,7 @@ export class CoursesService implements ICoursesService {
     }
   }
 
-  async blockCourse(
-    courseId: string | mongoose.Types.ObjectId
-  ): ServiceResponse {
+  async blockCourse(courseId: string | DatabaseId): ServiceResponse {
     try {
       await this.coursesRepository.updateOne(
         { _id: courseId },
@@ -1012,9 +1005,7 @@ export class CoursesService implements ICoursesService {
     }
   }
 
-  async unblockCourse(
-    courseId: string | mongoose.Types.ObjectId
-  ): ServiceResponse {
+  async unblockCourse(courseId: string | DatabaseId): ServiceResponse {
     try {
       await this.coursesRepository.updateOne(
         { _id: courseId },

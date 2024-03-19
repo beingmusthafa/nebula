@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import DatabaseId from "../types/databaseId.type.js";
+
 import wishlistsRepositoryInstance from "../repositories/wishlists.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import IWishlistsService from "../interfaces/service.interfaces/wishlists.service.interface.js";
@@ -10,7 +11,7 @@ export class WishlistsService implements IWishlistsService {
   }
   I;
   async getCount(
-    userId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId
   ): ServiceResponse<{ count: number }> {
     try {
       const count = await this.wishlistsRepository.count({ user: userId });
@@ -27,7 +28,7 @@ export class WishlistsService implements IWishlistsService {
   }
 
   async getWishlist(
-    userId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId
   ): ServiceResponse<{ docs?: object[] }> {
     try {
       const result = await this.wishlistsRepository.find(
@@ -54,8 +55,8 @@ export class WishlistsService implements IWishlistsService {
   }
 
   async addToWishlist(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId,
+    courseId: string | DatabaseId
   ): ServiceResponse {
     try {
       const wishlistExists = await this.wishlistsRepository.findOne({
@@ -81,8 +82,8 @@ export class WishlistsService implements IWishlistsService {
   }
 
   async removeFromWishlist(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId,
+    courseId: string | DatabaseId
   ): ServiceResponse {
     try {
       await this.wishlistsRepository.deleteOne({
@@ -101,8 +102,8 @@ export class WishlistsService implements IWishlistsService {
   }
 
   async checkWishlist(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId,
+    courseId: string | DatabaseId
   ) {
     try {
       const wishlistExists = await this.wishlistsRepository.findOne({

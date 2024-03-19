@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import DatabaseId from "../types/databaseId.type.js";
+
 import IChapters from "../interfaces/chapters.interface.js";
 import chaptersRepositoryInstance from "../repositories/chapters.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
@@ -25,7 +26,7 @@ export class ChaptersService implements IChaptersService {
   }
 
   async getByCourse(
-    course: string | mongoose.Types.ObjectId
+    course: string | DatabaseId
   ): ServiceResponse<{ chapters: object[] }> {
     try {
       const chapters = await this.chaptersRepository.find(
@@ -171,9 +172,7 @@ export class ChaptersService implements IChaptersService {
     }
   }
 
-  async count(
-    course: string | mongoose.Types.ObjectId
-  ): ServiceResponse<{ count: number }> {
+  async count(course: string | DatabaseId): ServiceResponse<{ count: number }> {
     try {
       const count = await this.chaptersRepository.count({ course });
       return {

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import DatabaseId from "../types/databaseId.type.js";
 import cartsRepositoryInstance from "../repositories/carts.repository.js";
 import ServiceResponse from "../types/serviceresponse.type.js";
 import ICourses from "../interfaces/courses.interface.js";
@@ -26,8 +26,8 @@ export class CartsService implements ICartsService {
   }
 
   private async isActionValid(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId,
+    courseId: string | DatabaseId
   ) {
     try {
       const isOwnCourse = this.coursesRepository.findOne({
@@ -58,7 +58,7 @@ export class CartsService implements ICartsService {
   }
 
   async getCount(
-    userId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId
   ): ServiceResponse<{ count: number }> {
     try {
       const count = await this.cartsRepository.count({ user: userId });
@@ -74,7 +74,7 @@ export class CartsService implements ICartsService {
     }
   }
 
-  async getCart(userId: string | mongoose.Types.ObjectId): ServiceResponse<{
+  async getCart(userId: string | DatabaseId): ServiceResponse<{
     docs?: ICourses[];
     bill?: { totalPrice: number; totalDiscount: number; finalTotal: number };
   }> {
@@ -112,8 +112,8 @@ export class CartsService implements ICartsService {
   }
 
   async addtoCart(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId,
+    courseId: string | DatabaseId
   ): ServiceResponse {
     try {
       const isActionValid = await this.isActionValid(userId, courseId);
@@ -136,8 +136,8 @@ export class CartsService implements ICartsService {
   }
 
   async removeFromCart(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId,
+    courseId: string | DatabaseId
   ): ServiceResponse {
     try {
       await this.cartsRepository.deleteOne({ user: userId, course: courseId });
@@ -148,10 +148,7 @@ export class CartsService implements ICartsService {
     }
   }
 
-  async checkCart(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId
-  ) {
+  async checkCart(userId: string | DatabaseId, courseId: string | DatabaseId) {
     try {
       const cartExists = await this.cartsRepository.findOne({
         user: userId,

@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import DatabaseId from "../types/databaseId.type.js";
+
 import IExercises from "../interfaces/exercises.interface.js";
 import chaptersRepositoryInstance from "../repositories/chapters.repository.js";
 import exercisesRepositoryInstance from "../repositories/exercises.repository.js";
@@ -55,7 +56,7 @@ export class ExercisesService implements IExercisesService {
     exercise: {
       question: string;
       options: string[];
-      chapter: string | mongoose.Types.ObjectId;
+      chapter: string | DatabaseId;
       order: number;
       answer: "A" | "B" | "C" | "D";
     }
@@ -87,7 +88,7 @@ export class ExercisesService implements IExercisesService {
   }
 
   async count(
-    chapter: string | mongoose.Types.ObjectId
+    chapter: string | DatabaseId
   ): ServiceResponse<{ count: number }> {
     try {
       const count = await this.exercisesRepository.count({ chapter });

@@ -3,7 +3,8 @@ import cartsRepositoryInstance from "../repositories/carts.repository.js";
 import wishlistRepositoryInstance from "../repositories/wishlists.repository.js";
 import progressRepositoryInstance from "../repositories/progress.repository.js";
 import progressServiceInstance from "./progress.service.js";
-import mongoose from "mongoose";
+import DatabaseId from "../types/databaseId.type.js";
+
 import ServiceResponse from "../types/serviceresponse.type.js";
 import coursesRepositoryInstance from "../repositories/courses.repository.js";
 import Stripe from "stripe";
@@ -15,6 +16,7 @@ import ICartsRepository from "../interfaces/repository.interfaces/carts.reposito
 import IWishlistsRepository from "../interfaces/repository.interfaces/wishlists.repository.interface.js";
 import IProgressRepository from "../interfaces/repository.interfaces/progress.repository.interface.js";
 import IProgressService from "../interfaces/service.interfaces/progress.service.interface.js";
+import mongoose from "mongoose";
 dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_KEY);
 
@@ -41,8 +43,8 @@ export class EnrollmentsService implements IEnrollmentsService {
     this.progressService = progressService;
   }
   private async isActionValid(
-    userId: string | mongoose.Types.ObjectId,
-    courseId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId,
+    courseId: string | DatabaseId
   ) {
     try {
       const isOwnCourse = this.coursesRepository.findOne({
@@ -65,7 +67,7 @@ export class EnrollmentsService implements IEnrollmentsService {
   }
 
   async createCheckoutSession(
-    userId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId
   ): ServiceResponse<{ sessionId?: string }> {
     try {
       const carts = (await this.cartsRepository.find(
@@ -160,7 +162,7 @@ export class EnrollmentsService implements IEnrollmentsService {
   }
 
   async getEnrollments(
-    userId: string | mongoose.Types.ObjectId
+    userId: string | DatabaseId
   ): ServiceResponse<{ enrollments: object[] }> {
     try {
       const enrollments = await this.enrollmentsRepository.find(
@@ -188,7 +190,7 @@ export class EnrollmentsService implements IEnrollmentsService {
   }
 
   async getGraphData(
-    tutorId?: string | mongoose.Types.ObjectId
+    tutorId?: string | DatabaseId
   ): ServiceResponse<{ courseEnrollmentData: object[] }> {
     try {
       const enrollmentsAggregate = await this.enrollmentsRepository.aggregate([
@@ -239,7 +241,7 @@ export class EnrollmentsService implements IEnrollmentsService {
   }
 
   async getTopCourses(
-    tutorId?: string | mongoose.Types.ObjectId
+    tutorId?: string | DatabaseId
   ): ServiceResponse<{ courses: object[] }> {
     try {
       const enrollmentsAggregate = await this.enrollmentsRepository.aggregate([
