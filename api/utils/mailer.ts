@@ -18,7 +18,6 @@ export class Mailer {
     this.transporter = transporter;
   }
   async sendRecoveryMail(email: string, code: number) {
-    console.log("started sending");
     const mail = {
       from: process.env.GMAIL,
       to: email,

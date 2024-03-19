@@ -332,7 +332,6 @@ const scheduleReportGeneration = () => {
       generateTutorReport("yearly", course._id);
     });
   });
-  console.log("scheduled cron jobs for report generation");
 };
 
 export const testGeneration = async () => {
@@ -348,7 +347,6 @@ export const testGeneration = async () => {
     tutors.forEach(async (tutor) => {
       generateTutorReport("monthly", tutor._id);
     });
-    console.log("tutor test generation started");
   } catch (error) {
     console.log(error);
   }

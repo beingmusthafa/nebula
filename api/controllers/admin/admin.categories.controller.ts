@@ -32,7 +32,6 @@ class AdminCategoriesController {
   async edit(req: Request, res: Response, next: NextFunction) {
     try {
       const image = req.file;
-      console.log(image);
       const { id, name } = req.body;
       const response = await this.categoriesService.edit(id, {
         name,

@@ -43,7 +43,6 @@ export const generateReportPdf = async (
     });
 
     await browser.close();
-    console.log("generated report pdf");
     return pdfBuffer;
   } catch (error) {
     console.log(error);

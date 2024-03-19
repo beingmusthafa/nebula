@@ -20,7 +20,6 @@ export class ExercisesService implements IExercisesService {
 
   async create(exercise: IExercises): ServiceResponse {
     try {
-      console.log({ exercise });
       if (exercise.question.trim().length < 5) {
         return {
           success: false,

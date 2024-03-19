@@ -25,7 +25,6 @@ class AuthController {
   async finishSignUp(req: Request, res: Response, next: NextFunction) {
     try {
       const { userDetails, code } = req.body;
-      console.log({ code });
       const response = await this.authService.finishSignUp(
         userDetails,
         Number(code)
@@ -53,7 +52,6 @@ class AuthController {
 
   async googleAuth(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log("reached");
       const response = await this.authService.googleAuth(req.body);
       if (!response.success) {
         return next(customError(response.statusCode, response.message));

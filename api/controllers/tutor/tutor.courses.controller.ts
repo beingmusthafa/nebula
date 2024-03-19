@@ -34,8 +34,6 @@ class TutorController {
 
   async createCourse(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log("req", req.file);
-      console.log("req body:", req.body);
       const {
         title,
         description,

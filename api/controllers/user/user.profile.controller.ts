@@ -20,7 +20,6 @@ class UserProfileController {
   async addInterests(req: Request, res: Response, next: NextFunction) {
     try {
       const { interests } = req.body;
-      console.log("interests::::", interests);
       const response = await this.usersService.addInterests(
         req.session.user?._id,
         interests

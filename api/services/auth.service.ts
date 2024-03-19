@@ -199,13 +199,11 @@ export class AuthService implements IAuthService {
     name: string;
   }): ServiceResponse<{ token?: string; doc?: object }> {
     try {
-      console.log("details", details);
       const existingUser = await this.usersRepository.findByEmail(
         details.email
       );
       if (existingUser) {
         const { password: _password, ...rest } = existingUser;
-        console.log(rest);
         return {
           success: true,
           message: "User logged in",
@@ -290,7 +288,6 @@ export class AuthService implements IAuthService {
       );
       const { password: _password, ...doc } = user;
       const token = this.generateToken({ id: user._id.toString() });
-      console.log(doc);
       return {
         success: true,
         message: "Password changed",

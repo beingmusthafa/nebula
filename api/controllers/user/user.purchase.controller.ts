@@ -72,7 +72,6 @@ class UserPurchaseController {
   async addToWishlist(req: Request, res: Response, next: NextFunction) {
     try {
       const { courseId } = req.body;
-      console.log("this is user", req.session.user);
       const userId = req.session.user._id;
       const response = await this.wishlistsService.addToWishlist(
         userId,

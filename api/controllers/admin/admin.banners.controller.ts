@@ -58,7 +58,6 @@ class AdminBannersController {
   async enableBanner(req: Request, res: Response, next: NextFunction) {
     try {
       const { bannerId } = req.params;
-      console.log("banner", bannerId);
       const response = await this.bannersService.toggleBanner(
         bannerId,
         "enable"
@@ -71,7 +70,6 @@ class AdminBannersController {
   async disableBanner(req: Request, res: Response, next: NextFunction) {
     try {
       const { bannerId } = req.params;
-      console.log("banner", bannerId);
       const response = await this.bannersService.toggleBanner(
         bannerId,
         "disable"
