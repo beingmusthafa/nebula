@@ -263,7 +263,7 @@ const Profile = () => {
                       ref={bioRef}
                       rows={2}
                       defaultValue={currentUser.bio}
-                      className="w-80 p-2 border border-black"
+                      className="w-80 p-2 border border-black _no-scrollbar"
                     />
                   ) : (
                     currentUser?.bio || "No bio provided"

@@ -26,6 +26,10 @@
 input[type="file"]::file-selector-button {
   display: none;
 }
+textarea:focus,
+input:focus {
+  outline: none;
+}
 body {
   font-size: 0.8rem;
   font-family: "DM Sans", sans-serif;
