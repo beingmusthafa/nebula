@@ -11,7 +11,6 @@ export class ReviewsRepository implements IReviewsRepository {
     rating: number;
     comment?: string;
   }) {
-    console.log("raeched :::: repo");
     try {
       const review = await this.model.create(data);
       return review;

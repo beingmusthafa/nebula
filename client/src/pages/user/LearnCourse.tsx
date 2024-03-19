@@ -43,8 +43,6 @@ const LearnCourseEntry = () => {
   const [rating, setRating] = useState(1);
   const [loading, setLoading] = useState<boolean>(true);
   let commentRef = useRef<HTMLTextAreaElement>(null);
-  const navigate = useNavigate();
-  console.log("progress", progress);
   const getProgress = async () => {
     try {
       const res = await fetch(

@@ -50,7 +50,6 @@ const MyCourses = () => {
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       return res.progressList;
-      console.log(res.progressList);
     } catch (error) {
       console.log(error);
     }

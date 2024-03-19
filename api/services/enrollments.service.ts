@@ -151,10 +151,7 @@ export class EnrollmentsService implements IEnrollmentsService {
         );
         await this.cartsRepository.deleteMany({ user: userId });
         await this.wishlistsRepository.deleteMany({ user: userId });
-        console.log("payment succeeded");
         return;
-      } else {
-        console.log("Payment failed");
       }
     } catch (error) {
       console.log(error);
@@ -240,16 +237,6 @@ export class EnrollmentsService implements IEnrollmentsService {
       throw error;
     }
   }
-
-  // async getMonthlyStats(
-  //   tutorId?: string | mongoose.Types.ObjectId
-  // ): ServiceResponse {
-  //   try {
-  //   } catch (error) {
-  //     console.log(error);
-  //     throw error;
-  //   }
-  // }
 
   async getTopCourses(
     tutorId?: string | mongoose.Types.ObjectId

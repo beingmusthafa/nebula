@@ -11,7 +11,6 @@ const GoogleAuth = () => {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      console.log(result);
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/auth/google-auth",
         {
@@ -25,9 +24,7 @@ const GoogleAuth = () => {
           }),
         }
       ).then((res) => res.json());
-      console.log("res", res);
       if (!res.success) return console.log(res.message);
-      console.log(res.user);
       dispatch(signIn(res.user));
       localStorage.setItem("token", res.token);
       navigate("/");

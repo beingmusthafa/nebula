@@ -28,7 +28,6 @@ interface Props {
 }
 
 const Accordions: React.FC<Props> = ({ data }) => {
-  console.log(data);
   return (
     <>
       <div className="flex flex-col px-10 w-full mx-auto items-center text-base mb-24">

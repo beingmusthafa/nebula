@@ -82,7 +82,6 @@ const Header = () => {
       ).then((res) => res.json());
       if (!res.success) throw new Error(res.message);
       setResult(res?.result.docs);
-      console.log(res.result.docs);
     } catch (error) {
       console.log(error);
     }
@@ -155,7 +154,6 @@ const Header = () => {
                 <div
                   key={course._id}
                   onClick={() => {
-                    console.log("clicked");
                     setResult([]);
                     setSearch("");
                     location.href = "/course-details/" + course._id;

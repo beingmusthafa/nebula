@@ -21,7 +21,6 @@ const Timer: React.FC<Props> = ({ time, onComplete }) => {
   React.useEffect(() => {
     setRemainingTime(time);
   }, [time]);
-  console.log(remainingTime);
   if (remainingTime === 0) return null;
   return (
     <p className="text-center">

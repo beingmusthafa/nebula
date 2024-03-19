@@ -68,7 +68,6 @@ const ChatRoom: React.FC<Props> = ({ courseId, setShow }) => {
       course: courseId,
       createdAt: new Date(),
     };
-    console.log("sent message");
     socket.emit("send-message", message);
     messageRef.current.value = "";
     if (chatContainerRef.current) {
@@ -82,12 +81,8 @@ const ChatRoom: React.FC<Props> = ({ courseId, setShow }) => {
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
     }
-    socket.on("connect", () => {
-      console.log("connected socket");
-    });
     socket.emit("join-course-room", courseId);
     socket.on("receive-message", (data: Message) => {
-      console.log("receieved mesg::::", data.message);
       setMessages((prevMessages) => [...prevMessages, data]);
     });
     return () => {

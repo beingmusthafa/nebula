@@ -83,7 +83,6 @@ const EditCourse = () => {
     fetchCategories();
   }, []);
   function addBenefit(ben: string | undefined) {
-    console.log(ben);
     if (!ben || !ben.trim()) return;
     let newSet = new Set(benefits);
     newSet.add(ben.trim());
