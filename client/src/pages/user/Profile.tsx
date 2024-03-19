@@ -63,7 +63,12 @@ const Profile = () => {
         bio: bioRef.current?.value,
       };
       if (email !== currentUser.email) {
-        body = { ...body, code: verificationRef.current?.value };
+        const code = verificationRef.current?.value;
+        if (!code) {
+          toast.dismiss(toastId);
+          return setError("Verification code is required");
+        }
+        body = { ...body, code: code };
       }
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/edit-profile",
