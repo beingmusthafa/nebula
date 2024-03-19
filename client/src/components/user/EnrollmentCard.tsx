@@ -1,7 +1,10 @@
+import { Link } from "react-router-dom";
+
 interface Enrollment {
   _id: string;
-  course: { title: string; thumbnail: string; price: number };
-  createdAt: any;
+  course: { _id: string; title: string; thumbnail: string; price: number };
+  createdAt: string;
+  price: number;
 }
 interface Props {
   enrollment: Enrollment;
@@ -9,7 +12,10 @@ interface Props {
 const EnrollmentCard: React.FC<Props> = ({ enrollment }) => {
   const enrollmentDate = new Date(enrollment.createdAt);
   return (
-    <div className="w-full md:w-[50vw] p-6 border flex flex-col md:mx-auto mx-4">
+    <Link
+      to={"/my-courses/learn/" + enrollment.course._id}
+      className="w-full md:w-[50vw] p-6 border flex flex-col md:mx-auto mx-4"
+    >
       <div className="flex justify-evenly items-center">
         <img
           src={enrollment.course.thumbnail}
@@ -21,12 +27,15 @@ const EnrollmentCard: React.FC<Props> = ({ enrollment }) => {
         </p>
       </div>
       <div className="flex justify-evenly items-center mt-2">
-        <p className="font-semibold text-xl">899</p>
-        <p className="font-semibold text-slate-500">{`${enrollmentDate.getDate()}-${
-          enrollmentDate.getMonth() + 1
-        }-${enrollmentDate.getFullYear()}`}</p>
+        <p className="font-semibold text-xl">&#8377; {enrollment.price}</p>
+        <p className="font-semibold text-slate-500">
+          Date:{" "}
+          {`${enrollmentDate.getDate()}-${
+            enrollmentDate.getMonth() + 1
+          }-${enrollmentDate.getFullYear()}`}
+        </p>
       </div>
-    </div>
+    </Link>
   );
 };
 
