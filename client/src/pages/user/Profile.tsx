@@ -44,7 +44,7 @@ const Profile = () => {
       setEnrollments(res.enrollments);
     } catch (error: any) {
       console.log(error);
-      toast.error(error.message || error);
+      toast.error("Something went wrong");
     }
   };
 
