@@ -2,14 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import Loading from "../../components/Loading";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import ChangeEmailVerification from "../../components/user/ChangeEmailVerification";
 import { updateDetails } from "../../redux/user/userSlice";
 import EnrollmentCard from "../../components/user/EnrollmentCard";
 
 interface Enrollment {
   _id: string;
-  course: { title: string; thumbnail: string; price: number };
-  createdAt: Date;
+  course: { _id: string; title: string; thumbnail: string; price: number };
+  price: number;
+  createdAt: string;
 }
 const Profile = () => {
   const { currentUser } = useSelector((state: any) => state.user);
