@@ -150,6 +150,7 @@ const CourseDetails = () => {
   }
   const addtoCart = async () => {
     if (!currentUser) return navigate("/sign-in");
+    setLoading(true);
     const toastId = toast.loading("Adding to cart");
     try {
       const res = await fetch(
@@ -167,16 +168,19 @@ const CourseDetails = () => {
       ).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
+      setLoading(false);
       setCartCount((prev) => prev + 1);
       const newData = { inCart: true, inWishlist: data?.inWishlist };
       setData(newData);
     } catch (error) {
+      setLoading(false);
       toast.dismiss(toastId);
       console.log(error);
     }
   };
   const removeFromCart = async () => {
     if (!currentUser) return navigate("/sign-in");
+    setLoading(true);
     const toastId = toast.loading("Removing from cart");
     try {
       const res = await fetch(
@@ -194,15 +198,18 @@ const CourseDetails = () => {
       ).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
+      setLoading(false);
       setCartCount((prev) => prev - 1);
       const newData = { inCart: false, inWishlist: data?.inWishlist };
       setData(newData);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
   const addtoWishlist = async () => {
     if (!currentUser) return navigate("/sign-in");
+    setLoading(true);
     const toastId = toast.loading("Adding to wishlist");
     try {
       const res = await fetch(
@@ -220,15 +227,18 @@ const CourseDetails = () => {
       ).then((res) => res.json());
       toast.dismiss(toastId);
       if (!res.success) throw new Error(res.message);
+      setLoading(false);
       setWishlistCount((prev) => prev + 1);
       const newData = { inCart: data?.inCart, inWishlist: true };
       setData(newData);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
   const removeFromWishlist = async () => {
     if (!currentUser) return navigate("/sign-in");
+    setLoading(true);
     const toastId = toast.loading("Removing from wishlist");
     try {
       const res = await fetch(
@@ -245,11 +255,16 @@ const CourseDetails = () => {
         }
       ).then((res) => res.json());
       toast.dismiss(toastId);
-      if (!res.success) return toast.error(res.message);
+      if (!res.success) {
+        setLoading(false);
+        return toast.error(res.message);
+      }
+      setLoading(false);
       setWishlistCount((prev) => prev - 1);
       const newData = { inCart: data?.inCart, inWishlist: false };
       setData(newData);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -337,29 +352,36 @@ const CourseDetails = () => {
               />
               <div className="flex mx-auto gap-4 mt-4">
                 {currentUser && data?.inCart ? (
-                  <div
+                  <button
+                    disabled={loading}
                     onClick={removeFromCart}
                     className="_fill-btn-blue flex items-center gap-2"
                   >
                     Remove from cart <i className="bx bx-trash text-xl"></i>
-                  </div>
+                  </button>
                 ) : (
-                  <div
+                  <button
+                    disabled={loading}
                     onClick={addtoCart}
                     className="_fill-btn-blue flex items-center gap-2"
                   >
                     Add to cart <i className="bx bx-cart-add text-xl"></i>
-                  </div>
+                  </button>
                 )}
                 {currentUser && data?.inWishlist ? (
                   <button
+                    disabled={loading}
                     className="_fill-btn-blue"
                     onClick={removeFromWishlist}
                   >
                     <i className="bx bxs-heart text-xl"></i>
                   </button>
                 ) : (
-                  <button className="_fill-btn-blue" onClick={addtoWishlist}>
+                  <button
+                    disabled={loading}
+                    className="_fill-btn-blue"
+                    onClick={addtoWishlist}
+                  >
                     <i className="bx bx-heart text-xl"></i>
                   </button>
                 )}
