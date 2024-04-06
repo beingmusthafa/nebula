@@ -20,7 +20,7 @@ const ConfirmationPopup_Admin: React.FC<Props> = ({
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3, type: "spring" }}
         style={{ zIndex: 15 }}
-        className="_screen-center flex flex-col p-6 border-4 _border-blue-black-gradient2 bg-white max-w-96"
+        className="_screen-center flex flex-col p-6 border-4 _border-blue-black-gradient2 bg-white z-30 max-w-96"
       >
         <div className="text-base font-medium text-center">{confirmText}</div>
         <div className="flex gap-10 mx-auto mt-10">

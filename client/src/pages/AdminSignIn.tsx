@@ -35,6 +35,7 @@ const AdminSignIn = () => {
       return setError(res.message);
     }
     dispatch(signIn(res.user));
+    localStorage.setItem("token", res.token);
     setError(null);
     navigate("/admin/users");
   }
