@@ -5,7 +5,9 @@ import { Link } from "react-router-dom";
 import ICourse from "../../interfaces/courses.interface";
 
 const Home = () => {
-  const [images, setImages] = useState<{ image: string; link: string }[]>([]);
+  const [images, setImages] = useState<
+    { _id: string; image: string; link: string }[]
+  >([]);
   const [lists, setLists] = useState<
     { category: string; courses: ICourse[] }[]
   >([]);
@@ -36,7 +38,7 @@ const Home = () => {
     const timer = setTimeout(() => {
       const nextIndex = (currentIndex + 1) % images.length;
       setCurrentIndex(nextIndex);
-    }, 4000);
+    }, 3000);
     return () => {
       clearTimeout(timer);
     };
@@ -48,7 +50,7 @@ const Home = () => {
           <img
             className="w-full object-cover"
             src={images[currentIndex]?.image}
-            alt="Banner"
+            alt="http://res.cloudinary.com/dfezowkdc/image/upload/v1712436612/vgqi18yfo18xl69m4pgt.jpg"
           />
         </Link>
       ) : (
@@ -65,7 +67,7 @@ const Home = () => {
           (list, i) =>
             list.courses.length > 0 && (
               <>
-                <div key={i} className="_section-title">
+                <div key={list.category} className="_section-title">
                   {list.category} courses
                 </div>
                 <div className="flex gap-4 whitespace-nowrap overflow-x-auto px-6 _no-scrollbar bg-white">
