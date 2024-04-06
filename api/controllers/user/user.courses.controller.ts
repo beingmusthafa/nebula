@@ -36,7 +36,7 @@ class UserCoursesController {
       const { results } = await this.coursesService.findByMultipleCategories(
         req.session.user
       );
-      const response = await this.bannersService.getBanners(true);
+      const response = await this.bannersService.getBanners(false);
       res
         .status(response.statusCode)
         .json({ ...response, categories: results });
