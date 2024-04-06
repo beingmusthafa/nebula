@@ -4,6 +4,9 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { updateDetails } from "../../redux/user/userSlice";
 import EnrollmentCard from "../../components/user/EnrollmentCard";
+import { signOut } from "../../redux/user/userSlice";
+import ConfirmationPopup from "../../components/ConfirmationPopup";
+import { useNavigate } from "react-router-dom";
 
 interface Enrollment {
   _id: string;
@@ -22,11 +25,13 @@ const Profile = () => {
   const [verificationComplete, setVerificationComplete] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   let nameRef = useRef<HTMLInputElement>(null);
   let emailRef = useRef<HTMLInputElement>(null);
   let bioRef = useRef<HTMLTextAreaElement>(null);
   let verificationRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const getEnrollments = async () => {
     setLoading(true);
     try {
@@ -181,13 +186,42 @@ const Profile = () => {
     if (!image) return;
     changeImage();
   }, [image]);
-
+  const logout = async () => {
+    const toastId = toast.loading("Logging out");
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_API_BASE_URL + "/api/auth/sign-out",
+        {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      ).then((res) => res.json());
+      if (!res.success) throw new Error(res.message);
+      toast.dismiss(toastId);
+      dispatch(signOut());
+      setShowLogoutConfirm(false);
+      localStorage.removeItem("token");
+      navigate("/sign-in");
+    } catch (error: any) {
+      setShowLogoutConfirm(false);
+      toast.dismiss(toastId);
+      console.log(error.message);
+    }
+  };
   return (
     <>
       {loading ? (
         <Loading />
       ) : (
         <>
+          {showLogoutConfirm && (
+            <ConfirmationPopup
+              confirmText="Are you sure you want to logout?"
+              onCancel={() => setShowLogoutConfirm(false)}
+              onConfirm={logout}
+            />
+          )}
           <div className="flex flex-col md:flex-row items-center gap-10 justify-center w-full p-10">
             <div className="flex flex-col items-start gap-4 order-2 md:order-1">
               {error && (
@@ -319,6 +353,12 @@ const Profile = () => {
               >
                 Change image
               </label>
+              <button
+                onClick={() => setShowLogoutConfirm(true)}
+                className=" text-red-500 text-base font-bold mx-auto"
+              >
+                Logout
+              </button>
             </div>
           </div>
           {enrollments?.length > 0 && (

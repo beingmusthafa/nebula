@@ -24,37 +24,12 @@ const Header = () => {
     null
   );
   const [showOptions, setShowOptions] = useState(false);
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const [search, setSearch] = useState<string>("");
   const [result, setResult] = useState<ICourse[]>([]);
   const [showResult, setShowResult] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const logout = async () => {
-    const toastId = toast.loading("Logging out");
-    try {
-      const res = await fetch(
-        import.meta.env.VITE_API_BASE_URL + "/api/auth/sign-out",
-        {
-          headers: {
-            "Authorization": "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      ).then((res) => res.json());
-      if (!res.success) throw new Error(res.message);
-      toast.dismiss(toastId);
-      dispatch(signOut());
-      setShowOptions(false);
-      setShowLogoutConfirm(false);
-      localStorage.removeItem("token");
-      navigate("/sign-in");
-    } catch (error: any) {
-      setShowLogoutConfirm(false);
-      toast.dismiss(toastId);
-      console.log(error.message);
-    }
-  };
   const navigateOptions = (route: string) => {
     setShowOptions(false);
     navigate(route);
@@ -200,12 +175,6 @@ const Header = () => {
         <div className="md:gap-8 gap-4 items-center cursor-pointer hidden md:flex">
           {currentUser ? (
             <>
-              <button
-                className="text-red-500 font-semibold"
-                onClick={() => setShowLogoutConfirm(true)}
-              >
-                Logout
-              </button>
               <Link to={"/my-courses"}>
                 <i className="bx hover:bg-slate-200 _transition-0-5 rounded-full py-1 px-2 bxs-videos text-2xl cursor-pointer"></i>
               </Link>
@@ -299,12 +268,6 @@ const Header = () => {
               />
               Profile
             </div>
-            <button
-              className="text-red-500 font-semibold my-4"
-              onClick={() => setShowLogoutConfirm(true)}
-            >
-              Logout
-            </button>
           </motion.div>
         )}
         {!currentUser && showOptions && (
@@ -322,13 +285,6 @@ const Header = () => {
               sign up
             </button>
           </div>
-        )}
-        {showLogoutConfirm && (
-          <ConfirmationPopup
-            confirmText="Are you sure you want to logout?"
-            onCancel={() => setShowLogoutConfirm(false)}
-            onConfirm={logout}
-          />
         )}
       </div>
     )
