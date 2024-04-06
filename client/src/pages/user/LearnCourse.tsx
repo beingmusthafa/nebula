@@ -144,13 +144,16 @@ const LearnCourseEntry = () => {
             key={i}
             className="flex justify-between w-11/12 py-2 border-t border-slate-500"
           >
-            <div className="flex items-center _transition-0-3 hover:text-sky-600 hover:font-bold cursor-pointer">
+            <Link
+              to={`/my-courses/learn/${courseId}/${chapter._id}/video/${video.order}`}
+              className="flex items-center _transition-0-3 hover:text-sky-600 hover:font-bold cursor-pointer"
+            >
               <i className="bx bx-video text-xl text-slate-500 mr-2"></i>
               {video.title}
               {isVideoCompleted && (
                 <i className="bx bx-check-circle text-xl text-green-500 ml-2"></i>
               )}
-            </div>
+            </Link>
             <p className="text-slate-500">{`${mins}m ${seconds}s`}</p>
           </motion.div>
         );
@@ -167,13 +170,16 @@ const LearnCourseEntry = () => {
             key={i}
             className="flex justify-start w-11/12 py-2 border-t border-slate-500"
           >
-            <div className="flex items-center _transition-0-3 hover:text-sky-600 hover:font-bold cursor-pointer">
+            <Link
+              to={`/my-courses/learn/${courseId}/${chapter._id}/exercise/${exercise.order}`}
+              className="flex items-center _transition-0-3 hover:text-sky-600 hover:font-bold cursor-pointer"
+            >
               <i className="bx bx-notepad text-xl text-slate-500 mr-2"></i>
               {`Exercise - ${i + 1}`}
               {isExerciseCompleted && (
                 <i className="bx bx-check-circle text-xl text-green-500 ml-2"></i>
               )}
-            </div>
+            </Link>
           </motion.div>
         );
       });
