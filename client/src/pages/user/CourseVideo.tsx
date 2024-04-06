@@ -62,11 +62,14 @@ const CourseVideo = () => {
   ) : (
     <>
       <div className="flex flex-col">
-        <video className="md:h-[80vh] pt-10 pb-2 mx-auto" controls>
+        <video
+          className="md:h-[80vh] pb-2 mx-auto border-b-4 border-sky-500"
+          controls
+        >
           <source src={video?.video} type="video/mp4" />
         </video>
-        <h1 className="text-center text-xl">{video?.title}</h1>
-        <div className="flex gap-10 w-full justify-center">
+        <h1 className="text-center text-xl mt-4">{video?.title}</h1>
+        <div className="flex gap-10 w-full justify-center mt-4">
           <button
             onClick={handlePrev}
             disabled={Number(videoOrder) === 1}
