@@ -141,7 +141,7 @@ const LearnCourseEntry = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
-            key={i}
+            key={video.order}
             className="flex justify-between w-11/12 py-2 border-t border-slate-500"
           >
             <Link
@@ -167,7 +167,7 @@ const LearnCourseEntry = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            key={i}
+            key={exercise.order}
             className="flex justify-start w-11/12 py-2 border-t border-slate-500"
           >
             <Link
