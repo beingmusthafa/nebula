@@ -35,13 +35,15 @@ const Home = () => {
     getSlides();
   }, []);
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const nextIndex = (currentIndex + 1) % images.length;
-      setCurrentIndex(nextIndex);
-    }, 3000);
-    return () => {
-      clearTimeout(timer);
-    };
+    if (images.length > 1) {
+      const timer = setTimeout(() => {
+        const nextIndex = (currentIndex + 1) % images.length;
+        setCurrentIndex(nextIndex);
+      }, 3000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
   }, [currentIndex, images.length]);
   return (
     <>
@@ -50,7 +52,7 @@ const Home = () => {
           <img
             className="w-full object-cover"
             src={images[currentIndex]?.image}
-            alt="http://res.cloudinary.com/dfezowkdc/image/upload/v1712436612/vgqi18yfo18xl69m4pgt.jpg"
+            alt="Banner"
           />
         </Link>
       ) : (
