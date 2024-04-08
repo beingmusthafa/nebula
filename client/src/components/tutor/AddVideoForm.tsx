@@ -1,54 +1,37 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import Loading from "../Loading";
-import IChapter from "../../interfaces/chapters.interface";
 
 interface Props {
   course: string;
   chapter: string;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const VideoForm: React.FC<Props> = ({ course, chapter, setShow }) => {
-  const [chapters, setChapters] = useState<IChapter[]>([]);
-  const [loading, setLoading] = useState(true);
+const VideoForm: React.FC<Props> = ({ chapter, setShow }) => {
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [video, setVideo] = useState<File | null>(null);
   let titleRef = useRef<HTMLInputElement>(null);
-  const getData = async () => {
-    setLoading(true);
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-chapters/" + course,
-      {
-        headers: {
-          "Authorization": "Bearer " + localStorage.getItem("token"),
-        },
-      }
-    ).then((res) => res.json());
-    if (!res.success) return toast.error(res.message);
-    setChapters(res.chapters);
-    setLoading(false);
-  };
-  useEffect(() => {
-    try {
-      getData();
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
     setLoading(true);
     const toastId = toast.loading("Adding video...");
+    const title = titleRef.current?.value;
     try {
-      if (!(video && titleRef.current?.value)) {
+      if (!(video && title)) {
         setLoading(false);
         toast.dismiss(toastId);
         return setError("All fields are required");
       } else setError("");
+      if (title.length < 3) {
+        setLoading(false);
+        toast.dismiss(toastId);
+        return setError("Title too short");
+      }
       const formData = new FormData();
       formData.append("video", video!);
-      formData.append("title", titleRef.current?.value!);
+      formData.append("title", title!);
       formData.append("chapter", chapter);
       const res = await fetch(
         import.meta.env.VITE_API_BASE_URL + "/api/tutor/add-video",

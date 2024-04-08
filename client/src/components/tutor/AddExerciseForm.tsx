@@ -1,8 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { toast } from "react-toastify";
 import Loading from "../Loading";
-import IChapter from "../../interfaces/chapters.interface";
-import IExercise from "../../interfaces/exercises.interface";
 
 interface Props {
   course: string;
@@ -10,8 +8,7 @@ interface Props {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const AddExerciseForm: React.FC<Props> = ({ course, chapter, setShow }) => {
-  const [chapters, setChapters] = useState<IChapter[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   let questionRef = useRef<HTMLInputElement>(null);
   let optionARef = useRef<HTMLInputElement>(null);
@@ -19,27 +16,7 @@ const AddExerciseForm: React.FC<Props> = ({ course, chapter, setShow }) => {
   let optionCRef = useRef<HTMLInputElement>(null);
   let optionDRef = useRef<HTMLInputElement>(null);
   let answerRef = useRef<HTMLSelectElement>(null);
-  const getChapters = async () => {
-    setLoading(true);
-    const res = await fetch(
-      import.meta.env.VITE_API_BASE_URL + "/api/tutor/get-chapters/" + course,
-      {
-        headers: {
-          "Authorization": "Bearer " + localStorage.getItem("token"),
-        },
-      }
-    ).then((res) => res.json());
-    setLoading(false);
-    if (!res.success) return toast.error(res.message);
-    setChapters(res.chapters);
-  };
-  useEffect(() => {
-    try {
-      getChapters();
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
